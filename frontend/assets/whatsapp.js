@@ -4,7 +4,7 @@ function generateWhatsAppMessage(name, description, price, productUrl, vendorNum
 
 *Product:* ${name}
 *Description:* ${description}
-*Price:* $${price}
+*Price:* ₦${price}
 *Product Link:* ${productUrl}
 
 I would like to know more about this product.`;

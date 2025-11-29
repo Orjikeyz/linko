@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vendor Dashboard - Johnsonkeyz</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: #f5f5f5;
+            color: #000000;
+        }
+
+        /* Dashboard Header */
+        .dashboard-header {
+            background-color: #000000;
+            color: #ffffff;
+            padding: 1rem 1.5rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .dashboard-header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .dashboard-logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn-logout {
+            background-color: #ffffff;
+            color: #000000;
+        }
+
+        .btn-logout:hover {
+            background-color: #e0e0e0;
+        }
+
+        /* Sidebar */
+        .dashboard-container {
+            display: flex;
+            max-width: 1400px;
+            margin: 0 auto;
+            min-height: calc(100vh - 70px);
+        }
+
+        .sidebar {
+            width: 250px;
+            background-color: #ffffff;
+            padding: 2rem 0;
+            border-right: 2px solid #e0e0e0;
+        }
+
+        .sidebar-nav {
+            list-style: none;
+        }
+
+        .sidebar-nav li {
+            margin-bottom: 0.5rem;
+        }
+
+        .sidebar-nav a {
+            display: block;
+            padding: 1rem 1.5rem;
+            color: #000000;
+            text-decoration: none;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+
+        .sidebar-nav a:hover,
+        .sidebar-nav a.active {
+            background-color: #000000;
+            color: #ffffff;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 2rem;
+        }
+
+        .page-title {
+            font-size: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background-color: #ffffff;
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 2px solid #e0e0e0;
+            transition: all 0.3s;
+        }
+
+        .stat-card:hover {
+            border-color: #000000;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        .stat-change {
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+        }
+
+        .stat-change.positive {
+            color: #22c55e;
+        }
+
+        .stat-change.negative {
+            color: #ef4444;
+        }
+
+        /* Table */
+        .content-card {
+            background-color: #ffffff;
+            border-radius: 12px;
+            border: 2px solid #e0e0e0;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+        }
+
+        .btn-primary {
+            background-color: #000000;
+            color: #ffffff;
+        }
+
+        .btn-primary:hover {
+            background-color: #333333;
+        }
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background-color: #f5f5f5;
+        }
+
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        th {
+            font-weight: 600;
+        }
+
+        tbody tr:hover {
+            background-color: #f9f9f9;
+        }
+
+        .badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .badge-active {
+            background-color: #d1fae5;
+            color: #065f46;
+        }
+
+        .badge-inactive {
+            background-color: #fee2e2;
+            color: #991b1b;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-small {
+            padding: 0.4rem 0.8rem;
+            font-size: 0.85rem;
+        }
+
+        .btn-edit {
+            background-color: #f0f0f0;
+            color: #000000;
+        }
+
+        .btn-edit:hover {
+            background-color: #e0e0e0;
+        }
+
+        .btn-delete {
+            background-color: #fee2e2;
+            color: #991b1b;
+        }
+
+        .btn-delete:hover {
+            background-color: #fecaca;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background-color: #ffffff;
+            padding: 2rem;
+            border-radius: 12px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .form-input,
+        .form-select,
+        .form-textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-input:focus,
+        .form-select:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: #000000;
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            margin-top: 2rem;
+        }
+
+        .btn-cancel {
+            background-color: #f5f5f5;
+            color: #000000;
+        }
+
+        .btn-cancel:hover {
+            background-color: #e0e0e0;
+        }
+
+        /* Login Page */
+        .login-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 1rem;
+        }
+
+        .login-card {
+            background-color: #ffffff;
+            padding: 3rem 2rem;
+            border-radius: 12px;
+            border: 2px solid #e0e0e0;
+            max-width: 400px;
+            width: 100%;
+        }
+
+        .login-title {
+            font-size: 2rem;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .error-message {
+            background-color: #fee2e2;
+            color: #991b1b;
+            padding: 0.75rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .dashboard-container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                border-right: none;
+                border-bottom: 2px solid #e0e0e0;
+                padding: 1rem 0;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            table {
+                font-size: 0.85rem;
+            }
+
+            th, td {
+                padding: 0.75rem 0.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Page -->
+    <div id="loginPage">
+        <div class="login-container">
+            <div class="login-card">
+                <h1 class="login-title">Vendor Login</h1>
+                <div class="error-message" id="loginError">Invalid credentials</div>
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label class="form-label">Email</label>
+                        <input type="email" class="form-input" id="loginEmail" placeholder="vendor@example.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Password</label>
+                        <input type="password" class="form-input" id="loginPassword" placeholder="Enter password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">Login</button>
+                </form>
+                <p style="text-align: center; margin-top: 1rem; color: #666; font-size: 0.9rem;">
+                    Demo: vendor@demo.com / password123
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dashboard -->
+    <div id="dashboardPage" style="display: none;">
+        <!-- Header -->
+        <header class="dashboard-header">
+            <div class="dashboard-header-content">
+                <div class="dashboard-logo">Johnsonkeyz Dashboard</div>
+                <div class="user-menu">
+                    <span id="userEmail">vendor@example.com</span>
+                    <button class="btn btn-logout" onclick="logout()">Logout</button>
+                </div>
+            </div>
+        </header>
+
+        <div class="dashboard-container">
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <nav>
+                    <ul class="sidebar-nav">
+                        <li><a href="#" class="active" onclick="showSection('overview')">Overview</a></li>
+                        <li><a href="#" onclick="showSection('products')">Products</a></li>
+                        <li><a href="#" onclick="showSection('orders')">Orders</a></li>
+                        <li><a href="#" onclick="showSection('analytics')">Analytics</a></li>
+                    </ul>
+                </nav>
+            </aside>
+
+            <!-- Main Content -->
+            <main class="main-content">
+                <!-- Overview Section -->
+                <div id="overviewSection" class="dashboard-section">
+                    <h1 class="page-title">Dashboard Overview</h1>
+
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-label">Total Revenue</div>
+                            <div class="stat-value">$12,485</div>
+                            <div class="stat-change positive">+12.5% from last month</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">Total Orders</div>
+                            <div class="stat-value">156</div>
+                            <div class="stat-change positive">+8.2% from last month</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">Active Products</div>
+                            <div class="stat-value">24</div>
+                            <div class="stat-change">No change</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">Conversion Rate</div>
+                            <div class="stat-value">3.2%</div>
+                            <div class="stat-change negative">-1.1% from last month</div>
+                        </div>
+                    </div>
+
+                    <div class="content-card">
+                        <div class="card-header">
+                            <h2 class="card-title">Recent Orders</h2>
+                        </div>
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Order ID</th>
+                                        <th>Product</th>
+                                        <th>Customer</th>
+                                        <th>Amount</th>
+                                        <th>Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>#ORD-1234</td>
+                                        <td>Premium Beat Pack Vol. 1</td>
+                                        <td>John Doe</td>
+                                        <td>$49.99</td>
+                                        <td>2024-01-15</td>
+                                    </tr>
+                                    <tr>
+                                        <td>#ORD-1233</td>
+                                        <td>Music Production Masterclass</td>
+                                        <td>Jane Smith</td>
+                                        <td>$99.99</td>
+                                        <td>2024-01-14</td>
+                                    </tr>
+                                    <tr>
+                                        <td>#ORD-1232</td>
+                                        <td>Serum Preset Bank</td>
+                                        <td>Mike Johnson</td>
+                                        <td>$29.99</td>
+                                        <td>2024-01-14</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Products Section -->
+                <div id="productsSection" class="dashboard-section" style="display: none;">
+                    <h1 class="page-title">Product Management</h1>
+
+                    <div class="content-card">
+                        <div class="card-header">
+                            <h2 class="card-title">All Products</h2>
+                            <button class="btn btn-primary" onclick="openProductModal()">Add New Product</button>
+                        </div>
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Product Name</th>
+                                        <th>Category</th>
+                                        <th>Price</th>
+                                        <th>Status</th>
+                                        <th>Sales</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="productsTableBody">
+                                    <!-- Products will be inserted here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Orders Section -->
+                <div id="ordersSection" class="dashboard-section" style="display: none;">
+                    <h1 class="page-title">Order Management</h1>
+
+                    <div class="content-card">
+                        <div class="card-header">
+                            <h2 class="card-title">All Orders</h2>
+                        </div>
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Order ID</th>
+                                        <th>Product</th>
+                                        <th>Customer</th>
+                                        <th>Email</th>
+                                        <th>Amount</th>
+                                        <th>Date</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="ordersTableBody">
+                                    <!-- Orders will be inserted here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Analytics Section -->
+                <div id="analyticsSection" class="dashboard-section" style="display: none;">
+                    <h1 class="page-title">Analytics</h1>
+
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-label">Total Visitors</div>
+                            <div class="stat-value">5,234</div>
+                            <div class="stat-change positive">+18.3% from last month</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">Page Views</div>
+                            <div class="stat-value">12,847</div>
+                            <div class="stat-change positive">+22.1% from last month</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">Avg. Order Value</div>
+                            <div class="stat-value">$80.03</div>
+                            <div class="stat-change positive">+5.2% from last month</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">Customer Retention</div>
+                            <div class="stat-value">68%</div>
+                            <div class="stat-change positive">+3.5% from last month</div>
+                        </div>
+                    </div>
+
+                    <div class="content-card">
+                        <div class="card-header">
+                            <h2 class="card-title">Top Selling Products</h2>
+                        </div>
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Product</th>
+                                        <th>Category</th>
+                                        <th>Units Sold</th>
+                                        <th>Revenue</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Music Production Masterclass</td>
+                                        <td>Courses</td>
+                                        <td>45</td>
+                                        <td>$4,499.55</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Premium Beat Pack Vol. 1</td>
+                                        <td>Beats</td>
+                                        <td>38</td>
+                                        <td>$1,899.62</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Hip Hop Heat Vol. 2</td>
+                                        <td>Beats</td>
+                                        <td>32</td>
+                                        <td>$1,439.68</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Product Modal -->
+    <div class="modal" id="productModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="modalTitle">Add New Product</h2>
+                <button class="close-btn" onclick="closeProductModal()">&times;</button>
+            </div>
+            <form id="productForm">
+                <div class="form-group">
+                    <label class="form-label">Product Name</label>
+                    <input type="text" class="form-input" id="productName" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Category</label>
+                    <select class="form-select" id="productCategory" required>
+                        <option value="">Select category</option>
+                        <option value="beats">Beats</option>
+                        <option value="courses">Courses</option>
+                        <option value="ebooks">E-books</option>
+                        <option value="presets">Presets</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Price ($)</label>
+                    <input type="number" class="form-input" id="productPrice" step="0.01" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Description</label>
+                    <textarea class="form-textarea" id="productDescription" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Status</label>
+                    <select class="form-select" id="productStatus" required>
+                        <option value="active">Active</option>
+                        <option value="inactive">Inactive</option>
+                    </select>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-cancel" onclick="closeProductModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Product</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Mock data
+        let products = [
+            { id: 1, name: "Premium Beat Pack Vol. 1", category: "beats", price: 49.99, status: "active", sales: 38 },
+            { id: 2, name: "Music Production Masterclass", category: "courses", price: 99.99, status: "active", sales: 45 },
+            { id: 3, name: "Music Theory for Producers", category: "ebooks", price: 19.99, status: "active", sales: 28 },
+            { id: 4, name: "Serum Preset Bank", category: "presets", price: 29.99, status: "active", sales: 22 },
+            { id: 5, name: "Afrobeat Essentials", category: "beats", price: 39.99, status: "active", sales: 15 },
+            { id: 6, name: "Mixing & Mastering Course", category: "courses", price: 79.99, status: "active", sales: 19 },
+            { id: 7, name: "Hip Hop Heat Vol. 2", category: "beats", price: 44.99, status: "active", sales: 32 },
+            { id: 8, name: "Music Marketing Blueprint", category: "ebooks", price: 24.99, status: "inactive", sales: 12 }
+        ];
+
+        let orders = [
+            { id: "ORD-1234", product: "Premium Beat Pack Vol. 1", customer: "John Doe", email: "john@example.com", amount: 49.99, date: "2024-01-15", status: "Completed" },
+            { id: "ORD-1233", product: "Music Production Masterclass", customer: "Jane Smith", email: "jane@example.com", amount: 99.99, date: "2024-01-14", status: "Completed" },
+            { id: "ORD-1232", product: "Serum Preset Bank", customer: "Mike Johnson", email: "mike@example.com", amount: 29.99, date: "2024-01-14", status: "Completed" },
+            { id: "ORD-1231", product: "Hip Hop Heat Vol. 2", customer: "Sarah Williams", email: "sarah@example.com", amount: 44.99, date: "2024-01-13", status: "Processing" },
+            { id: "ORD-1230", product: "Music Theory for Producers", customer: "David Brown", email: "david@example.com", amount: 19.99, date: "2024-01-13", status: "Completed" }
+        ];
+
+        let currentEditId = null;
+
+        // Authentication
+        function login(event) {
+            event.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+
+            // Simple demo authentication
+            if (email === '' && password === '') {
+                localStorage.setItem('isLoggedIn', 'true');
+                localStorage.setItem('userEmail', email);
+                showDashboard();
+            } else {
+                document.getElementById('loginError').classList.add('show');
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('isLoggedIn');
+            localStorage.removeItem('userEmail');
+            location.reload();
+        }
+
+        function showDashboard() {
+            document.getElementById('loginPage').style.display = 'none';
+            document.getElementById('dashboardPage').style.display = 'block';
+            const email = localStorage.getItem('userEmail');
+            if (email) {
+                document.getElementById('userEmail').textContent = email;
+            }
+            loadProducts();
+            loadOrders();
+        }
+
+        // Check authentication on load
+        window.addEventListener('DOMContentLoaded', () => {
+            const isLoggedIn = localStorage.getItem('isLoggedIn');
+            if (isLoggedIn === 'true') {
+                showDashboard();
+            }
+
+            document.getElementById('loginForm').addEventListener('submit', login);
+        });
+
+        // Navigation
+        function showSection(section) {
+            // Hide all sections
+            document.querySelectorAll('.dashboard-section').forEach(s => s.style.display = 'none');
+            
+            // Remove active class from all nav links
+            document.querySelectorAll('.sidebar-nav a').forEach(a => a.classList.remove('active'));
+            
+            // Show selected section
+            document.getElementById(section + 'Section').style.display = 'block';
+            
+            // Add active class to clicked nav link
+            event.target.classList.add('active');
+        }
+
+        // Products Management
+        function loadProducts() {
+            const tbody = document.getElementById('productsTableBody');
+            tbody.innerHTML = products.map(product => `
+                <tr>
+                    <td>${product.name}</td>
+                    <td>${product.category.charAt(0).toUpperCase() + product.category.slice(1)}</td>
+                    <td>$${product.price.toFixed(2)}</td>
+                    <td>
+                        <span class="badge ${product.status === 'active' ? 'badge-active' : 'badge-inactive'}">
+                            ${product.status.charAt(0).toUpperCase() + product.status.slice(1)}
+                        </span>
+                    </td>
+                    <td>${product.sales} units</td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="btn btn-small btn-edit" onclick="editProduct(${product.id})">Edit</button>
+                            <button class="btn btn-small btn-delete" onclick="deleteProduct(${product.id})">Delete</button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function openProductModal(productId = null) {
+            const modal = document.getElementById('productModal');
+            const form = document.getElementById('productForm');
+            
+            if (productId) {
+                const product = products.find(p => p.id === productId);
+                document.getElementById('modalTitle').textContent = 'Edit Product';
+                document.getElementById('productName').value = product.name;
+                document.getElementById('productCategory').value = product.category;
+                document.getElementById('productPrice').value = product.price;
+                document.getElementById('productDescription').value = product.description || '';
+                document.getElementById('productStatus').value = product.status;
+                currentEditId = productId;
+            } else {
+                document.getElementById('modalTitle').textContent = 'Add New Product';
+                form.reset();
+                currentEditId = null;
+            }
+            
+            modal.classList.add('active');
+        }
+
+        function closeProductModal() {
+            document.getElementById('productModal').classList.remove('active');
+            document.getElementById('productForm').reset();
+            currentEditId = null;
+        }
+
+        function editProduct(id) {
+            openProductModal(id);
+        }
+
+        function deleteProduct(id) {
+            if (confirm('Are you sure you want to delete this product?')) {
+                products = products.filter(p => p.id !== id);
+                loadProducts();
+            }
+        }
+
+        document.getElementById('productForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const productData = {
+                name: document.getElementById('productName').value,
+                category: document.getElementById('productCategory').value,
+                price: parseFloat(document.getElementById('productPrice').value),
+                description: document.getElementById('productDescription').value,
+                status: document.getElementById('productStatus').value,
+            };
+
+            if (currentEditId) {
+                // Edit existing product
+                const index = products.findIndex(p => p.id === currentEditId);
+                products[index] = { ...products[index], ...productData };
+            } else {
+                // Add new product
+                const newId = Math.max(...products.map(p => p.id)) + 1;
+                products.push({ id: newId, ...productData, sales: 0 });
+            }
+
+            loadProducts();
+            closeProductModal();
+        });
+
+        // Orders Management
+        function loadOrders() {
+            const tbody = document.getElementById('ordersTableBody');
+            tbody.innerHTML = orders.map(order => `
+                <tr>
+                    <td>${order.id}</td>
+                    <td>${order.product}</td>
+                    <td>${order.customer}</td>
+                    <td>${order.email}</td>
+                    <td>$${order.amount.toFixed(2)}</td>
+                    <td>${order.date}</td>
+                    <td>
+                        <span class="badge ${order.status === 'Completed' ? 'badge-active' : 'badge-inactive'}">
+                            ${order.status}
+                        </span>
+                    </td>
+                </tr>
+            `).join('');
+        }
+    </script>
+</body>
+</html>

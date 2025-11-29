@@ -27,10 +27,31 @@
         padding: 10px;
     }
 
-    .product-item img {
+    .product-item #main-img {
         width: 100%;
         height: 500px;
+        border-radius: 5px;
+        transition: 0.1s ease-in-out all;
     }
+
+    .main-img-toggle {
+        animation: slideToggle 0.4s ease-in-out alternate;
+    }
+
+    @keyframes slideToggle {
+        0% {
+            opacity: 1;
+            transform: translateX(0);
+            /* visible */
+        }
+
+        100% {
+            opacity: 0.8;
+            transform: translateX(1px);
+            /* slide out + disappear */
+        }
+    }
+
 
     .product-item-footer {
         display: flex;
@@ -53,24 +74,36 @@
         color: white;
     }
 
+    .img-list img {
+        width: 80px;
+        height: 80px;
+        border-radius: 5px;
+    }
+
     @media screen and (min-width: 768px) {
         .product-item {
             display: grid;
             grid-template-columns: 1fr 1fr;
         }
 
+        .img-list img {
+            width: 80px;
+            height: 80px;
+            border-radius: 5px;
+        }
+
         .product-item-content:nth-child(2) {
             padding: 10px;
         }
 
-        .product-item img {
+        .product-item #main-img {
             width: 90%;
             height: 500px;
         }
     }
 
     @media screen and (min-width: 1022px) {
-        .product-item img {
+        .product-item #main-img {
             width: 90%;
 
         }
@@ -90,11 +123,23 @@
         <section class="product-item">
             <div class="product-item-content">
                 <img src="https://www.wamdenim.com/cdn/shop/files/florence_black_shirt_01.jpg?v=1763378903&width=1500"
-                    loading="lazy">
+                    loading="lazy" id="main-img">
+                <div class="img-list">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSi2gfiWgwwHQWrcKgWX3nw4X2bZ5t5xCV2pw&s"
+                        loading="lazy" class="img-list-item">
+                    <img src="https://www.wamdenim.com/cdn/shop/files/florence_black_shirt_01.jpg?v=1763378903&width=1500"
+                        loading="lazy" class="img-list-item">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQh2XiuBBYSi19ShKtMcYJxt1Bv-Gxc9okSnuUhab0DIdAXO-M7wviZs8nA44-chEd5WvE&usqp=CAU"
+                        loading="lazy" class="img-list-item">
+                </div>
             </div>
+
             <div class="product-item-content">
                 <h2 id="productName">Premium Beat Pack Vol. 1</h2>
-                <p class="item-description" id="productDescription" style="color: #474646;">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nesciunt perferendis eaque ex similique facilis accusamus quia quis harum voluptatibus exercitationem assumenda dolorum magnam itaque vel, aperiam quae autem, in labore.
+                <p class="item-description" id="productDescription" style="color: #474646;">Lorem ipsum dolor, sit amet
+                    consectetur adipisicing elit. Nesciunt perferendis eaque ex similique facilis accusamus quia quis
+                    harum voluptatibus exercitationem assumenda dolorum magnam itaque vel, aperiam quae autem, in
+                    labore.
                 </p><br>
                 <p id="vendorNumber" style="display: none;">+2349012527321</p>
                 <div class="product-item-footer">
@@ -125,6 +170,19 @@
         buy.addEventListener("click", function () {
             generateWhatsAppMessage(productName.textContent, productDescription.textContent, price.textContent, productUrl.textContent, vendorNumber.textContent)
         })
+
+        let img_list_item = document.querySelectorAll(".img-list-item")
+        let main_img = document.getElementById("main-img")
+
+        img_list_item.forEach(item => {
+            main_img.classList.remove("main-img-toggle")
+            item.addEventListener("click", function () {
+                main_img.classList.remove("main-img-toggle")
+                void main_img.offsetWidth;
+                main_img.classList.add("main-img-toggle")
+                main_img.src = item.src
+            })
+        });
     </script>
     <script src="./assets/whatsapp.js"></script>
 </body>

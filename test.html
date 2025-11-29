@@ -1,0 +1,1205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Johnsonkeyz - Music Producer & Digital Creator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: #ffffff;
+            color: #000000;
+            line-height: 1.6;
+        }
+
+        /* Added styles for product detail page */
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        .product-detail {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background-color: #000000;
+            color: #ffffff;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-bottom: 2rem;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+
+        .back-btn:hover {
+            background-color: #333333;
+            transform: translateX(-4px);
+        }
+
+        .product-detail-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        @media (min-width: 768px) {
+            .product-detail-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .product-detail-image {
+            width: 100%;
+            border-radius: 12px;
+            border: 2px solid #e0e0e0;
+            overflow: hidden;
+        }
+
+        .product-detail-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .product-detail-info h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .product-detail-badges {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .product-detail-price {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 1.5rem;
+        }
+
+        .product-detail-description {
+            font-size: 1.1rem;
+            color: #666;
+            margin-bottom: 2rem;
+            line-height: 1.8;
+        }
+
+        .product-features {
+            background-color: #f5f5f5;
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+        }
+
+        .product-features h3 {
+            margin-bottom: 1rem;
+        }
+
+        .product-features ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .product-features li {
+            padding: 0.5rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .product-features li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+        }
+
+        .purchase-section {
+            background-color: #000000;
+            color: #ffffff;
+            padding: 2rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+        }
+
+        .purchase-btn {
+            width: 100%;
+            padding: 1rem;
+            background-color: #ffffff;
+            color: #000000;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 1rem;
+        }
+
+        .purchase-btn:hover {
+            background-color: #e0e0e0;
+            transform: scale(1.02);
+        }
+
+        .related-products {
+            margin-top: 4rem;
+        }
+
+        .related-products h2 {
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        /* </CHANGE> */
+
+        /* Header Styles */
+        .header {
+            background-color: #000000;
+            color: #ffffff;
+            padding: 1rem 1.5rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-decoration: none;
+            color: #ffffff;
+            cursor: pointer;
+        }
+
+        .search-container {
+            flex: 1;
+            max-width: 400px;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 0.5rem 1rem;
+            border: 2px solid #333;
+            background-color: #1a1a1a;
+            color: #ffffff;
+            border-radius: 8px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .search-input:focus {
+            border-color: #666;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: #ffffff;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #999;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%);
+            color: #ffffff;
+            padding: 3rem 1.5rem;
+            text-align: center;
+        }
+
+        .hero-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .profile-image {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 4px solid #ffffff;
+            margin-bottom: 1.5rem;
+            object-fit: cover;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            color: #cccccc;
+            margin-bottom: 1.5rem;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .social-btn {
+            padding: 0.5rem 1rem;
+            background-color: #ffffff;
+            color: #000000;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .social-btn:hover {
+            background-color: #e0e0e0;
+            transform: translateY(-2px);
+        }
+
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: #999;
+        }
+
+        /* Filter Section */
+        .filters {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .filter-btn {
+            padding: 0.6rem 1.2rem;
+            border: 2px solid #000;
+            background-color: #ffffff;
+            color: #000000;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            background-color: #000000;
+            color: #ffffff;
+        }
+
+        .sort-select {
+            padding: 0.6rem 1rem;
+            border: 2px solid #000;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            background-color: #ffffff;
+        }
+
+        /* Product Grid */
+        .products {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+        }
+
+        @media (min-width: 640px) {
+            .product-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .product-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (min-width: 1280px) {
+            .product-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        .product-card {
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s;
+            background-color: #ffffff;
+            cursor: pointer;
+        }
+
+        .product-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+            border-color: #000000;
+        }
+
+        .product-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            background-color: #f5f5f5;
+        }
+
+        .product-content {
+            padding: 1rem;
+        }
+
+        .product-badges {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.75rem;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .badge-featured {
+            background-color: #000000;
+            color: #ffffff;
+        }
+
+        .badge-category {
+            background-color: #f0f0f0;
+            color: #000000;
+        }
+
+        .product-title {
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .product-description {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 1rem;
+        }
+
+        .product-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .product-price {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .buy-btn {
+            padding: 0.5rem 1rem;
+            background-color: #000000;
+            color: #ffffff;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .buy-btn:hover {
+            background-color: #333333;
+            transform: scale(1.05);
+        }
+
+        /* Newsletter Section */
+        .newsletter {
+            background-color: #000000;
+            color: #ffffff;
+            padding: 4rem 1.5rem;
+            margin-top: 4rem;
+        }
+
+        .newsletter-content {
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .newsletter h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .newsletter p {
+            color: #cccccc;
+            margin-bottom: 2rem;
+        }
+
+        .newsletter-form {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .newsletter-input {
+            flex: 1;
+            min-width: 250px;
+            padding: 0.75rem 1rem;
+            border: 2px solid #333;
+            border-radius: 8px;
+            background-color: #1a1a1a;
+            color: #ffffff;
+        }
+
+        .newsletter-btn {
+            padding: 0.75rem 2rem;
+            background-color: #ffffff;
+            color: #000000;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .newsletter-btn:hover {
+            background-color: #e0e0e0;
+        }
+
+        /* Footer */
+        .footer {
+            background-color: #0a0a0a;
+            color: #ffffff;
+            padding: 3rem 1.5rem 1.5rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 1rem;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-links a {
+            color: #999;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: #ffffff;
+        }
+
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-top: 2rem;
+            border-top: 1px solid #333;
+            text-align: center;
+            color: #666;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .search-container {
+                width: 100%;
+                max-width: 100%;
+            }
+
+            .newsletter-form {
+                flex-direction: column;
+            }
+
+            .newsletter-input {
+                width: 100%;
+            }
+
+            .product-detail-info h1 {
+                font-size: 1.8rem;
+            }
+
+            .product-detail-price {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <a onclick="showHomePage()" class="logo">Johnsonkeyz</a>
+            <div class="search-container">
+                <input type="text" class="search-input" placeholder="Search products..." id="searchInput">
+            </div>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="#products">Products</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Home Page wrapper -->
+    <div id="homePage" class="page active">
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-content">
+                <img src="/placeholder.svg?height=120&width=120" alt="Johnsonkeyz" class="profile-image">
+                <h1>Johnsonkeyz</h1>
+                <p>Music Producer | Beat Maker | Digital Creator</p>
+                <div class="social-links">
+                    <a href="#" class="social-btn">Instagram</a>
+                    <a href="#" class="social-btn">Twitter</a>
+                    <a href="#" class="social-btn">YouTube</a>
+                </div>
+                <div class="stats">
+                    <div class="stat-item">
+                        <div class="stat-number">50+</div>
+                        <div class="stat-label">Products</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">2.5K+</div>
+                        <div class="stat-label">Happy Customers</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">4.9★</div>
+                        <div class="stat-label">Rating</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Filters -->
+        <div class="filters">
+            <button class="filter-btn active" data-filter="all">All Products</button>
+            <button class="filter-btn" data-filter="beats">Beats</button>
+            <button class="filter-btn" data-filter="courses">Courses</button>
+            <button class="filter-btn" data-filter="ebooks">E-books</button>
+            <button class="filter-btn" data-filter="presets">Presets</button>
+            <select class="sort-select" id="sortSelect">
+                <option value="newest">Newest First</option>
+                <option value="price-low">Price: Low to High</option>
+                <option value="price-high">Price: High to Low</option>
+                <option value="popular">Most Popular</option>
+            </select>
+        </div>
+
+        <!-- Products Section -->
+        <section class="products" id="products">
+            <div class="product-grid" id="productGrid">
+                <!-- Product cards remain the same -->
+                <!-- Product 1 -->
+                <div class="product-card" data-category="beats" data-price="49.99" data-id="1">
+                    <img src="/placeholder.svg?height=200&width=300" alt="Premium Beat Pack" class="product-image">
+                    <div class="product-content">
+                        <div class="product-badges">
+                            <span class="badge badge-featured">Featured</span>
+                            <span class="badge badge-category">Beats</span>
+                        </div>
+                        <h3 class="product-title">Premium Beat Pack Vol. 1</h3>
+                        <p class="product-description">10 professional trap beats ready for your next hit</p>
+                        <div class="product-footer">
+                            <span class="product-price">$49.99</span>
+                            <button class="buy-btn">Buy Now</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 2 -->
+                <div class="product-card" data-category="courses" data-price="99.99" data-id="2">
+                    <img src="/placeholder.svg?height=200&width=300" alt="Music Production Course" class="product-image">
+                    <div class="product-content">
+                        <div class="product-badges">
+                            <span class="badge badge-featured">Featured</span>
+                            <span class="badge badge-category">Courses</span>
+                        </div>
+                        <h3 class="product-title">Music Production Masterclass</h3>
+                        <p class="product-description">Complete guide from beginner to professional producer</p>
+                        <div class="product-footer">
+                            <span class="product-price">$99.99</span>
+                            <button class="buy-btn">Buy Now</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 3 -->
+                <div class="product-card" data-category="ebooks" data-price="19.99" data-id="3">
+                    <img src="/placeholder.svg?height=200&width=300" alt="Music Theory E-book" class="product-image">
+                    <div class="product-content">
+                        <div class="product-badges">
+                            <span class="badge badge-category">E-books</span>
+                        </div>
+                        <h3 class="product-title">Music Theory for Producers</h3>
+                        <p class="product-description">Essential music theory concepts made simple</p>
+                        <div class="product-footer">
+                            <span class="product-price">$19.99</span>
+                            <button class="buy-btn">Buy Now</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 4 -->
+                <div class="product-card" data-category="presets" data-price="29.99" data-id="4">
+                    <img src="/placeholder.svg?height=200&width=300" alt="Serum Presets" class="product-image">
+                    <div class="product-content">
+                        <div class="product-badges">
+                            <span class="badge badge-category">Presets</span>
+                        </div>
+                        <h3 class="product-title">Serum Preset Bank</h3>
+                        <p class="product-description">200+ high-quality Serum presets for modern production</p>
+                        <div class="product-footer">
+                            <span class="product-price">$29.99</span>
+                            <button class="buy-btn">Buy Now</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 5 -->
+                <div class="product-card" data-category="beats" data-price="39.99" data-id="5">
+                    <img src="/placeholder.svg?height=200&width=300" alt="Afrobeat Pack" class="product-image">
+                    <div class="product-content">
+                        <div class="product-badges">
+                            <span class="badge badge-category">Beats</span>
+                        </div>
+                        <h3 class="product-title">Afrobeat Essentials</h3>
+                        <p class="product-description">Authentic Afrobeat rhythms and melodies</p>
+                        <div class="product-footer">
+                            <span class="product-price">$39.99</span>
+                            <button class="buy-btn">Buy Now</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 6 -->
+                <div class="product-card" data-category="courses" data-price="79.99" data-id="6">
+                    <img src="/placeholder.svg?height=200&width=300" alt="Mixing Course" class="product-image">
+                    <div class="product-content">
+                        <div class="product-badges">
+                            <span class="badge badge-category">Courses</span>
+                        </div>
+                        <h3 class="product-title">Mixing & Mastering Course</h3>
+                        <p class="product-description">Professional mixing techniques revealed</p>
+                        <div class="product-footer">
+                            <span class="product-price">$79.99</span>
+                            <button class="buy-btn">Buy Now</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 7 -->
+                <div class="product-card" data-category="beats" data-price="44.99" data-id="7">
+                    <img src="/placeholder.svg?height=200&width=300" alt="Hip Hop Beats" class="product-image">
+                    <div class="product-content">
+                        <div class="product-badges">
+                            <span class="badge badge-featured">Featured</span>
+                            <span class="badge badge-category">Beats</span>
+                        </div>
+                        <h3 class="product-title">Hip Hop Heat Vol. 2</h3>
+                        <p class="product-description">15 fire hip hop instrumentals</p>
+                        <div class="product-footer">
+                            <span class="product-price">$44.99</span>
+                            <button class="buy-btn">Buy Now</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 8 -->
+                <div class="product-card" data-category="ebooks" data-price="24.99" data-id="8">
+                    <img src="/placeholder.svg?height=200&width=300" alt="Marketing Guide" class="product-image">
+                    <div class="product-content">
+                        <div class="product-badges">
+                            <span class="badge badge-category">E-books</span>
+                        </div>
+                        <h3 class="product-title">Music Marketing Blueprint</h3>
+                        <p class="product-description">Grow your music brand and audience</p>
+                        <div class="product-footer">
+                            <span class="product-price">$24.99</span>
+                            <button class="buy-btn">Buy Now</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Newsletter -->
+        <section class="newsletter">
+            <div class="newsletter-content">
+                <h2>Stay Updated</h2>
+                <p>Get exclusive beats, discounts, and production tips delivered to your inbox</p>
+                <form class="newsletter-form" onsubmit="return false;">
+                    <input type="email" class="newsletter-input" placeholder="Enter your email" required>
+                    <button type="submit" class="newsletter-btn">Subscribe</button>
+                </form>
+            </div>
+        </section>
+    </div>
+    <!-- </CHANGE> -->
+
+    <!-- Product Detail Page -->
+    <div id="detailPage" class="page">
+        <section class="product-detail">
+            <button class="back-btn" onclick="showHomePage()">
+                ← Back to Products
+            </button>
+            
+            <div class="product-detail-grid">
+                <div class="product-detail-image">
+                    <img id="detailImage" src="/placeholder.svg" alt="">
+                </div>
+                
+                <div class="product-detail-info">
+                    <div class="product-detail-badges" id="detailBadges"></div>
+                    <h1 id="detailTitle"></h1>
+                    <div class="product-detail-price" id="detailPrice"></div>
+                    <p class="product-detail-description" id="detailDescription"></p>
+                    
+                    <div class="product-features">
+                        <h3>What's Included:</h3>
+                        <ul id="detailFeatures">
+                            <li>High-quality digital files</li>
+                            <li>Instant download access</li>
+                            <li>Lifetime updates</li>
+                            <li>Commercial use license</li>
+                            <li>24/7 customer support</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="purchase-section">
+                        <h3>Ready to elevate your music?</h3>
+                        <p>One-time payment. Instant access. No subscriptions.</p>
+                        <button class="purchase-btn">Purchase Now</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="related-products">
+                <h2>You Might Also Like</h2>
+                <div class="product-grid" id="relatedProducts"></div>
+            </div>
+        </section>
+    </div>
+    <!-- </CHANGE> -->
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>About Johnsonkeyz</h3>
+                <p>Professional music producer and digital creator dedicated to helping artists create amazing music.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a href="#products">All Products</a></li>
+                    <li><a href="#beats">Beats</a></li>
+                    <li><a href="#courses">Courses</a></li>
+                    <li><a href="#about">About</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Support</h3>
+                <ul class="footer-links">
+                    <li><a href="#faq">FAQ</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                    <li><a href="#refund">Refund Policy</a></li>
+                    <li><a href="#terms">Terms of Service</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Connect</h3>
+                <ul class="footer-links">
+                    <li><a href="#">Instagram</a></li>
+                    <li><a href="#">Twitter</a></li>
+                    <li><a href="#">YouTube</a></li>
+                    <li><a href="#">SoundCloud</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Johnsonkeyz. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        const products = [
+            {
+                id: 1,
+                title: "Premium Beat Pack Vol. 1",
+                price: 49.99,
+                category: "beats",
+                description: "10 professional trap beats ready for your next hit",
+                fullDescription: "This premium beat pack includes 10 professionally crafted trap beats with hard-hitting 808s, crisp hi-hats, and melodic elements. Perfect for modern hip-hop and trap artists looking to create chart-topping hits. Each beat comes in high-quality WAV and MP3 formats with stems included for full creative control.",
+                featured: true,
+                image: "https://www.wamdenim.com/cdn/shop/files/florence_black_shirt_01.jpg?v=1763378903&width=1500",
+                features: [
+                    "10 exclusive trap beats",
+                    "WAV & MP3 formats included",
+                    "Full stems for mixing",
+                    "BPM range: 130-150",
+                    "Commercial license included"
+                ]
+            },
+            {
+                id: 2,
+                title: "Music Production Masterclass",
+                price: 99.99,
+                category: "courses",
+                description: "Complete guide from beginner to professional producer",
+                fullDescription: "Learn everything you need to know about music production from industry professionals. This comprehensive course covers beat making, mixing, mastering, sound design, and music theory. With over 50 hours of content and hands-on projects, you'll develop the skills to produce professional-quality music.",
+                featured: true,
+                image: "https://www.wamdenim.com/cdn/shop/files/florence_black_shirt_01.jpg?v=1763378903&width=1500",
+                features: [
+                    "50+ hours of video content",
+                    "20+ downloadable projects",
+                    "Private community access",
+                    "Certificate of completion",
+                    "Lifetime course access"
+                ]
+            },
+            {
+                id: 3,
+                title: "Music Theory for Producers",
+                price: 19.99,
+                category: "ebooks",
+                description: "Essential music theory concepts made simple",
+                fullDescription: "Unlock the power of music theory and take your productions to the next level. This comprehensive ebook breaks down complex music theory concepts into easy-to-understand lessons. Learn scales, chords, progressions, and melody writing that will transform your creative process.",
+                featured: false,
+                image: "https://www.wamdenim.com/cdn/shop/files/florence_black_shirt_01.jpg?v=1763378903&width=1500",
+                features: [
+                    "150+ pages of content",
+                    "Interactive exercises",
+                    "Audio examples included",
+                    "Chord progression cheat sheets",
+                    "PDF format for all devices"
+                ]
+            },
+            {
+                id: 4,
+                title: "Serum Preset Bank",
+                price: 29.99,
+                category: "presets",
+                description: "200+ high-quality Serum presets for modern production",
+                fullDescription: "Elevate your sound design with this massive collection of Serum presets. Featuring 200+ expertly crafted sounds perfect for EDM, trap, future bass, and more. Each preset is meticulously designed and organized by category for easy browsing and instant inspiration.",
+                featured: false,
+                image: "https://www.wamdenim.com/cdn/shop/files/florence_black_shirt_01.jpg?v=1763378903&width=1500",
+                features: [
+                    "200+ Serum presets",
+                    "Organized by category",
+                    "Macro controls assigned",
+                    "Compatible with Serum 1.3+",
+                    "Free updates included"
+                ]
+            },
+            {
+                id: 5,
+                title: "Afrobeat Essentials",
+                price: 39.99,
+                category: "beats",
+                description: "Authentic Afrobeat rhythms and melodies",
+                fullDescription: "Capture the vibrant energy of Afrobeat music with this essential pack. Featuring authentic rhythms, melodic patterns, and percussion elements that define the genre. Perfect for creating modern Afrobeat, Afropop, and fusion tracks that move dance floors worldwide.",
+                featured: false,
+                image: "https://www.wamdenim.com/cdn/shop/files/florence_black_shirt_01.jpg?v=1763378903&width=1500",
+                features: [
+                    "15 Afrobeat instrumentals",
+                    "Authentic percussion loops",
+                    "Melodic stems included",
+                    "BPM range: 110-128",
+                    "Full mixing stems"
+                ]
+            },
+            {
+                id: 6,
+                title: "Mixing & Mastering Course",
+                price: 79.99,
+                category: "courses",
+                description: "Professional mixing techniques revealed",
+                fullDescription: "Master the art of mixing and mastering with this in-depth course. Learn industry-standard techniques for EQ, compression, reverb, and more. Get your music to sound radio-ready and competitive with professional releases across all platforms.",
+                featured: false,
+                image: "https://www.wamdenim.com/cdn/shop/files/florence_black_shirt_01.jpg?v=1763378903&width=1500",
+                features: [
+                    "30+ hours of tutorials",
+                    "Before & after examples",
+                    "Plugin recommendations",
+                    "Mixing templates included",
+                    "1-on-1 feedback sessions"
+                ]
+            },
+            {
+                id: 7,
+                title: "Hip Hop Heat Vol. 2",
+                price: 44.99,
+                category: "beats",
+                description: "15 fire hip hop instrumentals",
+                fullDescription: "This collection features 15 blazing hip hop beats with diverse styles ranging from boom-bap to modern trap-influenced sounds. Each beat is crafted with attention to detail, perfect for rappers and vocalists looking for quality instrumentals to showcase their talent.",
+                featured: true,
+                image: "https://www.wamdenim.com/cdn/shop/files/florence_black_shirt_01.jpg?v=1763378903&width=1500",
+                features: [
+                    "15 hip hop beats",
+                    "Multiple sub-genres covered",
+                    "Tagged & untagged versions",
+                    "Commercial rights included",
+                    "Instant MP3 & WAV download"
+                ]
+            },
+            {
+                id: 8,
+                title: "Music Marketing Blueprint",
+                price: 24.99,
+                category: "ebooks",
+                description: "Grow your music brand and audience",
+                fullDescription: "Learn proven strategies to market your music effectively and build a loyal fanbase. This comprehensive guide covers social media marketing, playlist pitching, email marketing, branding, and monetization strategies that actually work in today's music industry.",
+                featured: false,
+                image: "https://www.wamdenim.com/cdn/shop/files/florence_black_shirt_01.jpg?v=1763378903&width=1500",
+                features: [
+                    "100+ page marketing guide",
+                    "Social media templates",
+                    "Email marketing scripts",
+                    "Playlist pitching strategies",
+                    "Monetization roadmap"
+                ]
+            }
+        ];
+
+        // Show product detail page
+        function showProductDetail(productId) {
+            const product = products.find(p => p.id === productId);
+            if (!product) return;
+
+            // Update detail page content
+            document.getElementById('detailImage').src = product.image;
+            document.getElementById('detailImage').alt = product.title;
+            document.getElementById('detailTitle').textContent = product.title;
+            document.getElementById('detailPrice').textContent = '$' + product.price.toFixed(2);
+            document.getElementById('detailDescription').textContent = product.fullDescription;
+
+            // Update badges
+            const badgesHTML = `
+                ${product.featured ? '<span class="badge badge-featured">Featured</span>' : ''}
+                <span class="badge badge-category">${product.category.charAt(0).toUpperCase() + product.category.slice(1)}</span>
+            `;
+            document.getElementById('detailBadges').innerHTML = badgesHTML;
+
+            // Update features
+            if (product.features) {
+                document.getElementById('detailFeatures').innerHTML = product.features.map(f => `<li>${f}</li>`).join('');
+            }
+
+            // Show related products (same category, excluding current)
+            const relatedProducts = products.filter(p => p.category === product.category && p.id !== productId).slice(0, 4);
+            const relatedHTML = relatedProducts.map(p => `
+                <div class="product-card" data-category="${p.category}" data-price="${p.price}" data-id="${p.id}">
+                    <img src="${p.image}" alt="${p.title}" class="product-image">
+                    <div class="product-content">
+                        <div class="product-badges">
+                            ${p.featured ? '<span class="badge badge-featured">Featured</span>' : ''}
+                            <span class="badge badge-category">${p.category.charAt(0).toUpperCase() + p.category.slice(1)}</span>
+                        </div>
+                        <h3 class="product-title">${p.title}</h3>
+                        <p class="product-description">${p.description}</p>
+                        <div class="product-footer">
+                            <span class="product-price">$${p.price.toFixed(2)}</span>
+                            <button class="buy-btn">Buy Now</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+            document.getElementById('relatedProducts').innerHTML = relatedHTML;
+
+            // Switch pages
+            document.getElementById('homePage').classList.remove('active');
+            document.getElementById('detailPage').classList.add('active');
+            window.scrollTo(0, 0);
+
+            // Reattach event listeners to related products
+            attachProductClickListeners();
+        }
+
+        // Show home page
+        function showHomePage() {
+            document.getElementById('detailPage').classList.remove('active');
+            document.getElementById('homePage').classList.add('active');
+            window.scrollTo(0, 0);
+        }
+
+        // Attach click listeners to product cards
+        function attachProductClickListeners() {
+            document.querySelectorAll('.product-card').forEach(card => {
+                card.addEventListener('click', function(e) {
+                    // Don't navigate if clicking the buy button
+                    if (e.target.classList.contains('buy-btn')) {
+                        e.stopPropagation();
+                        return;
+                    }
+                    const productId = parseInt(this.getAttribute('data-id'));
+                    showProductDetail(productId);
+                });
+            });
+        }
+        // </CHANGE>
+
+        // Filter functionality
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const productCards = document.querySelectorAll('.product-card');
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                const filter = btn.getAttribute('data-filter');
+
+                productCards.forEach(card => {
+                    if (filter === 'all' || card.getAttribute('data-category') === filter) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        // Search functionality
+        const searchInput = document.getElementById('searchInput');
+        searchInput.addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+
+            productCards.forEach(card => {
+                const title = card.querySelector('.product-title').textContent.toLowerCase();
+                const description = card.querySelector('.product-description').textContent.toLowerCase();
+
+                if (title.includes(searchTerm) || description.includes(searchTerm)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+
+        // Sort functionality
+        const sortSelect = document.getElementById('sortSelect');
+        const productGrid = document.getElementById('productGrid');
+
+        sortSelect.addEventListener('change', (e) => {
+            const sortValue = e.target.value;
+            const cardsArray = Array.from(productCards);
+
+            cardsArray.sort((a, b) => {
+                const priceA = parseFloat(a.getAttribute('data-price'));
+                const priceB = parseFloat(b.getAttribute('data-price'));
+
+                switch(sortValue) {
+                    case 'price-low':
+                        return priceA - priceB;
+                    case 'price-high':
+                        return priceB - priceA;
+                    case 'popular':
+                        return 0; // Keep original order for popular
+                    default:
+                        return 0; // Keep original order for newest
+                }
+            });
+
+            // Clear and re-append sorted cards
+            productGrid.innerHTML = '';
+            cardsArray.forEach(card => productGrid.appendChild(card));
+        });
+
+        // Newsletter form
+        document.querySelector('.newsletter-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.querySelector('.newsletter-input').value;
+            alert('Thank you for subscribing! Check your email for exclusive content.');
+            document.querySelector('.newsletter-input').value = '';
+        });
+
+        document.addEventListener('DOMContentLoaded', attachProductClickListeners);
+        // </CHANGE>
+    </script>
+</body>
+</html>

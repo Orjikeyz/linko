@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elitebrand - Music Producer & Digital Creator</title>
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v6.0.0-beta1/css/all.css"
+        integrity="SHA384-ABC123==" crossorigin="anonymous">
+    <link rel="stylesheet" href="./assets/style.css">
+</head>
+<style>
+    #backBtn {
+        background-color: black;
+        padding: 10px 15px;
+        border-radius: 5px;
+        color: white;
+        transition: 0.5s ease-in-out all;
+    }
+
+    #backBtn:hover {
+        transition: 0.5s ease-in-out all;
+        transform: translateX(10px);
+    }
+
+    .product-item {
+        padding: 10px;
+    }
+
+    .product-item img {
+        width: 100%;
+        height: 500px;
+    }
+
+    .product-item-footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px 0;
+    }
+
+    .product-item-footer #price {
+        font-weight: 600;
+        font-size: 20px;
+    }
+
+    .product-item-footer button {
+        padding: 10px 50px;
+        border: none;
+        outline: none;
+        background: black;
+        border-radius: 3px;
+        color: white;
+    }
+
+    @media screen and (min-width: 768px) {
+        .product-item {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .product-item-content:nth-child(2) {
+            padding: 10px;
+        }
+
+        .product-item img {
+            width: 90%;
+            height: 500px;
+        }
+    }
+
+    @media screen and (min-width: 1022px) {
+        .product-item img {
+            width: 90%;
+
+        }
+    }
+</style>
+
+<body>
+    <!-- Header -->
+    <div class="top-header">
+        <img src="./assets/images/logo.png" width="40px"> <span>Linko.ng</span>
+    </div>
+
+    <div class="product-preview-container">
+        <a href="index.html"><button type="button" id="backBtn">Back to Products</button></a><br><br>
+
+        <!-- Products Section -->
+        <section class="product-item">
+            <div class="product-item-content">
+                <img src="https://www.wamdenim.com/cdn/shop/files/florence_black_shirt_01.jpg?v=1763378903&width=1500"
+                    loading="lazy">
+            </div>
+            <div class="product-item-content">
+                <h2 id="productName">Premium Beat Pack Vol. 1</h2>
+                <p class="item-description" id="productDescription" style="color: #474646;">
+                    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nesciunt perferendis eaque ex similique
+                    facilis accusamus quia quis harum voluptatibus exercitationem assumenda dolorum magnam itaque vel,
+                    aperiam quae autem, in labore.
+                </p>
+                <p id="vendorNumber" style="display: none;">1234567890</p>
+                <div class="product-item-footer">
+                    <p id="price">$450.30</p>
+                    <button type="button" id="buy">Buy</button>
+                </div>
+
+            </div>
+        </section>
+    </div>
+    <br>
+
+    <footer style="text-align: center;">
+        <div class="top-header">
+            Powered by<img src="./assets/images/logo.png" width="40px"> <span>Linko.ng</span>
+        </div>
+        <p style="font-size: 13px;">© <span id="yearText">2025</span>Elitebrand Shop. All Rights Reserved..
+        </p>
+        <br>
+    </footer>
+
+    <script>
+        let buy = document.querySelector("#buy")
+        let productName = document.querySelector("#productName")
+        let productDescription = document.querySelector("#productDescription")
+        let price = document.querySelector("#price")
+        let productUrl = "http://127.0.0.1:5500/frontend/products.html"
+        buy.addEventListener("click", function () {
+            generateWhatsAppMessage(productName.textContent, productDescription.textContent, price.textContent, productUrl.textContent, vendorNumber.textContent)
+        })
+    </script>
+    <script src="./assets/whatsapp.js"></script>
+</body>
+
+</html>

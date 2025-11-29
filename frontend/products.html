@@ -98,8 +98,8 @@
                     Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nesciunt perferendis eaque ex similique
                     facilis accusamus quia quis harum voluptatibus exercitationem assumenda dolorum magnam itaque vel,
                     aperiam quae autem, in labore.
-                </p>
-                <p id="vendorNumber" style="display: none;">1234567890</p>
+                </p><br>
+                <p id="vendorNumber" style="display: none;">+2349012527321</p>
                 <div class="product-item-footer">
                     <p id="price">$450.30</p>
                     <button type="button" id="buy">Buy</button>
@@ -124,7 +124,7 @@
         let productName = document.querySelector("#productName")
         let productDescription = document.querySelector("#productDescription")
         let price = document.querySelector("#price")
-        let productUrl = "http://127.0.0.1:5500/frontend/products.html"
+        let productUrl = "https://linkohub.vercel.app/"
         buy.addEventListener("click", function () {
             generateWhatsAppMessage(productName.textContent, productDescription.textContent, price.textContent, productUrl.textContent, vendorNumber.textContent)
         })

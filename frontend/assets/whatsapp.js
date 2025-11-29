@@ -14,3 +14,4 @@ I would like to know more about this product.`;
     window.location.href = `https://wa.me/${vendorNumber}?text=${encoded}`
 }
 
+ 

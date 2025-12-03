@@ -39,38 +39,3 @@
                 }
             });
         });
-
-        // Sort functionality
-        const sortSelect = document.getElementById('sortSelect');
-        const productGrid = document.getElementById('productGrid');
-
-        sortSelect.addEventListener('change', (e) => {
-            const sortValue = e.target.value;
-            const productsArray = Array.from(productCards);
-
-            productsArray.sort((a, b) => {
-                const priceA = parseFloat(a.dataset.price);
-                const priceB = parseFloat(b.dataset.price);
-
-                switch (sortValue) {
-                    case 'price-low':
-                        return priceA - priceB;
-                    case 'price-high':
-                        return priceB - priceA;
-                    case 'newest':
-                    case 'popular':
-                    default:
-                        return 0;
-                }
-            });
-
-            // Re-append sorted products
-            productsArray.forEach(card => productGrid.appendChild(card));
-        });
-
-        // Buy button functionality
-        document.querySelectorAll('.buy-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                alert('Product added to cart!');
-            });
-        });

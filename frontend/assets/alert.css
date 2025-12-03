@@ -1,0 +1,22 @@
+/* 🔔 Alert box */
+.alert {
+  position: fixed;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  top: 20px;
+  right: 20px;
+  min-width: 200px;
+  padding: 12px 18px;
+  background: #28a745; /* green success */
+  color: #fff;
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  font-size: 14px;
+  opacity: 0;
+  transform: translateX(100%);
+  transition: all 0.4s ease;
+  z-index: 9999;
+}
+.alert.show {
+  opacity: 1;
+  transform: translateX(0);
+}

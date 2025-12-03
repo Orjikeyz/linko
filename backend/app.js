@@ -4,7 +4,9 @@ const app = express();
 const connectDB = require("./config/connect")
 connectDB() //connect DB
 const productRoutes = require("./router/productRoutes")
+const vendorRoutes = require("./router/vendorRoutes")
 
+app.use("/", vendorRoutes);
 app.use("/product", productRoutes);
 
 app.listen(3000, ()=> {

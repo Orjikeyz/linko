@@ -12,9 +12,10 @@ const getVendor = async (req, res) => {
       return responseData(res, 'error', 400, 'Vendor not found', [], 'free')
     }
 
-    res.send(vendor)
+    return responseData(res, 'success', 200, 'Vendor data retrieved successfully', vendor, 'free')
+
   } catch (error) {
-    return responseData(res, 'error', 500, 'Vendor not found', [], 'free')
+    return responseData(res, 'error', 500, 'Server Error', [], 'free')
   }
 }
 

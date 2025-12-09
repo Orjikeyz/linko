@@ -8,14 +8,16 @@ const getVendor = async (req, res) => {
     const { vendorUsername } = req.params
 
     const vendor = await Vendor.findOne({ username: vendorUsername })
+    
     if (!vendor) {
-      return responseData(res, 'error', 400, 'Vendor not found', [], 'free')
+      return responseData(res, 'error', 400, 'Vendor not found', [], '')
     }
 
-    return responseData(res, 'success', 200, 'Vendor data retrieved successfully', vendor, 'free')
+
+    return responseData(res, 'success', 200, 'Vendor data retrieved successfully', vendor, vendor.plan)
 
   } catch (error) {
-    return responseData(res, 'error', 500, 'Server Error', [], 'free')
+    return responseData(res, 'error', 500, 'Server Error', [], '')
   }
 }
 

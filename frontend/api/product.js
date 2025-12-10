@@ -3,6 +3,7 @@ const paramsValue = params.get('id')
 const productId = params.get('pid')
 
 if (paramsValue === '' || !paramsValue) {
+    document.getElementsByTagName("body")[0].style.display = "none"
     window.location.href = '404'
 }
 let productUrl = "https://linkohub.vercel.app/"
@@ -82,20 +83,21 @@ const getProductById = async () => {
             let productDescription = document.getElementById("productDescription")
             let price = document.getElementById("price")
             let img_list = document.querySelector(".img-list")
+            let main_img = document.getElementById("main-img")
 
             productName.textContent = data.result[0].name
             productDescription.textContent = data.result[0].description
             price.textContent = data.result[0].price
             let vendorNumber = data.result[0].vendor.phone_number;
+            main_img.src = data.result[0].images[0]
 
             let buy = document.querySelector("#buy")
 
-
             data.result[0].images.forEach(img => {
-                img_list.innerHTML += `<img src="${img}"loading="lazy" class="img-list-item">`
+                img_list.innerHTML += `<img src="${img}" loading="lazy" class="img-list-item">`
 
                 let img_list_item = document.querySelectorAll(".img-list-item")
-                let main_img = document.getElementById("main-img")
+
 
                 img_list_item.forEach(item => {
                     main_img.classList.remove("main-img-toggle")
@@ -127,3 +129,56 @@ const getProductById = async () => {
     }
 }
 
+// Vendor Dashboard Product API Call
+const getAllVendorProduct = async () => {
+    const tbody = document.getElementById('productsTableBody');
+    tbody.innerHTML = ""
+    let cachedProduct = localStorage.getItem("products")
+    if (cachedProduct) {
+        loadProducts(JSON.parse(cachedProduct))
+    } else if (cachedProduct === 1) {
+        try {
+            const response = await fetch(`http://localhost:3000/product/vendor/${paramsValue}`, {
+                method: 'GET',
+                headers: { 'Content-Type': 'application/json' }
+            })
+
+            if (!response.ok) {
+                showAlert('No data available', "error")
+            }
+
+            const data = await response.json()
+            if (data.status === 'error') {
+                showAlert(`${data.message}`, `${data.status}`)
+            }
+
+            if (data.status === 'success') {
+                cachedProduct = localStorage.setItem("products", JSON.stringify(data.result))
+                loadProducts(data.result)
+            }
+        } catch (error) {
+            showAlert('Server Error. Please try again later', "error")
+        }
+    }
+
+}
+
+function loadProducts(data) {
+    const tbody = document.getElementById('productsTableBody');
+    data.forEach(product => {
+        console.log(product)
+        tbody.innerHTML += `<tr>
+                    <td>${product.name}</td>
+                    <td><textarea rows='5' style='border: none; outline: none; background: transparent'>${product.description}</textarea></td>
+                    <td>$${product.price.toFixed(2)}</td>
+                    <td>status</td>
+                    <td>${product.price} units</td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="btn btn-small btn-edit" onclick="editProduct(${product._id})">Edit</button>
+                            <button class="btn btn-small btn-delete" onclick="deleteProduct(${product._id})">Delete</button>
+                        </div>
+                    </td>
+                </tr>`
+    });
+}

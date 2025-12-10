@@ -1,6 +1,6 @@
 RewriteEngine On
 
-# Remove .html extension
+# Remove .html extension globally (supports folders & subfolders)
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME}\.html -f
-RewriteRule ^([^/]+)$ $1.html [L]
+RewriteRule ^(.+)$ $1.html [L]

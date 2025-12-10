@@ -40,7 +40,7 @@ const getVendorData = async () => {
       profile_instagram.href = data.result.instagram
       profile_facebook.href = data.result.facebook
       profile_twitter.href = data.result.x
-      profile_phone_number.href = data.result.profile_phone_number
+      profile_phone_number.href = data.result.phone_number
 
       // heroImage.style.background = `linear-gradient(135deg, #000000 0%, #1a1a1ab5 100%), url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRLat8bZvhXD3ChSXyzGsFVh6qgplm1KhYPKA&s')`;
     }

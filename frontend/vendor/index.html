@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
     <link rel="stylesheet" href="./assets/style.css">
     <link rel="stylesheet" href="../assets/alert.css">
 </head>
+
 <body>
 
 
@@ -109,7 +111,9 @@
 
                 <!-- Products Section -->
                 <div id="productsSection" class="dashboard-section" style="display: none;">
-                    <h1 class="page-title" style="display: flex; align-items: center; justify-content: space-between;">Product Management <button class="btn btn-primary" onclick="openProductModal()">Refresh</button></h1>
+                    <h1 class="page-title" style="display: flex; align-items: center; justify-content: space-between;">
+                        Product Management <button class="btn btn-primary"
+                            onclick="refreshProductTable()">Refresh</button></h1>
 
                     <div class="content-card">
                         <div class="card-header">
@@ -121,10 +125,10 @@
                                 <thead>
                                     <tr>
                                         <th>Product Name</th>
-                                        <th>Category</th>
+                                        <th>Description</th>
                                         <th>Price</th>
+                                        <th>Image</th>
                                         <th>Status</th>
-                                        <th>Sales</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
@@ -283,9 +287,20 @@
         </div>
     </div>
 
-<div id="alertBox" class="alert">Saved successfully!</div>
-<script src="../assets/alert.js"></script>
-<script src="../api/product.js"></script>
-<script src="./assets/script.js"></script>
+    <div class="modal-img-overview-container">
+        <button id="close-img-overview">close</button>
+        <div class="modal-img-overview">
+            <img src="https://gcopositivity.ct.ws/en/app/images/dabas.jpg" width="100%" height="400px" id="img-overview-main">
+            <div class="img-overview-list" >
+
+            </div>
+        </div>
+    </div>
+
+    <div id="alertBox" class="alert">Saved successfully!</div>
+    <script src="../assets/alert.js"></script>
+    <script src="../api/product.js"></script>
+    <script src="./assets/script.js"></script>
 </body>
+
 </html>

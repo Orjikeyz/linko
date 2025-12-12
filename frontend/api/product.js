@@ -8,7 +8,6 @@ if (paramsValue === '' || !paramsValue) {
 }
 let productUrl = "https://linkohub.vercel.app/"
 
-
 const getProductsData = async () => {
     try {
         const response = await fetch(`http://localhost:3000/product/${paramsValue}`, {
@@ -136,7 +135,9 @@ const getAllVendorProduct = async () => {
     let cachedProduct = localStorage.getItem("products")
     if (cachedProduct) {
         loadProducts(JSON.parse(cachedProduct))
-    } else if (cachedProduct === 1) {
+        console.log("cached")
+    } else {
+        console.log("api")
         try {
             const response = await fetch(`http://localhost:3000/product/vendor/${paramsValue}`, {
                 method: 'GET',
@@ -153,6 +154,8 @@ const getAllVendorProduct = async () => {
             }
 
             if (data.status === 'success') {
+                localStorage.removeItem("products");
+
                 cachedProduct = localStorage.setItem("products", JSON.stringify(data.result))
                 loadProducts(data.result)
             }
@@ -163,16 +166,16 @@ const getAllVendorProduct = async () => {
 
 }
 
+// Load product
 function loadProducts(data) {
     const tbody = document.getElementById('productsTableBody');
     data.forEach(product => {
-        console.log(product)
         tbody.innerHTML += `<tr>
                     <td>${product.name}</td>
-                    <td><textarea rows='5' style='border: none; outline: none; background: transparent'>${product.description}</textarea></td>
-                    <td>$${product.price.toFixed(2)}</td>
+                    <td><textarea rows='5' style='border: none; outline: none; background: transparent;'>${product.description}</textarea></td>
+                    <td>₦${product.price.toFixed(2)}</td>
+                    <td><img src='${product.images[0]}' loading='lazy' data-img='${JSON.stringify(product.images)}' width='70px' height='70px' class='img-view'></td>
                     <td>status</td>
-                    <td>${product.price} units</td>
                     <td>
                         <div class="action-buttons">
                             <button class="btn btn-small btn-edit" onclick="editProduct(${product._id})">Edit</button>
@@ -181,4 +184,39 @@ function loadProducts(data) {
                     </td>
                 </tr>`
     });
+
+    let img_view = document.querySelectorAll(".img-view")
+    img_view.forEach(item => {
+        item.addEventListener("click", function () {
+            let dataimg = JSON.parse(item.getAttribute("data-img"))
+            let modal_img_overview_container = document.querySelector(".modal-img-overview-container")
+            let img_overview_main = document.getElementById("img-overview-main")
+            let img_overview_list = document.querySelector(".img-overview-list")
+            let close_img_overview = document.getElementById('close-img-overview')
+
+            modal_img_overview_container.style.display = "block"
+            img_overview_main.src = item.src
+
+            close_img_overview.addEventListener("click", function () {
+                modal_img_overview_container.style.display = "none"
+            })
+
+            img_overview_list.innerHTML = ""
+
+            dataimg.forEach((img, item) => {
+                img_overview_list.innerHTML += `<img src="${img}" width="70px" height="70px" class="img-overview-list-item">`
+                let img_overview_list_item = document.querySelectorAll(".img-overview-list-item")
+                img_overview_list_item.forEach(item => {
+                    item.addEventListener("click", function () {
+                        img_overview_main.src = item.src
+                    })
+                });
+            });
+        })
+    });
+}
+
+function refreshProductTable() {
+    localStorage.removeItem("products");
+    getAllVendorProduct()
 }

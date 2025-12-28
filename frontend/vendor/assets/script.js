@@ -56,27 +56,6 @@ function showSection(section) {
 //             `).join('');
 // }
 
-function openProductModal(productId = null) {
-    const modal = document.getElementById('productModal');
-    const form = document.getElementById('productForm');
-
-    if (productId) {
-        const product = products.find(p => p.id === productId);
-        document.getElementById('modalTitle').textContent = 'Edit Product';
-        document.getElementById('productName').value = product.name;
-        document.getElementById('productCategory').value = product.category;
-        document.getElementById('productPrice').value = product.price;
-        document.getElementById('productDescription').value = product.description || '';
-        document.getElementById('productStatus').value = product.status;
-        currentEditId = productId;
-    } else {
-        document.getElementById('modalTitle').textContent = 'Add New Product';
-        form.reset();
-        currentEditId = null;
-    }
-
-    modal.classList.add('active');
-}
 
 function closeProductModal() {
     document.getElementById('productModal').classList.remove('active');
@@ -84,9 +63,6 @@ function closeProductModal() {
     currentEditId = null;
 }
 
-function editProduct(id) {
-    openProductModal(id);
-}
 
 function deleteProduct(id) {
     if (confirm('Are you sure you want to delete this product?')) {

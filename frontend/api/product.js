@@ -128,8 +128,6 @@ const getProductById = async () => {
     }
 }
 
-
-
 // Vendor Dashboard Product API Call
 const getAllVendorProduct = async () => {
     const tbody = document.getElementById('productsTableBody');
@@ -219,21 +217,41 @@ function loadProducts(data) {
     });
 }
 
+// Open modal edit/ add product 
 function openProductModal(productId) {
     const modal = document.getElementById('productModal');
     const form = document.getElementById('productForm');
-
     let cachedProduct = JSON.parse(localStorage.getItem("products"))
+    let currentImage = document.querySelector(".currentImage")
+
+    currentImage.innerHTML = ""
 
     if (productId) {
         const product = cachedProduct.find(p => p._id === productId);
         document.getElementById('modalTitle').textContent = 'Edit Product';
         document.getElementById('productName').value = product.name;
-        document.getElementById('productCategory').value = product.category;
         document.getElementById('productPrice').value = product.price;
         document.getElementById('productDescription').value = product.description || '';
-        document.getElementById('productStatus').value = product.status;
         currentEditId = productId;
+        let removeImage = document.querySelectorAll(".removeImage")
+        let imageName = document.querySelectorAll(".imageName")
+        
+
+        product.images.forEach(item => {
+                    currentImage.innerHTML += `
+            <div class="currentimageItem">
+                <img src="${item}"
+                    loading="lazy" width="70px" height="70px" style="border-radius: 10px; margin: 0 10px;" class="imageName">
+                <i class="fa-solid fa-x removeImage" style="font-size: 10px; position: absolute; transform: translateX(-30px); background: #e3e3e3; padding: 5px; border-radius: 5px;"></i>
+            </div>
+        `
+        });
+        
+        removeImage.forEach((removeImageItem, index) => {
+            removeImageItem.addEventListener("click", ()=> {
+                console.log(index)
+            })
+        });
     } else {
         document.getElementById('modalTitle').textContent = 'Add New Product';
         form.reset();
@@ -245,6 +263,11 @@ function openProductModal(productId) {
 
 function editProduct(id) {
     openProductModal(id);
+}
+
+// Delete Product
+function deleteProduct(id) {
+    console.log(id)
 }
 
 function refreshProductTable() {

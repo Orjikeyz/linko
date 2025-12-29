@@ -64,13 +64,6 @@ function closeProductModal() {
 }
 
 
-function deleteProduct(id) {
-    if (confirm('Are you sure you want to delete this product?')) {
-        products = products.filter(p => p.id !== id);
-        loadProducts();
-    }
-}
-
 document.getElementById('productForm').addEventListener('submit', (e) => {
     e.preventDefault();
 

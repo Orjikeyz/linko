@@ -5,9 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vendor Dashboard - Linko.ng</title>
+    <link rel="icon" type="image/x-icon" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRkAs3GaRX_TvhQqqrPDFQhWEynsb6XQlHFXA&s">
     <link rel="stylesheet" href="./assets/style.css">
     <link rel="stylesheet" href="../assets/alert.css">
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v6.0.0-beta1/css/all.css">
+    <script src="../assets/urlParams.js"></script>
 </head>
 
 <body>
@@ -30,91 +32,49 @@
             <aside class="sidebar">
                 <nav>
                     <ul class="sidebar-nav">
-                        <li><a href="#" class="active" onclick="showSection('overview')">Overview</a></li>
-                        <li><a href="#" onclick="showSection('products')">Products</a></li>
-                        <li><a href="#" onclick="showSection('orders')">Orders</a></li>
-                        <li><a href="#" onclick="showSection('analytics')">Analytics</a></li>
+                        <li><a href="#" class="active" onclick="showSection('products')">Product Overview</a></li>
+                        <li><a href="#" onclick="showSection('overview')">Subscription Plan</a></li>
+                        <li><a href="#" onclick="showSection('products')">Settings</a></li>
                     </ul>
                 </nav>
             </aside>
 
             <!-- Main Content -->
             <main class="main-content">
-                <!-- Overview Section -->
-                <div id="overviewSection" class="dashboard-section">
-                    <h1 class="page-title">Dashboard Overview</h1>
-
-                    <div class="stats-grid">
-                        <div class="stat-card">
-                            <div class="stat-label">Total Revenue</div>
-                            <div class="stat-value">$12,485</div>
-                            <div class="stat-change positive">+12.5% from last month</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-label">Total Orders</div>
-                            <div class="stat-value">156</div>
-                            <div class="stat-change positive">+8.2% from last month</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-label">Active Products</div>
-                            <div class="stat-value">24</div>
-                            <div class="stat-change">No change</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-label">Conversion Rate</div>
-                            <div class="stat-value">3.2%</div>
-                            <div class="stat-change negative">-1.1% from last month</div>
-                        </div>
-                    </div>
-
-                    <div class="content-card">
-                        <div class="card-header">
-                            <h2 class="card-title">Recent Orders</h2>
-                        </div>
-                        <div class="table-container">
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>Order ID</th>
-                                        <th>Product</th>
-                                        <th>Customer</th>
-                                        <th>Amount</th>
-                                        <th>Date</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>#ORD-1234</td>
-                                        <td>Premium Beat Pack Vol. 1</td>
-                                        <td>John Doe</td>
-                                        <td>$49.99</td>
-                                        <td>2024-01-15</td>
-                                    </tr>
-                                    <tr>
-                                        <td>#ORD-1233</td>
-                                        <td>Music Production Masterclass</td>
-                                        <td>Jane Smith</td>
-                                        <td>$99.99</td>
-                                        <td>2024-01-14</td>
-                                    </tr>
-                                    <tr>
-                                        <td>#ORD-1232</td>
-                                        <td>Serum Preset Bank</td>
-                                        <td>Mike Johnson</td>
-                                        <td>$29.99</td>
-                                        <td>2024-01-14</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
 
                 <!-- Products Section -->
-                <div id="productsSection" class="dashboard-section" style="display: none;">
+                <div id="productsSection" class="dashboard-section">
                     <h1 class="page-title" style="display: flex; align-items: center; justify-content: space-between;">
                         Product Management <button class="btn btn-primary"
                             onclick="refreshProductTable()">Refresh</button></h1>
+
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-label">Total Product</div>
+                            <div class="stat-value" id="totalProduct">0</div>
+                        </div>
+                        <!-- <div class="stat-card">
+                            <div class="stat-label">Total Orders</div>
+                            <div class="stat-value">156</div>
+                        </div> -->
+                        <!-- <div class="stat-card">
+                            <div class="stat-label">Active Products</div>
+                            <div class="stat-value">24</div>
+                        </div> -->
+                        <div class="stat-card">
+                            <div class="stat-label">Store Views / Visits</div>
+                            <div class="stat-value">24</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">Account Status</div>
+                            <div class="stat-value stat-change positive" id="account_status">Active</div>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-label">Subscription Plan</div>
+                            <div class="stat-value stat-change" id="status_plan">Free</div>
+                        </div>
+                    </div>
 
                     <div class="content-card">
                         <div class="card-header">
@@ -129,7 +89,6 @@
                                         <th>Description</th>
                                         <th>Price</th>
                                         <th>Image</th>
-                                        <th>Status</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
@@ -145,100 +104,6 @@
                     </div>
                 </div>
 
-                <!-- Orders Section -->
-                <div id="ordersSection" class="dashboard-section" style="display: none;">
-                    <h1 class="page-title">Order Management</h1>
-
-                    <div class="content-card">
-                        <div class="card-header">
-                            <h2 class="card-title">All Orders</h2>
-                        </div>
-                        <div class="table-container">
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>Order ID</th>
-                                        <th>Product</th>
-                                        <th>Customer</th>
-                                        <th>Email</th>
-                                        <th>Amount</th>
-                                        <th>Date</th>
-                                        <th>Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="ordersTableBody">
-                                    <!-- Orders will be inserted here -->
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Analytics Section -->
-                <div id="analyticsSection" class="dashboard-section" style="display: none;">
-                    <h1 class="page-title">Analytics</h1>
-
-                    <div class="stats-grid">
-                        <div class="stat-card">
-                            <div class="stat-label">Total Visitors</div>
-                            <div class="stat-value">5,234</div>
-                            <div class="stat-change positive">+18.3% from last month</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-label">Page Views</div>
-                            <div class="stat-value">12,847</div>
-                            <div class="stat-change positive">+22.1% from last month</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-label">Avg. Order Value</div>
-                            <div class="stat-value">$80.03</div>
-                            <div class="stat-change positive">+5.2% from last month</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-label">Customer Retention</div>
-                            <div class="stat-value">68%</div>
-                            <div class="stat-change positive">+3.5% from last month</div>
-                        </div>
-                    </div>
-
-                    <div class="content-card">
-                        <div class="card-header">
-                            <h2 class="card-title">Top Selling Products</h2>
-                        </div>
-                        <div class="table-container">
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>Product</th>
-                                        <th>Category</th>
-                                        <th>Units Sold</th>
-                                        <th>Revenue</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>Music Production Masterclass</td>
-                                        <td>Courses</td>
-                                        <td>45</td>
-                                        <td>$4,499.55</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Premium Beat Pack Vol. 1</td>
-                                        <td>Beats</td>
-                                        <td>38</td>
-                                        <td>$1,899.62</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Hip Hop Heat Vol. 2</td>
-                                        <td>Beats</td>
-                                        <td>32</td>
-                                        <td>$1,439.68</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
             </main>
         </div>
     </div>
@@ -250,7 +115,7 @@
                 <h2 class="modal-title" id="modalTitle">Add New Product</h2>
                 <button class="close-btn" onclick="closeProductModal()">&times;</button>
             </div>
-            <form id="productForm">
+            <form id="productForm" onsubmit="return false">
                 <div class="form-group">
                     <label class="form-label">Product Name</label>
                     <input type="text" class="form-input" id="productName" required>
@@ -262,12 +127,12 @@
                 </div>
                 <div class="form-group">
                     <label class="form-label">Description</label>
-                    <textarea class="form-textarea" id="productDescription" required></textarea>
+                    <textarea class="form-textarea" id="productDescription" ></textarea>
                 </div>
 
                 <div class="form-group">
                     <label class="form-label">Product Image</label>
-                    <input type="file" multiple class="form-input" id="productImages" required>
+                    <input type="file"  class="form-input" id="productImages" name="images[]" multiple  required>
                     <div class="currentImage" style="margin: 10px 0; display: flex; flex-wrap: wrap;">
 
                     </div>
@@ -275,7 +140,7 @@
 
                 <div class="form-actions">
                     <button type="button" class="btn btn-cancel" onclick="closeProductModal()">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Save Product</button>
+                    <button type="submit" class="btn btn-primary" onclick="addProduct()">Save Product</button>
                 </div>
             </form>
         </div>
@@ -284,7 +149,7 @@
     <div class="modal-img-overview-container">
         <button id="close-img-overview">close</button>
         <div class="modal-img-overview">
-            <img src="https://gcopositivity.ct.ws/en/app/images/dabas.jpg" width="100%" height="400px"
+            <img src="" width="100%" height="400px"
                 id="img-overview-main">
             <div class="img-overview-list">
             </div>
@@ -294,6 +159,7 @@
     <div id="alertBox" class="alert">Saved successfully!</div>
     <script src="../assets/alert.js"></script>
     <script src="../api/product.js"></script>
+    <script src="../api/vendor.js"></script>
     <script src="./assets/script.js"></script>
 </body>
 

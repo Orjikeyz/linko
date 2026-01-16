@@ -1,3 +1,4 @@
+
         let year = new Date().getFullYear();
         document.getElementById("yearText").textContent = year
         // Filter functionality
@@ -39,3 +40,4 @@
                 }
             });
         });
+

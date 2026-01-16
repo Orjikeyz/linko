@@ -9,7 +9,7 @@ const getProduct = async (req, res) => {
         const products = await Product.find({ vendor_id: vendorUsername }).populate("vendor", "plan")
         if (!products) {
             return responseData(res, 'error', 400, 'Products not found', [], '')
-        } 
+        }
 
         return responseData(res, 'success', 200, 'Products data retrieved successfully', products, products[0].vendor.plan)
     } catch (error) {
@@ -37,12 +37,15 @@ const getProductById = async (req, res) => {
         return responseData(res, "success", 200, "Product retrieved successfully", product, product[0].vendor.plan);
 
     } catch (error) {
-        console.error(error); 
+        console.error(error);
         return responseData(res, 'error', 500, 'Server Error', [], '');
     }
 };
 
 // Vendor Backend Product API Call
+// =========================================
+
+// Get all Vendor Product
 const getAllVendorProduct = async (req, res) => {
     try {
         const { vendorUsername } = req.params
@@ -50,7 +53,7 @@ const getAllVendorProduct = async (req, res) => {
         const products = await Product.find({ vendor_id: vendorUsername }).populate("vendor", "plan")
         if (!products) {
             return responseData(res, 'error', 400, 'Products not found', [], '')
-        } 
+        }
 
         return responseData(res, 'success', 200, 'Products data retrieved successfully', products, products[0].vendor.plan)
     } catch (error) {
@@ -59,8 +62,39 @@ const getAllVendorProduct = async (req, res) => {
     }
 }
 
+//Add Product to Vendor 
+const addProduct = async (req, res) => {
+    const {vendorUsername} = req.params
+    console.log(req.body)
+
+}
+
+// Get total Product Count
+const getTotalProduct = async (req, res) => {
+    try {
+        const { vendorUsername } = req.params;
+
+        // Optional: validate input
+        if (!vendorUsername || typeof vendorUsername !== 'string') {
+            return responseData(res, 'error', 400, 'Invalid vendor username', [], '');
+        }
+
+        const totalProducts = await Product.countDocuments({ vendor_id: vendorUsername });
+
+        // Always return success, even if totalProducts = 0
+        return responseData(res, 'success', 200, 'Data retrieved successfully', { totalProducts });
+
+    } catch (error) {
+        console.error('Error in getTotalProduct:', error);
+        return responseData(res, 'error', 500, 'Server Error', [], '');
+    }
+};
+
+
 module.exports = {
     getProduct,
     getProductById,
-    getAllVendorProduct
+    getAllVendorProduct,
+    getTotalProduct,
+    addProduct
 }

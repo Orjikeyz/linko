@@ -1,20 +1,11 @@
 const getVendorData = async () => {
-  const params = new URLSearchParams(window.location.search)
-  const paramsValue = params.get('id')
-  const heroImage = document.getElementById("heroImage")
-
-
-  if (paramsValue === '' || !paramsValue) {
-    window.location.href = '404.html'
-  }
-
-    profile_name = document.querySelector("#profile-name");
-    profile_image = document.querySelector(".profile-image");
-    profile_description = document.querySelector(".profile-description");
-    profile_instagram = document.querySelector("#profile-instagram");
-    profile_twitter = document.querySelector("#profile-twitter");
-    profile_facebook = document.querySelector("#profile-facebook");
-    profile_phone_number = document.querySelector("#profile-phone-number");
+  profile_name = document.querySelector("#profile-name");
+  profile_image = document.querySelector(".profile-image");
+  profile_description = document.querySelector(".profile-description");
+  profile_instagram = document.querySelector("#profile-instagram");
+  profile_twitter = document.querySelector("#profile-twitter");
+  profile_facebook = document.querySelector("#profile-facebook");
+  profile_phone_number = document.querySelector("#profile-phone-number");
 
   try {
     const response = await fetch(`http://localhost:3000/${paramsValue}`, {
@@ -50,4 +41,30 @@ const getVendorData = async () => {
   }
 }
 
-getVendorData()
+// Vendor Dashboard Product API Call
+const getVendorDashboardData = async () => {
+  try {
+    const response = await fetch(`http://localhost:3000/${paramsValue}`, {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' }
+    })
+
+    if (!response.ok) {
+      showAlert('No data available', "error")
+    }
+
+    const data = await response.json()
+    if (data.status === 'error') {
+      showAlert(`${data.message}`, `${data.status}`)
+    }
+
+    if (data.status === "success") {
+      console.log(data.message)
+      sessionStorage.setItem("vendorData", JSON.stringify(data.result))
+    }
+  } catch (error) {
+    showAlert("Server Error. Please try again later", "error")
+    console.log(error)
+  }
+}
+

@@ -1,13 +1,3 @@
-const params = new URLSearchParams(window.location.search)
-const paramsValue = params.get('id')
-const productId = params.get('pid')
-
-if (paramsValue === '' || !paramsValue) {
-    document.getElementsByTagName("body")[0].style.display = "none"
-    window.location.href = '404'
-}
-let productUrl = "https://linkohub.vercel.app/"
-
 const getProductsData = async () => {
     try {
         const response = await fetch(`http://localhost:3000/product/${paramsValue}`, {
@@ -128,11 +118,13 @@ const getProductById = async () => {
     }
 }
 
+
 // Vendor Dashboard Product API Call
 const getAllVendorProduct = async () => {
+    getTotalProduct(paramsValue)
     const tbody = document.getElementById('productsTableBody');
     tbody.innerHTML = ""
-    let cachedProduct = localStorage.getItem("products")
+    let cachedProduct = sessionStorage.getItem("products")
     if (cachedProduct) {
         loadProducts(JSON.parse(cachedProduct))
         console.log("cached")
@@ -154,9 +146,9 @@ const getAllVendorProduct = async () => {
             }
 
             if (data.status === 'success') {
-                localStorage.removeItem("products");
+                sessionStorage.removeItem("products");
 
-                cachedProduct = localStorage.setItem("products", JSON.stringify(data.result))
+                cachedProduct = sessionStorage.setItem("products", JSON.stringify(data.result))
                 loadProducts(data.result)
             }
         } catch (error) {
@@ -168,6 +160,13 @@ const getAllVendorProduct = async () => {
 
 // Load vendor product list
 function loadProducts(data) {
+    let vendorData = JSON.parse(sessionStorage.getItem("vendorData"))
+    let status_plan = document.getElementById("status_plan")
+    let account_status = document.getElementById("account_status")
+
+    status_plan.textContent = vendorData.plan.charAt(0).toUpperCase() + vendorData.plan.slice(1).toLowerCase();
+    account_status.textContent = vendorData.status.charAt(0).toUpperCase() + vendorData.status.slice(1).toLowerCase();
+
     const tbody = document.getElementById('productsTableBody');
     data.forEach(product => {
         tbody.innerHTML += `<tr>
@@ -175,7 +174,6 @@ function loadProducts(data) {
                     <td><textarea rows='5' style='border: none; outline: none; background: transparent;'>${product.description}</textarea></td>
                     <td>₦${product.price.toFixed(2)}</td>
                     <td><img src='${product.images[0]}' loading='lazy' data-img='${JSON.stringify(product.images)}' width='70px' height='70px' class='img-view'></td>
-                    <td>status</td>
                     <td>
                         <div class="action-buttons">
                             <button class="btn btn-small btn-edit" onclick="editProduct('${product._id}')">Edit</button>
@@ -221,7 +219,7 @@ function loadProducts(data) {
 function openProductModal(productId) {
     const modal = document.getElementById('productModal');
     const form = document.getElementById('productForm');
-    let cachedProduct = JSON.parse(localStorage.getItem("products"))
+    let cachedProduct = JSON.parse(sessionStorage.getItem("products"))
     let currentImage = document.querySelector(".currentImage")
 
     currentImage.innerHTML = ""
@@ -235,10 +233,10 @@ function openProductModal(productId) {
         currentEditId = productId;
         let removeImage = document.querySelectorAll(".removeImage")
         let imageName = document.querySelectorAll(".imageName")
-        
+
 
         product.images.forEach(item => {
-                    currentImage.innerHTML += `
+            currentImage.innerHTML += `
             <div class="currentimageItem">
                 <img src="${item}"
                     loading="lazy" width="70px" height="70px" style="border-radius: 10px; margin: 0 10px;" class="imageName">
@@ -246,9 +244,9 @@ function openProductModal(productId) {
             </div>
         `
         });
-        
+
         removeImage.forEach((removeImageItem, index) => {
-            removeImageItem.addEventListener("click", ()=> {
+            removeImageItem.addEventListener("click", () => {
                 console.log(index)
             })
         });
@@ -261,6 +259,144 @@ function openProductModal(productId) {
     modal.classList.add('active');
 }
 
+
+
+function escapeHTML(str) {
+    return str
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#x27;");
+}
+
+// Add Product
+const addProduct = async () => {
+    const productNameInput = document.getElementById("productName");
+    const productPriceInput = document.getElementById("productPrice");
+    const productDescriptionInput = document.getElementById("productDescription");
+    const productImagesInput = document.getElementById("productImages");
+
+    const productName = productNameInput.value.trim();
+    const productPrice = productPriceInput.value.trim();
+    const productDescription = productDescriptionInput.value.trim();
+    const productImages = productImagesInput.files;
+
+    /* ================= VALIDATION ================= */
+
+    if (!productName || productName.length < 3) {
+        showAlert("Product name must be at least 3 characters", "error")
+        return;
+    }
+
+    if (!productPrice || isNaN(productPrice) || Number(productPrice) <= 0) {
+        showAlert("Enter a valid product price", "error")
+        return;
+    }
+
+    if (!productImages || productImages.length === 0) {
+        showAlert("Please upload at least one image", "error")
+        return;
+    }
+
+    if (productImages.length > 5) {
+        showAlert("You can upload a maximum of 5 images", "error")
+        return;
+    }
+
+    // Image validation
+    const allowedTypes = ["image/jpeg", "image/png", "image/webp"];
+    const maxSize = 2 * 1024 * 1024; // 2MB
+
+    for (let img of productImages) {
+        if (!allowedTypes.includes(img.type)) {
+            showAlert("Only JPG, PNG, or WEBP images are allowed", "error")
+            return;
+        }
+
+        if (img.size > maxSize) {
+            showAlert("Each image must be less than 2MB", "error")
+            return;
+        }
+    }
+
+    /* ================= SANITIZE ================= */
+
+    const safeName = escapeHTML(productName);
+    const safeDescription = escapeHTML(productDescription);
+
+    /* ================= FORM DATA ================= */
+
+    const formData = new FormData();
+    for (let img of productImages) {
+        formData.append("images[]", img);
+    }
+
+    /* ================= SEND TO External Storage ================= */
+
+    try {
+        const StorageResponse = await fetch("https://judydoesbraids.com/linkostorage/upload.php", {
+            method: "POST",
+            body: formData
+        });
+
+        if (!StorageResponse.ok) {
+            showAlert(`HTTP Error: ${StorageResponse.status}`, "error");
+            return;
+        }
+
+        const StorageData = await StorageResponse.json();
+
+        if (StorageData.status) {
+            let JSONFormData = {
+                name: safeName,
+                price: productPrice,
+                description: safeDescription
+            }
+
+            try {
+                const response = await fetch(`http://localhost:3000/product/vendor/${paramsValue}`, {
+                    method: "POST",
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(JSONFormData),
+                });
+
+                // Handle non-2xx HTTP responses
+                if (!response.ok) {
+                    showAlert(`HTTP Error: ${response.status}`, "error")
+                }
+
+                const data = await response.json();
+
+                if (data.status === "success") {
+                    showAlert(data.message, data.error)
+
+                } else {
+                    showAlert(data.message, data.error)
+                }
+
+            } catch (error) {
+                showAlert(`Server Error`, "error")
+            }
+        } else {
+            showAlert(StorageData.message || "Upload failed", "error");
+        }
+
+    } catch (error) {
+        console.error(error);
+        showAlert("Server error occurred", "error");
+    }
+
+
+    /* ================= SEND TO BACKEND ================= */
+
+
+}
+
+
+// Edit product
 function editProduct(id) {
     openProductModal(id);
 }
@@ -270,7 +406,34 @@ function deleteProduct(id) {
     console.log(id)
 }
 
+// Get total Product Count
+const getTotalProduct = async (id) => {
+    try {
+        const response = await fetch(`http://localhost:3000/product/vendor/totalProduct/${id}`, {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' }
+        })
+
+        if (!response.ok) {
+            showAlert('No data available', "error")
+        }
+
+        const data = await response.json()
+        if (data.status === 'error') {
+            showAlert(`${data.message}`, `${data.status}`)
+        }
+
+        if (data.status === 'success') {
+            let totalProduct = document.getElementById("totalProduct")
+            totalProduct.textContent = data.result.totalProducts
+        }
+    } catch (error) {
+        showAlert('Server Error. Please try again later', "error")
+    }
+}
+
 function refreshProductTable() {
-    localStorage.removeItem("products");
+    sessionStorage.removeItem("products");
     getAllVendorProduct()
 }
+

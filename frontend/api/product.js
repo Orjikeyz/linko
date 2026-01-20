@@ -272,6 +272,19 @@ function escapeHTML(str) {
 
 // Add Product
 const addProduct = async () => {
+    let save_btn = document.getElementById("save_btn")
+    let load_btn = document.getElementById("load_btn")
+
+    function loading() {
+        setTimeout(() => {
+            save_btn.style.display = "block"
+            load_btn.style.display = "none"
+        }, 1000);
+    }
+
+    save_btn.style.display = "none"
+    load_btn.style.display = "block"
+
     const productNameInput = document.getElementById("productName");
     const productPriceInput = document.getElementById("productPrice");
     const productDescriptionInput = document.getElementById("productDescription");
@@ -286,21 +299,25 @@ const addProduct = async () => {
 
     if (!productName || productName.length < 3) {
         showAlert("Product name must be at least 3 characters", "error")
+        loading()
         return;
     }
 
     if (!productPrice || isNaN(productPrice) || Number(productPrice) <= 0) {
         showAlert("Enter a valid product price", "error")
+        loading()
         return;
     }
 
     if (!productImages || productImages.length === 0) {
         showAlert("Please upload at least one image", "error")
+        loading()
         return;
     }
 
     if (productImages.length > 5) {
         showAlert("You can upload a maximum of 5 images", "error")
+        loading()
         return;
     }
 
@@ -311,11 +328,13 @@ const addProduct = async () => {
     for (let img of productImages) {
         if (!allowedTypes.includes(img.type)) {
             showAlert("Only JPG, PNG, or WEBP images are allowed", "error")
+            loading()
             return;
         }
 
         if (img.size > maxSize) {
             showAlert("Each image must be less than 2MB", "error")
+            loading()
             return;
         }
     }
@@ -348,50 +367,69 @@ const addProduct = async () => {
         const StorageData = await StorageResponse.json();
 
         if (StorageData.status) {
-            let JSONFormData = {
-                name: safeName,
-                price: productPrice,
-                description: safeDescription
+
+            if (StorageData.count <= 0) {
+                showAlert(StorageData.message || "Upload failed. Please try again later", "error");
+                loading()
+                return
             }
 
-            try {
-                const response = await fetch(`http://localhost:3000/product/vendor/${paramsValue}`, {
-                    method: "POST",
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(JSONFormData),
-                });
-
-                // Handle non-2xx HTTP responses
-                if (!response.ok) {
-                    showAlert(`HTTP Error: ${response.status}`, "error")
-                }
-
-                const data = await response.json();
-
-                if (data.status === "success") {
-                    showAlert(data.message, data.error)
-
-                } else {
-                    showAlert(data.message, data.error)
-                }
-
-            } catch (error) {
-                showAlert(`Server Error`, "error")
-            }
+            sendToBackend(StorageData.urls)
         } else {
             showAlert(StorageData.message || "Upload failed", "error");
+            loading()
         }
 
     } catch (error) {
         console.error(error);
         showAlert("Server error occurred", "error");
+        loading()
     }
 
 
     /* ================= SEND TO BACKEND ================= */
+    async function sendToBackend(urls) {
+        let JSONFormData = {
+            name: safeName,
+            price: productPrice,
+            description: safeDescription,
+            image: urls,
+        }
 
+        try {
+            const response = await fetch(`http://localhost:3000/product/vendor/${paramsValue}`, {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(JSONFormData),
+            });
+
+            // Handle non-2xx HTTP responses
+            if (!response.ok) {
+                showAlert(`HTTP Error: ${response.status}`, "error")
+                loading()
+            }
+
+            const data = await response.json();
+
+            if (data.status === "success") {
+                showAlert(data.message, data.status)
+                sessionStorage.removeItem("products")
+                setTimeout(() => {
+                    window.location.href = ""
+                }, 2000);
+
+            } else {
+                showAlert(data.message, data.status)
+                loading()
+            }
+
+        } catch (error) {
+            showAlert(`Server Error`, "error")
+            loading()
+        }
+    }
 
 }
 

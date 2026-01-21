@@ -464,7 +464,7 @@
             border: none;
             color: white;
             background: #ef4444;
-            margin: 15px ;
+            margin: 15px;
         }
 
         .modal-img-overview {
@@ -486,7 +486,91 @@
             margin: 5px;
             border-radius: 5px;
         }
-        
+
+
+        .plan-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            padding: 20px;
+        }
+
+        /* Plan Card */
+        .plan-item {
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            background: #fff;
+        }
+
+        /* Hover */
+        .plan-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+        }
+
+        /* Text */
+        .plan-item h3 {
+            margin: 10px 0;
+            font-size: 22px;
+        }
+
+        .plan-item p {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .plan-item ul {
+            list-style: none;
+            padding: 0;
+            text-align: left;
+            margin: 15px 0;
+        }
+
+        .plan-item ul li {
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        /* Button */
+        .plan-item button {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 15px;
+        }
+
+        /* Plan Colors */
+        .plan-free {
+            border-color: #484848;
+        }
+
+        .plan-free button,
+        .plan-basic button {
+            background: #343434;
+            color: #fff;
+        }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 1000px) {
+            .plan-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .plan-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
         @media screen and (min-width: 768px) {
             .modal-img-overview {
                 width: 400px;

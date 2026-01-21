@@ -5,7 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vendor Dashboard - Linko.ng</title>
-    <link rel="icon" type="image/x-icon" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRkAs3GaRX_TvhQqqrPDFQhWEynsb6XQlHFXA&s">
+    <link rel="icon" type="image/x-icon"
+        href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRkAs3GaRX_TvhQqqrPDFQhWEynsb6XQlHFXA&s">
     <link rel="stylesheet" href="./assets/style.css">
     <link rel="stylesheet" href="../assets/alert.css">
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v6.0.0-beta1/css/all.css">
@@ -33,7 +34,7 @@
                 <nav>
                     <ul class="sidebar-nav">
                         <li><a href="#" class="active" onclick="showSection('products')">Product Overview</a></li>
-                        <li><a href="#" onclick="showSection('overview')">Subscription Plan</a></li>
+                        <li><a href="#" onclick="showSection('plan')">Subscription Plan</a></li>
                         <li><a href="#" onclick="showSection('products')">Settings</a></li>
                     </ul>
                 </nav>
@@ -104,6 +105,37 @@
                     </div>
                 </div>
 
+                <div id="planSection" class="dashboard-section" style="display: none;">
+                    <h1 class="page-title" style="display: flex; align-items: center; justify-content: space-between;">
+                        Subscription Plan </h1>
+                    <div class="plan-container">
+                        <div class="plan-item plan-free">
+                            <h3>Free</h3>
+                            <p>Starter plan for new vendors</p>
+                            <ul>
+                                <li>WhatsApp purchase link</li>
+                                <li>10 products max</li>
+                                <li>1 image per product</li>
+                                <li>Basic support</li>
+                            </ul>
+                        </div>
+
+                        <div class="plan-item plan-basic">
+                            <h3>Basic</h3>
+                            <p>For growing vendors</p>
+                            <ul>
+                                <li>WhatsApp purchase link</li>
+                                <li>Payment gateway (Online Payment)</li>
+                                <li>Unlimited Products</li>
+                                <li>Up to 5 images per product</li>
+                                <li>Standard support</li>
+                            </ul>
+                            <button onclick="selectPlan('basic')">Choose Basic</button>
+                        </div>
+                    </div>
+
+                </div>
+
             </main>
         </div>
     </div>
@@ -127,12 +159,12 @@
                 </div>
                 <div class="form-group">
                     <label class="form-label">Description</label>
-                    <textarea class="form-textarea" id="productDescription" ></textarea>
+                    <textarea class="form-textarea" id="productDescription"></textarea>
                 </div>
 
                 <div class="form-group">
                     <label class="form-label">Product Image</label>
-                    <input type="file"  class="form-input" id="productImages" name="images[]" multiple  required>
+                    <input type="file" class="form-input" id="productImages" name="images[]" multiple required>
                     <div class="currentImage" style="margin: 10px 0; display: flex; flex-wrap: wrap;">
 
                     </div>
@@ -140,7 +172,8 @@
 
                 <div class="form-actions">
                     <button type="button" class="btn btn-cancel" onclick="closeProductModal()">Cancel</button>
-                    <button type="submit" class="btn btn-primary" id="save_btn" onclick="addProduct()">Save Product</button>
+                    <button type="submit" class="btn btn-primary" id="save_btn" onclick="addProduct()">Save
+                        Product</button>
                     <button type="btn" class="btn btn-primary" id="load_btn" style="display: none;">Loading...</button>
                 </div>
             </form>
@@ -150,8 +183,7 @@
     <div class="modal-img-overview-container">
         <button id="close-img-overview">close</button>
         <div class="modal-img-overview">
-            <img src="" width="100%" height="400px"
-                id="img-overview-main">
+            <img src="" width="100%" height="400px" id="img-overview-main">
             <div class="img-overview-list">
             </div>
         </div>

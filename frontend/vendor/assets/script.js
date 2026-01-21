@@ -13,8 +13,6 @@ function showSection(section) {
     // Show selected section
     document.getElementById(section + 'Section').style.display = 'block';
 
-    // if (section === "products") {
-    // }
 
     // Add active class to clicked nav link
     event.target.classList.add('active');

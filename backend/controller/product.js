@@ -1,6 +1,7 @@
 const express = require("express")
 const responseData = require('../middleware/response')
 const Product = require("../model/Product")
+const mongoose = require('mongoose');
 
 const getProduct = async (req, res) => {
     try {
@@ -61,6 +62,27 @@ const getAllVendorProduct = async (req, res) => {
 
     }
 }
+
+// Get total Product Count
+const getTotalProduct = async (req, res) => {
+    try {
+        const { vendorUsername } = req.params;
+
+        // Optional: validate input
+        if (!vendorUsername || typeof vendorUsername !== 'string') {
+            return responseData(res, 'error', 400, 'Invalid vendor username', [], '');
+        }
+
+        const totalProducts = await Product.countDocuments({ vendor_id: vendorUsername });
+
+        // Always return success, even if totalProducts = 0
+        return responseData(res, 'success', 200, 'Data retrieved successfully', { totalProducts });
+
+    } catch (error) {
+        console.error('Error in getTotalProduct:', error);
+        return responseData(res, 'error', 500, 'Server Error', [], '');
+    }
+};
 
 //Add Product to Vendor 
 const addProduct = async (req, res) => {
@@ -136,26 +158,37 @@ const addProduct = async (req, res) => {
     }
 }
 
-// Get total Product Count
-const getTotalProduct = async (req, res) => {
-    try {
-        const { vendorUsername } = req.params;
+// Delete Product 
+const deleteProduct = async (req, res) => {
+    const { vendorUsername, productId } = req.params;
 
-        // Optional: validate input
-        if (!vendorUsername || typeof vendorUsername !== 'string') {
-            return responseData(res, 'error', 400, 'Invalid vendor username', [], '');
+    try {
+
+        // validate product id
+        if (!mongoose.Types.ObjectId.isValid(productId)) {
+            return responseData(res, 'error', 400, 'Invalid product ID', [], '');
         }
 
-        const totalProducts = await Product.countDocuments({ vendor_id: vendorUsername });
+        // delete product (only if it belongs to vendor)
+        const product = await Product.findOneAndDelete({
+            _id: productId,
+            vendor_id: vendorUsername
+        });
 
-        // Always return success, even if totalProducts = 0
-        return responseData(res, 'success', 200, 'Data retrieved successfully', { totalProducts });
+        if (!product) {
+            return responseData(res, 'error', 404, 'Product not found', [], '');
+        }
+
+        return responseData(res, 'success', 200, 'Product deleted successfully', product, ''
+        );
 
     } catch (error) {
-        console.error('Error in getTotalProduct:', error);
-        return responseData(res, 'error', 500, 'Server Error', [], '');
+        console.error(error);
+        return responseData(res, 'error', 500, 'Server error', [], '');
     }
 };
+
+
 
 
 module.exports = {
@@ -163,5 +196,6 @@ module.exports = {
     getProductById,
     getAllVendorProduct,
     getTotalProduct,
-    addProduct
+    addProduct,
+    deleteProduct
 }

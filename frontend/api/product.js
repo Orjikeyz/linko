@@ -272,6 +272,7 @@ function escapeHTML(str) {
 
 // Add Product
 const addProduct = async () => {
+    let plan = JSON.parse(sessionStorage.getItem("vendorData")).plan
     let save_btn = document.getElementById("save_btn")
     let load_btn = document.getElementById("load_btn")
 
@@ -315,11 +316,20 @@ const addProduct = async () => {
         return;
     }
 
-    if (productImages.length > 5) {
-        showAlert("You can upload a maximum of 5 images", "error")
-        loading()
+
+    if (plan === "free" && productImages.length > 1) {
+        showAlert("Free plan allows only 1 image", "error");
+        loading();
         return;
     }
+
+    if (plan !== "free" && productImages.length > 5) {
+        showAlert("You can upload a maximum of 5 images", "error");
+        loading();
+        return;
+    }
+
+
 
     // Image validation
     const allowedTypes = ["image/jpeg", "image/png", "image/webp"];
@@ -360,7 +370,8 @@ const addProduct = async () => {
         });
 
         if (!StorageResponse.ok) {
-            showAlert(`HTTP Error: ${StorageResponse.status}`, "error");
+            showAlert(`Sorry an error occurred while processing request. Please try again later`, "error");
+            loading()
             return;
         }
 
@@ -440,8 +451,37 @@ function editProduct(id) {
 }
 
 // Delete Product
-function deleteProduct(id) {
-    console.log(id)
+async function deleteProduct(id) {
+
+    if (confirm("Do you wish to delete product")) {
+        try {
+            const response = await fetch(`http://localhost:3000/product/vendor/${paramsValue}/${id}`, {
+                method: "DELETE",
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+
+            const data = await response.json()
+
+            if (data.status === "error") {
+                showAlert(data.message, data.status)
+                return
+            }
+
+            if (data.status === "success") {
+                showAlert(data.message, data.status)
+                sessionStorage.removeItem("products");
+                setTimeout(() => {
+                    window.location.href = ""
+                }, 1000);
+                return
+            }
+        } catch (error) {
+            console.log(error)
+            showAlert("Sorry an error occurred.", "error")
+        }
+    }
 }
 
 // Get total Product Count

@@ -56,6 +56,12 @@ const getVendorDashboardData = async () => {
     const data = await response.json()
     if (data.status === 'error') {
       showAlert(`${data.message}`, `${data.status}`)
+
+      if (data.message === "Vendor not found") {
+        sessionStorage.removeItem('vendorData');
+        window.location.href = "../404.html"
+      }
+      return
     }
 
     if (data.status === "success") {

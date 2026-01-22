@@ -11,5 +11,8 @@ router.get("/vendor/:vendorUsername", productController.getAllVendorProduct)
 router.get("/vendor/totalProduct/:vendorUsername", productController.getTotalProduct)
 router.post("/vendor/:vendorUsername", productController.addProduct)
 router.delete("/vendor/:vendorUsername/:productId", productController.deleteProduct)
+router.get("/vendor/v1/payment", productController.processPayment)
+router.get("/vendor/v1/verify", productController.verifyPayment)
+router.get("/vendor/v1/webhook", productController.webHookPayment)
 
 module.exports = router

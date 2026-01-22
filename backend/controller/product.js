@@ -188,8 +188,109 @@ const deleteProduct = async (req, res) => {
     }
 };
 
+const processPayment = async (req, res) => {
+    console.log("hello")
+    try {
+        // const { email, amount } = req.body;
+        const email = "orjikeyz7@gmail.com"
+        const amount = 20000
+        const PAYSTACK_BASE_URL = "https://api.paystack.co";
+        const secretKey = "sk_test_1ad1cf92245b905c757189620b799793a1daaf91"
+
+        if (!email || !amount) {
+            return res.status(400).json({ error: "Email and amount required" });
+        }
+
+        const response = await fetch(
+            `${PAYSTACK_BASE_URL}/transaction/initialize`,
+            {
+                method: "POST",
+                headers: {
+                    Authorization: `Bearer ${secretKey}`,
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    email,
+                    amount: amount * 100, // convert to kobo
+                    callback_url: `${process.env.BASE_URL}/payment/callback`,
+                }),
+            }
+        );
+
+        const data = await response.json();
+
+        if (!data.status) {
+            return res.status(400).json(data);
+        }
+
+        res.json({
+            authorization_url: data.data.authorization_url,
+            reference: data.data.reference,
+        });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+}
 
 
+const verifyPayment = async (req, res) => {
+    try {
+        const PAYSTACK_BASE_URL = "https://api.paystack.co";
+        const secretKey = "sk_test_1ad1cf92245b905c757189620b799793a1daaf91"
+        const reference = req.query.reference
+
+        const response = await fetch(
+            `${PAYSTACK_BASE_URL}/transaction/verify/${reference}`,
+            {
+                headers: {
+                    Authorization: `Bearer ${secretKey}`,
+                },
+            }
+        );
+
+        const data = await response.json();
+
+        if (data.data && data.data.status === "success") {
+            // Save transaction to DB here
+            console.log(data.data.amount / 100)
+            return res.json({
+                status: "success",
+                transaction: data.data,
+            });
+        }
+
+        res.status(400).json({ status: "failed", data });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+}
+
+
+const webHookPayment = async (req, res) => {
+    const secretKey = "sk_test_1ad1cf92245b905c757189620b799793a1daaf91"
+
+    const hash = crypto
+        .createHmac("sha512", process.env.PAYSTACK_SECRET_KEY)
+        .update(req.rawBody)
+        .digest("hex");
+
+    if (hash !== req.headers["x-paystack-signature"]) {
+        return res.status(401).send("Invalid signature");
+    }
+
+    const event = req.body;
+
+    if (event.event === "charge.success") {
+        const transaction = event.data;
+
+        console.log("✅ Payment Successful:", transaction.reference);
+
+        // Save to database
+        // Update order status
+    }
+
+    res.sendStatus(200);
+}
 
 module.exports = {
     getProduct,
@@ -197,5 +298,8 @@ module.exports = {
     getAllVendorProduct,
     getTotalProduct,
     addProduct,
-    deleteProduct
+    deleteProduct,
+    processPayment,
+    verifyPayment,
+    webHookPayment
 }

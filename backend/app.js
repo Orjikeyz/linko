@@ -12,11 +12,11 @@ app.use(express.urlencoded({ extended: true }));
 
 const productRoutes = require("./router/productRoutes")
 const vendorRoutes = require("./router/vendorRoutes")
-const paymentRoutes = require("./router/paymentRoutes")
+const transactionRoutes = require("./router/transactionRoutes")
 
 app.use("/", vendorRoutes);
 app.use("/product", productRoutes);
-app.use("/payment", paymentRoutes);
+app.use("/transaction", transactionRoutes);
 
 app.listen(3000, ()=> {
     console.log(`Server running on port: ${process.env.PORT}`)

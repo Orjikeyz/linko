@@ -1,6 +1,11 @@
 async function selectPlan(plan) {
+    let subscribeBtn = document.getElementById("subscribeBtn")
+    subscribeBtn.disabled = true
+    subscribeBtn.textContent = "Processing..."
+    let username = JSON.parse(sessionStorage.getItem("vendorData")).username
+
     try {
-        const response = await fetch(`http://localhost:3000/payment/processPayment`, {
+        const response = await fetch(`http://localhost:3000/transaction/processPayment?id=${username}`, {
             method: "GET",
         });
 
@@ -8,6 +13,8 @@ async function selectPlan(plan) {
 
         if (data.status === "error") {
             showAlert(data.message, data.status);
+            subscribeBtn.disabled = false
+            subscribeBtn.textContent = "Choose Basic"
             return;
         }
 
@@ -16,6 +23,8 @@ async function selectPlan(plan) {
         window.location.href = `${data.result.authorization_url}`
 
     } catch (error) {
+        subscribeBtn.disabled = false
+        subscribeBtn.textContent = "Choose Basic"
         console.error(error);
         showAlert("Network error. Please try again.");
     }
@@ -24,7 +33,7 @@ async function selectPlan(plan) {
 
 async function verifySubscriptionPayment() {
     try {
-        const response = await fetch(`http://localhost:3000/payment/verifyPayment?reference=${sessionStorage.getItem("payStackReference")}`, {
+        const response = await fetch(`http://localhost:3000/transaction/verifyPayment?reference=${sessionStorage.getItem("payStackReference")}`, {
             method: "GET",
         });
 
@@ -40,12 +49,10 @@ async function verifySubscriptionPayment() {
         }
 
         // success
-        console.log(data.result.status)
         if (data.status === "success") {
             if (data.result.status === "success") {
                 showAlert(data.message, data.status);
                 setTimeout(() => {
-                    console.log(332)
                     window.location.href = `../vendor/?id=${username}`
                 }, 1500);
             }

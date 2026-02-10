@@ -2,8 +2,7 @@ async function selectPlan(plan) {
     let subscribeBtn = document.getElementById("subscribeBtn")
     subscribeBtn.disabled = true
     subscribeBtn.textContent = "Processing..."
-    let username = JSON.parse(sessionStorage.getItem("vendorData")).username
-
+    let username = JSON.parse(localStorage.getItem("vendorData")).username
     try {
         const response = await fetch(`http://localhost:3000/transaction/processPayment?id=${username}`, {
             method: "GET",
@@ -19,7 +18,8 @@ async function selectPlan(plan) {
         }
 
         // success
-        sessionStorage.setItem("payStackReference", data.result.reference)
+        
+        localStorage.setItem("payStackReference", data.result.reference)
         window.location.href = `${data.result.authorization_url}`
 
     } catch (error) {
@@ -33,12 +33,12 @@ async function selectPlan(plan) {
 
 async function verifySubscriptionPayment() {
     try {
-        const response = await fetch(`http://localhost:3000/transaction/verifyPayment?reference=${sessionStorage.getItem("payStackReference")}`, {
+        const response = await fetch(`http://localhost:3000/transaction/verifyPayment?reference=${localStorage.getItem("payStackReference")}`, {
             method: "GET",
         });
 
         const data = await response.json();
-        let username = JSON.parse(sessionStorage.getItem("vendorData")).username
+        let username = JSON.parse(localStorage.getItem("vendorData")).username
 
         if (data.status === "error") {
             showAlert(data.message, data.status);

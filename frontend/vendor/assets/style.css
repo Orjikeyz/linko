@@ -405,11 +405,13 @@
 
             table {
                 font-size: 0.85rem;
+                text-wrap: nowrap;
             }
 
             th,
             td {
-                padding: 0.75rem 0.5rem;
+                padding: 1.45rem 0.5rem !important;
+                border-right: 1px solid #efefef;
             }
         }
 
@@ -426,11 +428,12 @@
             padding: 10px 5px;
         }
 
-        .page-button button {
+
+        .page-button button, #transactionTable_next, #transactionTable_previous {
             padding: 7px 20px;
             border-radius: 5px;
-            background: #000000;
-            color: white;
+            background: #202020;
+            color: white !important;
             border: none;
             outline: none;
             margin: 0 5px;
@@ -576,3 +579,9 @@
                 width: 400px;
             }
         }
+        
+            th,
+            td {
+                padding: 1.45rem 0.5rem !important;
+                border-right: 1px solid #efefefa5;
+            }

@@ -14,6 +14,7 @@ function showSection(section) {
     document.getElementById(section + 'Section').style.display = 'block';
 
 
+
     // Add active class to clicked nav link
     event.target.classList.add('active');
 }
@@ -23,4 +24,15 @@ function closeProductModal() {
     document.getElementById('productForm').reset();
     currentEditId = null;
 }
+
+// Datatable script
+$(document).ready(function () {
+    $('#transactionTable').DataTable({
+        pageLength: 5,
+        lengthChange: false,
+        ordering: true,
+        searching: true,
+        info: true
+    });
+});
 

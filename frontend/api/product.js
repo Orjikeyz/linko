@@ -124,7 +124,7 @@ const getAllVendorProduct = async () => {
     getTotalProduct(paramsValue)
     const tbody = document.getElementById('productsTableBody');
     tbody.innerHTML = ""
-    let cachedProduct = sessionStorage.getItem("products")
+    let cachedProduct = localStorage.getItem("products")
     if (cachedProduct) {
         loadProducts(JSON.parse(cachedProduct))
         console.log("cached")
@@ -146,9 +146,9 @@ const getAllVendorProduct = async () => {
             }
 
             if (data.status === 'success') {
-                sessionStorage.removeItem("products");
+                localStorage.removeItem("products");
 
-                cachedProduct = sessionStorage.setItem("products", JSON.stringify(data.result))
+                cachedProduct = localStorage.setItem("products", JSON.stringify(data.result))
                 loadProducts(data.result)
             }
         } catch (error) {
@@ -160,7 +160,7 @@ const getAllVendorProduct = async () => {
 
 // Load vendor product list
 function loadProducts(data) {
-    let vendorData = JSON.parse(sessionStorage.getItem("vendorData"))
+    let vendorData = JSON.parse(localStorage.getItem("vendorData"))
     let status_plan = document.getElementById("status_plan")
     let account_status = document.getElementById("account_status")
 
@@ -219,7 +219,7 @@ function loadProducts(data) {
 function openProductModal(productId) {
     const modal = document.getElementById('productModal');
     const form = document.getElementById('productForm');
-    let cachedProduct = JSON.parse(sessionStorage.getItem("products"))
+    let cachedProduct = JSON.parse(localStorage.getItem("products"))
     let currentImage = document.querySelector(".currentImage")
 
     currentImage.innerHTML = ""
@@ -272,7 +272,7 @@ function escapeHTML(str) {
 
 // Add Product
 const addProduct = async () => {
-    let plan = JSON.parse(sessionStorage.getItem("vendorData")).plan
+    let plan = JSON.parse(localStorage.getItem("vendorData")).plan
     let save_btn = document.getElementById("save_btn")
     let load_btn = document.getElementById("load_btn")
 
@@ -426,7 +426,7 @@ const addProduct = async () => {
 
             if (data.status === "success") {
                 showAlert(data.message, data.status)
-                sessionStorage.removeItem("products")
+                localStorage.removeItem("products")
                 setTimeout(() => {
                     window.location.href = ""
                 }, 2000);
@@ -471,7 +471,7 @@ async function deleteProduct(id) {
 
             if (data.status === "success") {
                 showAlert(data.message, data.status)
-                sessionStorage.removeItem("products");
+                localStorage.removeItem("products");
                 setTimeout(() => {
                     window.location.href = ""
                 }, 1000);
@@ -511,7 +511,7 @@ const getTotalProduct = async (id) => {
 }
 
 function refreshProductTable() {
-    sessionStorage.removeItem("products");
+    localStorage.removeItem("products");
     getAllVendorProduct()
 }
 

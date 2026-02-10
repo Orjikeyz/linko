@@ -80,7 +80,7 @@ const verifyPayment = async (req, res) => {
         const data = await response.json();
 
         if (data.data?.status !== 'success') {
-            return responseData(res, 'error', 400, 'Payment not successful', [], '');
+            return responseData(res, 'error', 400, data.data?.gateway_response, [], '');
         }
 
         // Check for duplicate transaction

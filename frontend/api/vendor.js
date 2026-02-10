@@ -58,7 +58,7 @@ const getVendorDashboardData = async () => {
       showAlert(`${data.message}`, `${data.status}`)
 
       if (data.message === "Vendor not found") {
-        sessionStorage.removeItem('vendorData');
+        localStorage.removeItem('vendorData');
         window.location.href = "../404.html"
       }
       return
@@ -66,7 +66,7 @@ const getVendorDashboardData = async () => {
 
     if (data.status === "success") {
       console.log(data.message)
-      sessionStorage.setItem("vendorData", JSON.stringify(data.result))
+      localStorage.setItem("vendorData", JSON.stringify(data.result))
     }
   } catch (error) {
     showAlert("Server Error. Please try again later", "error")

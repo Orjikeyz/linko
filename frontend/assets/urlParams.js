@@ -1,4 +1,4 @@
-const params = new URLSearchParams(window.location.search)
+let params = new URLSearchParams(window.location.search)
 const paramsValue = params.get('id') || ""
 const productId = params.get('pid') || ""
 

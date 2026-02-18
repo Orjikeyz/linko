@@ -3,6 +3,48 @@ const responseData = require('../middleware/response')
 const Transaction = require("../model/Transaction")
 require("dotenv").config();
 
+const getTransaction = async (req, res) => {
+    try {
+        const vendor_id = req.query.id;
+        const page = parseInt(req.query.page) || 1;     // current page
+        const limit = parseInt(req.query.limit) || 10;  // items per page
+
+        if (!vendor_id) {
+            return responseData(res, 'error', 400, 'Vendor ID required', [], '');
+        }
+
+        const skip = (page - 1) * limit;
+
+        // Get total count for pagination
+        const total = await Transaction.countDocuments({ vendor_id });
+
+        if (total === 0) {
+            return responseData(res, 'error', 404, 'No transactions found', [], '');
+        }
+
+
+        // Fetch paginated data
+        const transactions = await Transaction.find({ vendor_id })
+            .sort({ createdAt: -1 }) // optional sorting
+            .skip(skip)
+            .limit(limit);
+
+
+        return responseData(res, 'success', 200, 'Transactions fetched successfully', {
+            data: transactions,
+            currentPage: page,
+            totalPages: console.log(),
+            totalRecords: total
+        }, '');
+
+    } catch (error) {
+        console.error(error);
+        return responseData(res, 'error', 500, 'Internal server error', [], '');
+    }
+};
+
+
+
 const processPayment = async (req, res) => {
     try {
         const email = "orjikeyz7@gmail.com"
@@ -54,7 +96,6 @@ const processPayment = async (req, res) => {
         return responseData(res, 'error', 400, `${error.message}`, [], '')
     }
 }
-
 
 const verifyPayment = async (req, res) => {
     try {
@@ -112,5 +153,6 @@ const verifyPayment = async (req, res) => {
 
 module.exports = {
     processPayment,
-    verifyPayment
+    verifyPayment,
+    getTransaction
 }

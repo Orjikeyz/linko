@@ -429,7 +429,9 @@
         }
 
 
-        .page-button button, #transactionTable_next, #transactionTable_previous {
+        .page-button button,
+        #transactionTable_next,
+        #transactionTable_previous {
             padding: 7px 20px;
             border-radius: 5px;
             background: #202020;
@@ -579,9 +581,31 @@
                 width: 400px;
             }
         }
-        
-            th,
-            td {
-                padding: 1.45rem 0.5rem !important;
-                border-right: 1px solid #efefefa5;
-            }
+
+        th,
+        td {
+            padding: 1.45rem 0.5rem !important;
+            border-right: 1px solid #efefefa5;
+        }
+
+        .success,
+        .approved {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.75rem;
+            background: #dbfef1af;
+            color: #1dd87e;
+            border: 1px solid #bffeeb;
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+        }
+
+        .pending, .failed {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.75rem;
+            background: #fefadb;
+            color: #d8a61d;
+            border: 1px solid #fef9bf;
+            border-radius: 0.375rem;
+        }

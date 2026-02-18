@@ -1,3 +1,78 @@
+
+async function getTransaction(vendor_id) {
+    let currentPage = 1;
+    let limit = 15;
+
+    try {
+        let response = await fetch(`http://localhost:3000/transaction/getTransaction?id=${vendor_id}&limit=${limit}`, {
+            method: "GET"
+        })
+
+        if (!response.ok) {
+            console.log(`HTTP error! Status: ${response.status}`)
+            showAlert(`HTTP error! Status: ${response.status}`, `error`);
+        }
+
+        let data = await response.json()
+
+        if (data.status === "error") {
+            showAlert(data.message, data.status)
+            return
+        }
+
+        if (data.status === "success") {
+            let transactionBody = document.querySelector(".transactionBody")
+
+            if ($.fn.DataTable.isDataTable('#transactionTable')) {
+                $('#transactionTable').DataTable().destroy()
+            }
+
+            let dataTable = $('#transactionTable').DataTable({
+                order: [],
+                paging: false,
+                info: false,
+                pageLength: 30
+            })
+
+            function humanDate(dateValue) {
+                const isoDate = `${dateValue}`;
+                const date = new Date(isoDate);
+
+                // Short human-friendly format: "Jan 30, 2026"
+                const humanDate = date.toLocaleDateString("en-US", {
+                    month: "short",
+                    day: "numeric",
+                    year: "numeric"
+                });
+
+                console.log(humanDate); // "Jan 30, 2026"
+                return humanDate
+            }
+
+
+            data.result.data.forEach((value, index) => {
+                dataTable.row.add([
+                    index + 1,
+                    value.reference_id,
+                    value.amount,
+                    `<span class="${value.status}">${value.status}</span>`,
+                    value.description,
+                    humanDate(value.createdAt),
+                ])
+            })
+
+            dataTable.draw()   // 🔥 Important
+        }
+
+
+    } catch (error) {
+        console.error(error);
+        showAlert("Network error. Please try again.");
+    }
+}
+
+getTransaction(paramsValue)
+
 async function selectPlan(plan) {
     let subscribeBtn = document.getElementById("subscribeBtn")
     subscribeBtn.disabled = true
@@ -18,7 +93,7 @@ async function selectPlan(plan) {
         }
 
         // success
-        
+
         localStorage.setItem("payStackReference", data.result.reference)
         window.location.href = `${data.result.authorization_url}`
 

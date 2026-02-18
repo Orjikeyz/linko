@@ -29,10 +29,11 @@ function closeProductModal() {
 $(document).ready(function () {
     $('#transactionTable').DataTable({
         pageLength: 5,
+        paging: false,
         lengthChange: false,
         ordering: true,
         searching: true,
-        info: true
+        info: false
     });
 });
 

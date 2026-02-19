@@ -22,18 +22,16 @@ const getTransaction = async (req, res) => {
             return responseData(res, 'error', 404, 'No transactions found', [], '');
         }
 
-
         // Fetch paginated data
         const transactions = await Transaction.find({ vendor_id })
             .sort({ createdAt: -1 }) // optional sorting
             .skip(skip)
             .limit(limit);
 
-
         return responseData(res, 'success', 200, 'Transactions fetched successfully', {
             data: transactions,
             currentPage: page,
-            totalPages: console.log(),
+            totalPages: Math.ceil(total / limit),
             totalRecords: total
         }, '');
 

@@ -1,7 +1,8 @@
 // Navigation
 getAllVendorProduct()
 getVendorDashboardData()
-function showSection(section) {
+
+async function showSection(section) {
     // Hide all sections
     document.querySelectorAll('.dashboard-section').forEach(s => s.style.display = 'none');
 
@@ -13,10 +14,17 @@ function showSection(section) {
     // Show selected section
     document.getElementById(section + 'Section').style.display = 'block';
 
-
-
     // Add active class to clicked nav link
     event.target.classList.add('active');
+
+    let transactionLoaded = false;  // global flag
+
+    if (section === "transaction") {
+        if (!transactionLoaded) {
+            await getTransaction(paramsValue);  // load only once
+            transactionLoaded = true;           // mark as loaded
+        }
+    }
 }
 
 function closeProductModal() {

@@ -1,10 +1,12 @@
 
-async function getTransaction(vendor_id) {
-    let currentPage = 1;
-    let limit = 15;
+// Get Transaction Data
+let currentPage = 1;
+let limit = 10;
+let totalPages = 1;
 
+async function getTransaction(vendor_id) {
     try {
-        let response = await fetch(`http://localhost:3000/transaction/getTransaction?id=${vendor_id}&limit=${limit}`, {
+        let response = await fetch(`http://localhost:3000/transaction/getTransaction?id=${vendor_id}&limit=${limit}&page=${currentPage}`, {
             method: "GET"
         })
 
@@ -21,11 +23,11 @@ async function getTransaction(vendor_id) {
         }
 
         if (data.status === "success") {
-            let transactionBody = document.querySelector(".transactionBody")
 
             if ($.fn.DataTable.isDataTable('#transactionTable')) {
                 $('#transactionTable').DataTable().destroy()
             }
+            document.querySelector("#transactionTable tbody").innerHTML = "";
 
             let dataTable = $('#transactionTable').DataTable({
                 order: [],
@@ -34,6 +36,7 @@ async function getTransaction(vendor_id) {
                 pageLength: 30
             })
 
+            // Humanize createdAt date
             function humanDate(dateValue) {
                 const isoDate = `${dateValue}`;
                 const date = new Date(isoDate);
@@ -45,17 +48,21 @@ async function getTransaction(vendor_id) {
                     year: "numeric"
                 });
 
-                console.log(humanDate); // "Jan 30, 2026"
                 return humanDate
             }
 
+            // Number format for amount
+            function formatAmount(num) {
+                return Number(num).toLocaleString('en-US');
+            }
 
+            totalPages = data.result.totalPages
             data.result.data.forEach((value, index) => {
                 dataTable.row.add([
-                    index + 1,
+                    index + 1 + (currentPage - 1) * limit,
                     value.reference_id,
-                    value.amount,
-                    `<span class="${value.status}">${value.status}</span>`,
+                    formatAmount(value.amount),
+                    `<center><span class="${value.status}">${value.status}</span></center>`,
                     value.description,
                     humanDate(value.createdAt),
                 ])
@@ -71,7 +78,25 @@ async function getTransaction(vendor_id) {
     }
 }
 
-getTransaction(paramsValue)
+// Get transaction Data based on Next Button Pagination
+async function transactionNextBtn() {
+    if (currentPage < totalPages) {
+        currentPage++;
+        getTransaction(paramsValue);
+    } else {
+        showAlert("No more transactions to display", "info");
+    }
+}
+
+// Get transaction Data based on Prev Button Pagination
+async function transactionPrevBtn() {
+    if (currentPage > 1) {   
+        currentPage--;
+        getTransaction(paramsValue);
+    } else {
+        showAlert("You are already on the first page", "info");
+    }
+}
 
 async function selectPlan(plan) {
     let subscribeBtn = document.getElementById("subscribeBtn")

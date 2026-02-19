@@ -15,6 +15,10 @@ function showAlert(message, status) {
         alertBox.textContent = message;
         alertBox.style.background = "#28a745"; // custom color
         alertBox.classList.add("show");
+    } else if (status === "info") {
+        alertBox.textContent = message;
+        alertBox.style.background = "#2881a7"; // custom color
+        alertBox.classList.add("show");
     }
 
     setTimeout(() => {

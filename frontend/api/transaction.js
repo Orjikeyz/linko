@@ -147,7 +147,7 @@ async function verifySubscriptionPayment() {
             }, 1500);
             return;
         }
-
+ 
         // success
         if (data.status === "success") {
             if (data.result.status === "success") {

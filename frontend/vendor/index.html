@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="./assets/style.css">
     <link rel="stylesheet" href="../assets/alert.css">
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v6.0.0-beta1/css/all.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <script src="../assets/urlParams.js"></script>
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/jquery.dataTables.min.css">
 
@@ -38,7 +39,7 @@
                         <li><a href="#" class="active" onclick="showSection('products')">Product Overview</a></li>
                         <li><a href="#" onclick="showSection('plan')">Subscription Plan</a></li>
                         <li><a href="#" onclick="showSection('transaction')">Transactions</a></li>
-                        <li><a href="#" onclick="showSection('products')">Settings</a></li>
+                        <li><a href="#" onclick="showSection('settings')">Settings</a></li>
                     </ul>
                 </nav>
             </aside>
@@ -47,7 +48,7 @@
             <main class="main-content">
 
                 <!-- Products Section -->
-                <div id="productsSection" class="dashboard-section">
+                <div id="productsSection" class="dashboard-section" style="display: none;">
                     <h1 class="page-title" style="display: flex; align-items: center; justify-content: space-between;">
                         Product Management <button class="btn btn-primary"
                             onclick="refreshProductTable()">Refresh</button></h1>
@@ -119,8 +120,8 @@
 
                         </style>
                         <div class="table-container">
-                            <table id="transactionTable" >
-                                <thead> 
+                            <table id="transactionTable">
+                                <thead>
                                     <tr>
                                         <th>#</th>
                                         <th>Reference Id</th>
@@ -171,6 +172,46 @@
                         </div>
                     </div>
 
+                </div>
+
+                <style>
+                    .settingsTabContainer {
+                        list-style-type: none;
+                        padding: 5px 0;
+                        display: flex;
+                        justify-content: left;
+                        align-items: center;
+                        background: #f0ebeb;
+                        margin: 20px 0;
+                        border-radius: 10px;
+                        overflow-x: scroll;
+                        white-space: nowrap;
+                    }
+
+                    .settingsTabContainer li {
+                        padding: 5px 8px;
+                        font-size: 14px;
+                        margin: 0 10px;
+                        border-radius: 5px;
+                    }
+
+                    .settingsTabContainer .activeSetTab {
+                        background: white;
+                    }
+                </style>
+
+                <div id="settingsSection" class="dashboard-section" style="display: non; color: #2c2b2b;">
+                    <h1 class="page-title"
+                        style="display: flex; align-items: center; justify-content: space-between; margin: 10px 0 ; ">
+                        Store Settings </h1>
+                    <p>Manage your vendor profile, payment details, and store preferences.</p>
+
+                    <ul class="settingsTabContainer">
+                        <li class="activeSetTab"><i class="fa-solid fa-address-card"></i> Profile</li>
+                        <li><i class="fa-solid fa-address-card"></i> Payment</li>
+                        <li><i class="fa-solid fa-building-lock"></i> Security</li>
+                        <li><i class="fa-duotone fa-solid fa-address-card"></i> Profile</li>
+                    </ul>
                 </div>
 
             </main>

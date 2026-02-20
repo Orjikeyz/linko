@@ -19,7 +19,7 @@ const getProductsData = async () => {
             data.result.forEach(item => {
                 let productGrid = document.getElementById("productGrid")
                 productGrid.innerHTML += `
-                    <a href="products?id=${paramsValue}&pid=${item._id}">
+                    <a href="products.html?id=${paramsValue}&pid=${item._id}">
                 <div class="product-card" data-price="${item.price}">
                     <img src="https://www.wamdenim.com/cdn/shop/files/florence_black_shirt_01.jpg?v=1763378903&width=1500"
                         class="product-image" loading="lazy">

@@ -7,4 +7,4 @@ if (paramsValue === '' || !paramsValue) {
     window.location.href = '404'
 }
 let productUrl = "https://linkohub.vercel.app/" //producturl same as frontend url
-let backendUrl = "http://localhost:3000"
+let backendUrl = "https://linko-mosc.onrender.com"

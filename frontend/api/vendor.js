@@ -8,7 +8,7 @@ const getVendorData = async () => {
   profile_phone_number = document.querySelector("#profile-phone-number");
 
   try {
-    const response = await fetch(`http://localhost:3000/${paramsValue}`, {
+    const response = await fetch(`${backendUrl}/${paramsValue}`, {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' }
     })
@@ -44,7 +44,7 @@ const getVendorData = async () => {
 // Vendor Dashboard Product API Call
 const getVendorDashboardData = async () => {
   try {
-    const response = await fetch(`http://localhost:3000/${paramsValue}`, {
+    const response = await fetch(`${backendUrl}/${paramsValue}`, {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' }
     })

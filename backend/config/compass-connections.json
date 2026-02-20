@@ -1,0 +1,44 @@
+{
+  "type": "Compass Connections",
+  "version": {
+    "$numberInt": "1"
+  },
+  "connections": [
+    {
+      "id": "ba3751a0-8ce4-4a1e-815a-67fc50683ca3",
+      "lastUsed": {
+        "$date": {
+          "$numberLong": "1771259095481"
+        }
+      },
+      "favorite": {
+        "name": "linkoDB"
+      },
+      "savedConnectionType": "recent",
+      "connectionOptions": {
+        "connectionString": "mongodb://localhost:27017/",
+        "oidc": {
+          "serializedState": "eyJvaWRjUGx1Z2luU3RhdGVWZXJzaW9uIjoxLCJzdGF0ZSI6W119"
+        }
+      }
+    },
+    {
+      "id": "e61bc95c-cf82-4d5a-99fb-03b3353400dc",
+      "lastUsed": {
+        "$date": {
+          "$numberLong": "1764668816559"
+        }
+      },
+      "favorite": {
+        "name": "loanManagementDb"
+      },
+      "savedConnectionType": "recent",
+      "connectionOptions": {
+        "connectionString": "mongodb://localhost:27017/",
+        "oidc": {
+          "serializedState": "eyJvaWRjUGx1Z2luU3RhdGVWZXJzaW9uIjoxLCJzdGF0ZSI6W119"
+        }
+      }
+    }
+  ]
+}

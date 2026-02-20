@@ -1,6 +1,6 @@
 const getProductsData = async () => {
     try {
-        const response = await fetch(`http://localhost:3000/product/${paramsValue}`, {
+        const response = await fetch(`${backendUrl}/product/${paramsValue}`, {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' }
         })
@@ -49,7 +49,7 @@ const getProductById = async () => {
     }
 
     try {
-        const response = await fetch(`http://localhost:3000/product/id/${productId}`, {
+        const response = await fetch(`${backendUrl}/product/id/${productId}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -131,7 +131,7 @@ const getAllVendorProduct = async () => {
     } else {
         console.log("api")
         try {
-            const response = await fetch(`http://localhost:3000/product/vendor/${paramsValue}`, {
+            const response = await fetch(`${backendUrl}/product/vendor/${paramsValue}`, {
                 method: 'GET',
                 headers: { 'Content-Type': 'application/json' }
             })
@@ -408,7 +408,7 @@ const addProduct = async () => {
         }
 
         try {
-            const response = await fetch(`http://localhost:3000/product/vendor/${paramsValue}`, {
+            const response = await fetch(`${backendUrl}/product/vendor/${paramsValue}`, {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json'
@@ -455,7 +455,7 @@ async function deleteProduct(id) {
 
     if (confirm("Do you wish to delete product")) {
         try {
-            const response = await fetch(`http://localhost:3000/product/vendor/${paramsValue}/${id}`, {
+            const response = await fetch(`${backendUrl}/product/vendor/${paramsValue}/${id}`, {
                 method: "DELETE",
                 headers: {
                     'Content-Type': 'application/json'
@@ -487,7 +487,7 @@ async function deleteProduct(id) {
 // Get total Product Count
 const getTotalProduct = async (id) => {
     try {
-        const response = await fetch(`http://localhost:3000/product/vendor/totalProduct/${id}`, {
+        const response = await fetch(`${backendUrl}/product/vendor/totalProduct/${id}`, {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' }
         })

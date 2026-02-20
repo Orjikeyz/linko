@@ -6,7 +6,7 @@ let totalPages = 1;
 
 async function getTransaction(vendor_id) {
     try {
-        let response = await fetch(`http://localhost:3000/transaction/getTransaction?id=${vendor_id}&limit=${limit}&page=${currentPage}`, {
+        let response = await fetch(`${backendUrl}/transaction/getTransaction?id=${vendor_id}&limit=${limit}&page=${currentPage}`, {
             method: "GET"
         })
 
@@ -104,7 +104,7 @@ async function selectPlan(plan) {
     subscribeBtn.textContent = "Processing..."
     let username = JSON.parse(localStorage.getItem("vendorData")).username
     try {
-        const response = await fetch(`http://localhost:3000/transaction/processPayment?id=${username}`, {
+        const response = await fetch(`${backendUrl}/transaction/processPayment?id=${username}`, {
             method: "GET",
         });
 
@@ -133,7 +133,7 @@ async function selectPlan(plan) {
 
 async function verifySubscriptionPayment() {
     try {
-        const response = await fetch(`http://localhost:3000/transaction/verifyPayment?reference=${localStorage.getItem("payStackReference")}`, {
+        const response = await fetch(`${backendUrl}/transaction/verifyPayment?reference=${localStorage.getItem("payStackReference")}`, {
             method: "GET",
         });
 

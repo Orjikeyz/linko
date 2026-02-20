@@ -1,0 +1,143 @@
+[{
+  "_id": {
+    "$oid": "692eb5b4d7afbc0220a28814"
+  },
+  "name": "Music Production Masterclass",
+  "description": "Learn music production from industry experts.",
+  "price": 99.99,
+  "images": [
+    "https://www.wamdenim.com/cdn/shop/files/florence_black_shirt_01.jpg?v=1763378903&width=1500",
+    "https://example.com/images/course2.jpg",
+    "https://example.com/images/course3.jpg"
+  ],
+  "vendor_id": "empireclothing_4821"
+},
+{
+  "_id": {
+    "$oid": "692eb5b4d7afbc0220a28816"
+  },
+  "name": "Hip Hop Heat Vol. 2",
+  "description": "Next-level hip-hop beats for producers.",
+  "price": 44.99,
+  "images": [
+    "https://example.com/images/hiphop1.jpg",
+    "https://example.com/images/hiphop2.jpg"
+  ],
+  "vendor_id": "65fa12c4b2cd9a00123abcd4"
+},
+{
+  "_id": {
+    "$oid": "692eb5b4d7afbc0220a28817"
+  },
+  "name": "Afrobeat Essentials",
+  "description": "Essential afrobeat loops and samples.",
+  "price": 39.99,
+  "images": [
+    "https://example.com/images/afro1.jpg"
+  ],
+  "vendor_id": "65fa12c4b2cd9a00123abcd5"
+},
+{
+  "_id": {
+    "$oid": "692eb5b4d7afbc0220a28818"
+  },
+  "name": "Mixing & Mastering Course",
+  "description": "Master mixing and mastering for your tracks.",
+  "price": 79.99,
+  "images": [
+    "https://example.com/images/mix1.jpg",
+    "https://example.com/images/mix2.jpg"
+  ],
+  "vendor_id": "65fa12c4b2cd9a00123abcd6"
+},
+{
+  "_id": {
+    "$oid": "692eb5b4d7afbc0220a28819"
+  },
+  "name": "Music Theory for Producers",
+  "description": "Learn music theory specifically for producers.",
+  "price": 19.99,
+  "images": [
+    "https://example.com/images/theory1.jpg"
+  ],
+  "vendor_id": "65fa12c4b2cd9a00123abcd7"
+},
+{
+  "_id": {
+    "$oid": "692eb5b4d7afbc0220a2881a"
+  },
+  "name": "E-Book: Music Marketing Blueprint",
+  "description": "Guide to promote your music effectively.",
+  "price": 24.99,
+  "images": [
+    "https://example.com/images/ebook1.jpg"
+  ],
+  "vendor_id": "65fa12c4b2cd9a00123abcd8"
+},
+{
+  "_id": {
+    "$oid": "692eb5b4d7afbc0220a2881b"
+  },
+  "name": "Pop Essentials Vol. 1",
+  "description": "Pop music loops and samples for your tracks.",
+  "price": 34.99,
+  "images": [
+    "https://example.com/images/pop1.jpg",
+    "https://example.com/images/pop2.jpg",
+    "https://example.com/images/pop3.jpg"
+  ],
+  "vendor_id": "65fa12c4b2cd9a00123abcd9"
+},
+{
+  "_id": {
+    "$oid": "692eb5b4d7afbc0220a2881c"
+  },
+  "name": "Lo-Fi Chill Beats",
+  "description": "A collection of lo-fi beats for relaxation.",
+  "price": 29.99,
+  "images": [
+    "https://example.com/images/lofi1.jpg"
+  ],
+  "vendor_id": "65fa12c4b2cd9a00123abcda"
+},
+{
+  "_id": {
+    "$oid": "696f4c87c7d0a8f85b6d4cb3"
+  },
+  "name": "james",
+  "description": "welomc",
+  "price": 5000,
+  "images": [
+    "https://judydoesbraids.com/linkostorage/uploads/images/1776f92ad9318445c3860c0cdb790a4f.png",
+    "https://judydoesbraids.com/linkostorage/uploads/images/5959afd20acee6150c06b36808e675ff.png",
+    "https://judydoesbraids.com/linkostorage/uploads/images/f96caa84b256c3a53395ea23bdc1a828.png"
+  ],
+  "vendor_id": "empireclothing_4821",
+  "createdAt": {
+    "$date": "2026-01-20T09:36:07.252Z"
+  },
+  "updatedAt": {
+    "$date": "2026-01-20T09:36:07.252Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "696f553ac7d0a8f85b6d4d62"
+  },
+  "name": "32423",
+  "description": "",
+  "price": 4355,
+  "images": [
+    "https://judydoesbraids.com/linkostorage/uploads/images/75c81fa10c5dfe6e4216bfc24a9e8200.png",
+    "https://judydoesbraids.com/linkostorage/uploads/images/b3d5129d64e76f686efe8163c0ed715e.png"
+  ],
+  "vendor_id": "empireclothing_4821",
+  "createdAt": {
+    "$date": "2026-01-20T10:13:14.273Z"
+  },
+  "updatedAt": {
+    "$date": "2026-01-20T10:13:14.273Z"
+  },
+  "__v": 0
+}]

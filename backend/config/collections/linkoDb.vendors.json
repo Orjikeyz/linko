@@ -1,0 +1,32 @@
+[{
+  "_id": {
+    "$oid": "692ec5f3d7afbc0220a28824"
+  },
+  "brand_name": "Empire Clothing",
+  "brand_image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRLat8bZvhXD3ChSXyzGsFVh6qgplm1KhYPKA&s",
+  "brand_cover_image": "https://shorthand.com/the-craft/raster-images/assets/5kVrMqC0wp/sh-unsplash_5qt09yibrok-4096x2731.jpeg",
+  "brand_description": "Sales of Cloths | Bags | Shoes",
+  "instagram": "https://instagram.com/empireclothing",
+  "facebook": "https://facebook.com/empireclothing",
+  "x": "https://x.com/empireclothing",
+  "phone_number": "+1234567890",
+  "plan": "free",
+  "status": "active",
+  "username": "empireclothing_4821"
+},
+{
+  "_id": {
+    "$oid": "692ec5f3d7afbc0220a28825"
+  },
+  "brand_name": "Urban Threads",
+  "brand_image": "https://example.com/images/urbanthreads_logo.jpg",
+  "brand_cover_image": "https://example.com/images/urbanthreads_cover.jpg",
+  "brand_description": "Street style with a modern twist.",
+  "instagram": "https://instagram.com/urbanthreads",
+  "facebook": "https://facebook.com/urbanthreads",
+  "x": "https://x.com/urbanthreads",
+  "phone_number": "+0987654321",
+  "plan": "basic",
+  "status": "active",
+  "username": "urbanthreads_7392"
+}]

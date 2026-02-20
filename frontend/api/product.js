@@ -42,7 +42,7 @@ const getProductsData = async () => {
 
 const getProductById = async () => {
     let backBtnHref = document.getElementById("backBtnHref")
-    backBtnHref.href = `index?id=${paramsValue}`
+    backBtnHref.href = `index.html?id=${paramsValue}`
 
     if (!productId) {
         window.location.href = '404'

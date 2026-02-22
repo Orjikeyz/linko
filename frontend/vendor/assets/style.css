@@ -2,6 +2,7 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            list-style-type: none;
         }
 
         body {
@@ -579,6 +580,11 @@
         @media screen and (min-width: 768px) {
             .modal-img-overview {
                 width: 400px;
+            }
+
+            .brandLogoContainer {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
             }
         }
 

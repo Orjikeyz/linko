@@ -181,22 +181,91 @@
                         display: flex;
                         justify-content: left;
                         align-items: center;
-                        background: #f0ebeb;
+                        background: #ececec;
                         margin: 20px 0;
                         border-radius: 10px;
                         overflow-x: scroll;
                         white-space: nowrap;
                     }
 
+                    .settingsTabContainer::-webkit-scrollbar {
+                        background-color: transparent;
+                        height: 0px;
+                    }
+
                     .settingsTabContainer li {
-                        padding: 5px 8px;
+                        padding: 5px 10px;
                         font-size: 14px;
-                        margin: 0 10px;
+                        margin: 0 5px;
                         border-radius: 5px;
                     }
 
                     .settingsTabContainer .activeSetTab {
                         background: white;
+                    }
+
+                    .profileContainer,
+                    .storeDetailsContainer {
+                        padding: 2.5em 20px;
+                        border: 3px solid #e2e2e2;
+                        border-radius: 10px;
+                        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+                        margin: 30px 0;
+                    }
+
+                    #fileUploadLabel {
+                        display: flex;
+                        margin: 15px 0;
+                        align-items: center;
+                        justify-content: center;
+                        padding: 12px 20px;it 
+                        background: #e4e2e2a9;
+                        width: 100px;
+                        height: 90px;
+                        color: #adaaaa;
+                        border-radius: 10px;
+                        cursor: pointer;
+                        transition: 0.3s;
+                        border: 2px solid #dcdada;
+                    }
+
+                    .brandLogoContainer ul {
+                        display: flex;
+                        align-items: center;
+                        justify-content: left;
+                    }
+
+                    .brandLogoContainer ul li:nth-child(2) {
+                        padding: 10px;
+                    }
+
+                    .brandLogoContainer ul li:nth-child(2) button {
+                        background-color: #2c2b2b;
+                        color: white;
+                        padding: 10px 14px;
+                        border-radius: 5px;
+                        outline: none;
+                        border: none;
+                    }
+
+                    .storeDetailsContainer {
+                        display: block;
+                    }
+
+                    .storeDetailsContainer input,
+                    textarea {
+                        display: block;
+                        border-radius: 5px;
+                        border: 1px solid #d2d1d1;
+                        outline: none;
+                        width: 100%;
+                        padding: 10px;
+                        margin: 10px 0;
+                    }
+
+                    .storeDetailsContainer label {
+                        font-size: 14px;
+                        margin: 10px 0;
                     }
                 </style>
 
@@ -212,6 +281,55 @@
                         <li><i class="fa-solid fa-building-lock"></i> Security</li>
                         <li><i class="fa-duotone fa-solid fa-address-card"></i> Profile</li>
                     </ul>
+
+                    <div class="profileContainer">
+                        <div class="brandLogoContainer">
+                            <div>
+                                <h4><i class="fa-light fa-camera"></i> Brand Logo</h4>
+                                <ul>
+                                    <li>
+                                        <label for="fileUpload" id="fileUploadLabel"><i
+                                                class="fa-light fa-upload"></i></label>
+                                        <input type="file" id="fileUpload" hidden>
+                                    </li>
+                                    <li>
+                                        <button type="button"><i class="fa-light fa-upload"></i> Upload Logo</button>
+                                        <p style="font-size: 13px; margin: 8px 0;">Recommended: 400x400px, PNG or JPG.Max 2MB.</p>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div>
+                                <h4><i class="fa-light fa-camera"></i> Cover Image</h4>
+                                <ul>
+                                    <li>
+                                        <label for="fileUpload" id="fileUploadLabel"><i
+                                                class="fa-light fa-upload"></i></label>
+                                        <input type="file" id="fileUpload" hidden>
+                                    </li>
+                                    <li>
+                                        <button type="button"><i class="fa-light fa-upload"></i> Upload Cover Image</button>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="storeDetailsContainer">
+                        <h4><i class="fa-light fa-address-card"></i> Store Details / Contact Information</h4> <br>
+                        <label for=""><i class="fa-light fa-user"></i> Store / Vendor Name</label>
+                        <input type="text" id="vendorName">
+
+                        <label for=""><i class="fa-light fa-note"></i> Store Description </label>
+                        <textarea id="vendorDescription" cols="30" rows="5"></textarea>
+
+                        <label for=""><i class="fa-light fa-envelope"></i> Contact Email</label>
+                        <input type="text" id="vendorEmail">
+
+                        <label for=""><i class="fa-light fa-phone"></i> Contact Phone </label>
+                        <input type="text" id="vendorEmail">
+
+                    </div>
                 </div>
 
             </main>

@@ -14,7 +14,7 @@ const vendorSchema = new mongoose.Schema(
             type: String, // URL
             required: true,
         },
-        brand_cover_image: {
+        brand_email: {
             type: String, // URL
         },
         brand_description: {

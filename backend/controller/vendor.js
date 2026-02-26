@@ -102,7 +102,45 @@ const updateVendor = async (req, res) => {
   }
 }
 
+const updateVendorLogo = async (req, res) => {
+  try {
+    const { vendorUsername } = req.params;
+    const { image } = req.body; // Expecting array of URLs
+
+    // =========================
+    //  VALIDATION
+    // =========================
+    if (!Array.isArray(image) || image.length === 0) {
+      return responseData(res, "error", 400, "No image provided", [], "");
+    }
+
+    // Only accept first image for logo
+    const logoUrl = image[0].trim();
+
+    // Optional: simple URL check
+    const urlRegex = /^(https?:\/\/)?([\w\d-]+\.)+\w{2,}(\/.*)?$/i;
+    if (!urlRegex.test(logoUrl)) {
+      return responseData(res, "error", 400, "Invalid image URL", [], "");
+    }
+
+    // =========================
+    //  UPDATE VENDOR
+    // =========================
+    const updatedVendor = await Vendor.findOneAndUpdate({ username: vendorUsername }, {$set: { brand_image: logoUrl } }, {new: true, runValidators: true });
+
+    if (!updatedVendor) {
+      return responseData(res, "error", 404, "Vendor not found", [], "");
+    }
+
+    return responseData(res, "success", 200, "Vendor logo updated", updatedVendor, "");
+
+  } catch (error) {
+    console.error("Server error:", error);
+    return responseData(res, "error", 500, "Internal server error", [], "");
+  }
+};
 module.exports = {
   getVendor,
-  updateVendor
+  updateVendor,
+  updateVendorLogo
 }

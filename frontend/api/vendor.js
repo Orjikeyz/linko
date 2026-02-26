@@ -168,10 +168,10 @@ const updateVendorData = async (vendorName, vendorDescription, vendorPhone, vend
     }
 
     if (data.status === "success") {
-        localStorage.setItem("vendorData", JSON.stringify(data.result))
+      localStorage.setItem("vendorData", JSON.stringify(data.result))
       setTimeout(() => {
-          saveChanges.textContent = "Saved"
-          showAlert(`${data.message}`, `${data.status}`)
+        saveChanges.textContent = "Saved"
+        showAlert(`${data.message}`, `${data.status}`)
       }, 1500);
       setTimeout(() => {
         saveChanges.disabled = false
@@ -182,6 +182,147 @@ const updateVendorData = async (vendorName, vendorDescription, vendorPhone, vend
   } catch (error) {
     console.error(error)
     showAlert("Something went wrong", "error")
+  }
+}
+
+/* =================  Vendor Brand logo Upload ================= */
+let logoImage = document.getElementById('logoImage')
+let logoImageText = document.getElementById('logoImageText')
+
+document.getElementById("productImages").addEventListener("change", function (e) {
+  logoImage.src = URL.createObjectURL(e.target.files[0])
+  logoImageText.textContent = "Preview Brand Logo"
+})
+
+const uploadBrandLogo = async () => {
+  let uploadBrandLogoBtn = document.getElementById("uploadBrandLogoBtn")
+  uploadBrandLogoBtn.disabled = true
+
+  /* ================= FORM DATA ================= */
+  const productImagesInput = document.getElementById("productImages");
+  const productImages = productImagesInput.files;
+  let brandLogoUploadText = document.getElementById("brandLogoUploadText")
+  brandLogoUploadText.textContent = "Uploading..."
+
+
+
+  function loading() {
+    setTimeout(() => {
+      brandLogoUploadText.textContent = "Upload Logo"
+      uploadBrandLogoBtn.disabled = false
+    }, 1500);
+  }
+
+
+  if (productImages.length <= 0) {
+    showAlert("Upload Brand logo", "error");
+    loading()
+    return;
+  }
+
+  if (productImages.length > 1) {
+    showAlert("Only one image is allowed", "error");
+    loading()
+    return;
+  }
+
+  const formData = new FormData();
+  for (let img of productImages) {
+    formData.append("images[]", img);
+  }
+
+  /* ================= SEND TO External Storage ================= */
+
+  try {
+    // Image validation
+    const allowedTypes = ["image/jpeg", "image/png", "image/webp"];
+    const maxSize = 2 * 1024 * 1024; // 2MB
+
+    for (let img of productImages) {
+      if (!allowedTypes.includes(img.type)) {
+        showAlert("Only JPG, PNG, or WEBP images are allowed", "error")
+        loading()
+        return;
+      }
+
+      if (img.size > maxSize) {
+        showAlert("Image must be less than 2MB", "error")
+        loading()
+        return;
+      }
+    }
+
+    const StorageResponse = await fetch("https://judydoesbraids.com/linkostorage/upload.php", {
+      method: "POST",
+      body: formData
+    });
+
+    if (!StorageResponse.ok) {
+      showAlert(`Sorry an error occurred while processing request. Please try again later`, "error");
+      loading()
+      return;
+    }
+
+    const StorageData = await StorageResponse.json();
+
+    if (StorageData.status) {
+
+      if (StorageData.count <= 0) {
+        showAlert(StorageData.message || "Upload failed. Please try again later", "error");
+        loading()
+        return
+      }
+
+      sendToBackend(StorageData.urls, uploadBrandLogoBtn)
+
+    } else {
+      showAlert(StorageData.message || "Upload failed", "error");
+      loading()
+    }
+
+  } catch (error) {
+    console.error(error);
+    showAlert("Server error occurred", "error");
+    loading()
+  }
+}
+
+// Send brand logo upload to backend 
+async function sendToBackend(urls, uploadBrandLogoBtn) {
+  let JSONFormData = {
+    image: urls,
+  }
+
+  try {
+    const response = await fetch(`${backendUrl}/${paramsValue}/logoUpload`, {
+      method: "PUT",
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(JSONFormData),
+    });
+
+    const data = await response.json();
+    if (data.status === "error") {
+      showAlert(data.message, data.status)
+      loading()
+    }
+
+
+    if (data.status === "success") {
+      showAlert(data.message, data.status)
+      brandLogoUploadText.textContent = "Uploaded"
+      uploadBrandLogoBtn.disabled = false
+
+      setTimeout(() => {
+        brandLogoUploadText.textContent = "Upload Logo"
+      }, 1500);
+
+    }
+
+  } catch (error) {
+    showAlert(`Server Error`, "error")
+    loading()
   }
 }
 

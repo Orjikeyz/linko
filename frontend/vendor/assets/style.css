@@ -577,26 +577,7 @@
             }
         }
 
-        @media screen and (min-width: 768px) {
-            .modal-img-overview {
-                width: 400px;
-            }
 
-            .brandLogoContainer {
-                display: grid;
-                grid-template-columns: 1fr 1fr;
-            }
-
-            #logoImage {
-                width: 200px !important;
-            }
-        }
-
-        @media screen and (min-width: 1022px) {
-            #logoImage {
-                width: 300px !important;
-            }
-        }
 
         th,
         td {
@@ -711,7 +692,7 @@
         }
 
         .storeDetailsContainer input,
-        textarea {
+        textarea, select {
             display: block;
             border-radius: 5px;
             border: 1px solid #d2d1d1;
@@ -724,4 +705,39 @@
         .storeDetailsContainer label {
             font-size: 14px;
             margin: 10px 0;
+        }
+
+        @media screen and (min-width: 768px) {
+            .modal-img-overview {
+                width: 400px;
+            }
+
+            .brandLogoContainer {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+            }
+
+            #logoImage {
+                width: 200px !important;
+            }
+
+            .paymentFormContainer {
+                display: grid;
+                grid-template-columns: 1fr 1fr
+            }
+
+            .paymentFormContainer input, select {
+                margin: 10px 0px;
+                width: 98%;
+            }
+            
+            .paymentFormContainer div {
+                margin: 10px 0;
+            }
+        }
+
+        @media screen and (min-width: 1022px) {
+            #logoImage {
+                width: 300px !important;
+            }
         }

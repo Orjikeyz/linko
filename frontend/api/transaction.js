@@ -74,7 +74,7 @@ async function getTransaction(vendor_id) {
 
     } catch (error) {
         console.error(error);
-        showAlert("Network error. Please try again.");
+        showAlert("Network error. Please try again.", "error");
     }
 }
 
@@ -130,7 +130,7 @@ async function selectPlan(plan) {
     }
 }
 
-
+// Verify Subscription Payment  
 async function verifySubscriptionPayment() {
     try {
         const response = await fetch(`${backendUrl}/transaction/verifyPayment?reference=${localStorage.getItem("payStackReference")}`, {
@@ -161,5 +161,74 @@ async function verifySubscriptionPayment() {
     } catch (error) {
         console.error(error);
         showAlert("Network error. Please try again.");
+    }
+}
+
+
+// Verify Bank Account Data and list all bank 
+let bankName = document.getElementById("bankName")
+let bankCode = document.getElementById("bankCode")
+let accountNumber = document.getElementById("accountNumber")
+let accountName = document.getElementById("accountName")
+
+function bankDataLoop() {
+    let bankList = JSON.parse(localStorage.getItem("allBankList"))
+    bankName.innerHTML += "<option>Select bank name</option>"
+    bankList.forEach(item => {
+        bankName.innerHTML += `
+                <option data-bankCode="${item.code}">${item.name}</option>
+            `
+    });
+}
+
+const getAllBankData = async () => {
+    if (!localStorage.getItem("allBankList")) {
+        try {
+            let response = await fetch(`${backendUrl}/transaction/getAllBankData`)
+            let data = await response.json()
+
+            if (data.status === "error") {
+                showAlert(data.message, data.status)
+                return
+            }
+
+            localStorage.setItem("allBankList", JSON.stringify(data.result))
+            bankDataLoop()
+        } catch (error) {
+            console.log(error)
+            showAlert("Network error. Please try again.", "error");
+        }
+    } else {
+        bankDataLoop()
+    }
+}
+
+getAllBankData()
+
+bankName.addEventListener("change", function (e) {
+    const bankNameValue = e.target.value
+    const selectedOption = e.target.selectedOptions[0];
+    const code = selectedOption.dataset.bankcode; 
+    bankCode.value = code
+})
+
+accountNumber.addEventListener("keyup", function () {
+    verifyBankAccountData(accountNumber.value, bankCode.value)
+})
+
+const verifyBankAccountData = async (accountNumber, bankCode) => {
+    try {
+        let response = await fetch(`${backendUrl}/transaction/verifyBankAccountData?accountNumber=${accountNumber}&bankCode=${bankCode}`)
+        let data = await response.json()
+
+        if (data.status === "error") {
+            showAlert(data.message, data.status)
+            return
+        }
+
+        accountName.value = data.account_name
+    } catch (error) {
+        console.log(error)
+        showAlert("Network error. Please try again.", "error");
     }
 }

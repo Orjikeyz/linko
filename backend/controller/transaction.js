@@ -3,6 +3,7 @@ const responseData = require('../middleware/response')
 const Transaction = require("../model/Transaction")
 require("dotenv").config();
 
+// Get Transaction
 const getTransaction = async (req, res) => {
     try {
         const vendor_id = req.query.id;
@@ -41,8 +42,7 @@ const getTransaction = async (req, res) => {
     }
 };
 
-
-
+// Process subscription payment
 const processPayment = async (req, res) => {
     try {
         const email = "orjikeyz7@gmail.com"
@@ -91,10 +91,11 @@ const processPayment = async (req, res) => {
         }
         return responseData(res, 'success', 200, 'Data retrived successfully', paystackResponse, '')
     } catch (error) {
-        return responseData(res, 'error', 400, `${error.message}`, [], '')
+        return responseData(res, 'error', 400, "Network error. Please try again.", [], '')
     }
 }
 
+// Verify subscription payment
 const verifyPayment = async (req, res) => {
     try {
         const reference = req.query.reference;
@@ -144,13 +145,59 @@ const verifyPayment = async (req, res) => {
         return responseData(res, 'success', 200, 'Payment verified successfully', transaction, '');
 
     } catch (error) {
-        return responseData(res, 'error', 500, error.message, [], '');
+        return responseData(res, 'error', 500, "Network error. Please try again.", [], '');
     }
 };
+
+// Get List of all bank Name data
+const getAllBankData = async (req, res) => {
+    try {
+        const response = await fetch("https://api.paystack.co/bank?country=nigeria", {
+            headers: {
+                Authorization: `Bearer ${process.env.SECRET_KEY}`
+            }
+        });
+
+        const data = await response.json();
+        return responseData(res, 'success', 200, "data retrieved successfully", data.data, '');
+
+    } catch (error) {
+        console.log(error)
+        return responseData(res, 'error', 500, "Network error. Please try again.", [], '');
+    }
+}
+
+const verifyBankAccountData = async (req, res) => {
+    const accountNumber = req.query.accountNumber; // replace with actual account number
+    const bankCode = req.query.bankCode; // replace with actual bank code
+
+    try {
+        const response = await fetch(`https://api.paystack.co/bank/resolve?account_number=${accountNumber}&bank_code=${bankCode}`, {
+            method: "GET",
+            headers: {
+                Authorization: `Bearer ${process.env.SECRET_KEY}`,
+                "Content-Type": "application/json"
+            }
+        });
+
+        const data = await response.json();
+            console.log(data)
+
+        if (data.status) {
+            return responseData(res, 'success', 200, "data retrieved successfully", data, '');
+        } else {
+            return responseData(res, 'error', 404, "Invalid Account data.", [], '');
+        }
+    } catch (error) {
+        return responseData(res, 'error', 500, "Network error. Please try again.", [], '');
+    }
+}
 
 
 module.exports = {
     processPayment,
     verifyPayment,
-    getTransaction
+    getTransaction,
+    getAllBankData,
+    verifyBankAccountData
 }

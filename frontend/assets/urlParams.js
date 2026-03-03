@@ -6,6 +6,3 @@ if (paramsValue === '' || !paramsValue) {
     document.getElementsByTagName("body")[0].style.display = "none"
     window.location.href = '404'
 }
-let productUrl = "linko-ng.vercel.app/" //producturl same as frontend url
-let backendUrl = "https://linko-mosc.onrender.com"
-// let backendUrl = "http://localhost:3000"

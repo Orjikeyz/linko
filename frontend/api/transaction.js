@@ -212,9 +212,9 @@ bankName.addEventListener("change", function (e) {
     bankCode.value = code
 })
 
-accountNumber.addEventListener("keyup", function () {
-    verifyBankAccountData(accountNumber.value, bankCode.value)
-})
+// accountNumber.addEventListener("keyup", function () {
+//     verifyBankAccountData(accountNumber.value, bankCode.value)
+// })
 
 const verifyBankAccountData = async (accountNumber, bankCode) => {
     try {
@@ -226,7 +226,7 @@ const verifyBankAccountData = async (accountNumber, bankCode) => {
             return
         }
 
-        accountName.value = data.account_name
+        accountName.value = data.data.account_name
     } catch (error) {
         console.log(error)
         showAlert("Network error. Please try again.", "error");

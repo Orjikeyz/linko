@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v6.0.0-beta1/css/all.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <script src="../assets/urlParams.js"></script>
+    <script src="../assets/url.js"></script>
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/jquery.dataTables.min.css">
 
 </head>
@@ -253,7 +254,7 @@
                         </div>
                     </div>
 
-                    <div class="paymentSection settingsTabList" style="display: non;">
+                    <div class="paymentSection settingsTabList" style="display: none;">
                         <div class="storeDetailsContainer">
                             <h4><i class="fa-light fa-building-columns"></i> Bank / Payment Details</h4> 
                             <p style="font-size: 13.5px; margin: 16px 0;">Your payment information is stored securely and used for receiving payouts.</p>
@@ -262,7 +263,7 @@
                                 <div>
                                     <label for="">Bank Name</label>
                                     <select id="bankName"></select>
-                                    <input type="text" id="bankCode" disabled hidde>
+                                    <input type="hidden" id="bankCode" disabled >
                                 </div>
 
                                 <div>
@@ -272,34 +273,45 @@
 
                                 <div>
                                     <label for="">Account Holder Name</label>
-                                    <input type="text" id="accountName" placeholder="i.e John Doe">
+                                    <input type="text" id="accountName" placeholder="">
                                 </div>
                                 
                             </div>
                         </div>
                     </div>
 
-                    <div class="securitySection settingsTabList" style="display: none;">
+                    <div class="securitySection settingsTabList" style="display: non;">
                         <div class="storeDetailsContainer">
-                            <h4><i class="fa-light fa-address-card"></i> Store Details / Contact Information</h4> <br>
-                            <label for=""><i class="fa-light fa-user"></i> Store / Vendor Name</label>
-                            <input type="text" id="vendorName">
-                    
-                            <label for=""><i class="fa-light fa-note"></i> Store Description </label>
-                            <textarea id="vendorDescription" cols="30" rows="5"></textarea>
-                    
-                            <label for=""><i class="fa-light fa-phone"></i> Contact Phone </label>
-                            <input type="text" id="vendorPhone">
-                    
-                            <h5 style="margin: 20px 0;">Social Media Connect</h5>
-                            <label for=""><i class="fab fa-instagram"></i> Instagram Page </label>
-                            <input type="text" id="vendorInstagram">
-                    
-                            <label for=""><i class="fab fa-facebook-f"></i> Facebook Page </label>
-                            <input type="text" id="vendorFacebook">
-                    
-                            <label for=""><i class="fa-light fa-x"></i> Twitter page </label>
-                            <input type="text" id="vendorX">
+                            <h4><i class="fa-light fa-shield"></i> Account Security</h4> 
+                            <p style="font-size: 13.5px; margin: 16px 0; line-height: 20px;"> Protect your Linko account by using a strong password and keeping your login details confidential. For your safety, you may be required to confirm your current password before making sensitive changes.</p>
+
+                            <label for="currentPassword"><i class="fa-light fa-lock"></i> Current Password</label>
+                            <input type="password" id="currentPassword" placeholder="">
+                            
+                            <label for="newPassword"><i class="fa-light fa-lock"></i> New Password</label>
+                            <input type="password" id="newPassword" >
+                            
+                            <label for="confirmPassword"><i class="fa-light fa-lock"></i> Confirm New Password</label>
+                            <input type="password" id="confirmPassword">
+                            
+                            <button id="submitPassword">Update Password</button>
+
+                            <hr style="margin: 10px 0; transform: translateY(15px); border: none; border-bottom: 1px solid #b1abab;">
+
+                            <div class="twoFactorSection" style="margin-top: 40px;">
+                                <h4><i class="fa-light fa-mobile-screen-button"></i> Two-Factor Authentication (2FA)</h4>
+                                <p style="font-size: 13.5px; margin: 16px 0;">
+                                    Add an extra layer of security to your Linko account.
+                                    When enabled, you’ll be required to enter a one-time verification code during login.
+                                </p>
+                            
+                                <div class="twoFactorStatus" style="margin-bottom: 15px;">
+                                    <strong>Status:</strong>
+                                    <span class="statusBadge disabled">Disabled</span>
+                                </div>
+                            
+                                <button id="twofaButton">Enable 2FA</button>
+                            </div>
                         </div>
                     </div>
 

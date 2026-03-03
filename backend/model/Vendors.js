@@ -41,13 +41,25 @@ const vendorSchema = new mongoose.Schema(
             type: String,
             enum: ["active", "inactive", "pending"],
             default: "active",
-        }
+        },
+        password: {
+            type: String,
+            required: true,
+        },
+        twofactorToken: {
+            type: String,
+            enum: ["on", "off"],
+            default: "off"
+        }, 
+        token: {
+            type: String,
+        },
     },
     { timestamps: true }
 );
 
 // Pre-save hook to generate username
-vendorSchema.pre("save", function(next) {
+vendorSchema.pre("save", function (next) {
     if (!this.username) {
         const randomNum = Math.floor(1000 + Math.random() * 9000); // 4-digit random number
         this.username = this.brand_name.toLowerCase().replace(/\s+/g, '') + "_" + randomNum;

@@ -169,7 +169,8 @@ const getAllBankData = async (req, res) => {
 
 const verifyBankAccountData = async (req, res) => {
     const accountNumber = req.query.accountNumber; // replace with actual account number
-    const bankCode = req.query.bankCode; // replace with actual bank code
+    // const bankCode = req.query.bankCode; // replace with actual bank code
+    const bankCode = "001"
 
     try {
         const response = await fetch(`https://api.paystack.co/bank/resolve?account_number=${accountNumber}&bank_code=${bankCode}`, {

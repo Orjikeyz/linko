@@ -10,9 +10,14 @@ app.use(cors());               // ✅ enable CORS
 app.use(express.json());       // ✅ parse JSON bodies
 app.use(express.urlencoded({ extended: true }));
 
+// auth 
+const authRoutes = require("./router/authRoutes")
+
 const productRoutes = require("./router/productRoutes")
 const vendorRoutes = require("./router/vendorRoutes")
 const transactionRoutes = require("./router/transactionRoutes")
+
+app.use("/auth", authRoutes);
 
 app.use("/", vendorRoutes);
 app.use("/product", productRoutes);

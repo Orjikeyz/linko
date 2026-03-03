@@ -29,7 +29,7 @@ const login = async (req, res) => {
         const token = jwt.sign({ id: vendor._id }, process.env.JWT_SECRET, { expiresIn: "1h" });
 
         res.cookie("token", token, {
-            httpOnly: true,           // JS cannot access it
+            httpOnly: false,           // JS cannot access it
             secure: true,             // only over HTTPS
             sameSite: "None",         // needed if frontend is on a different domain (Vercel)
             maxAge: 24 * 60 * 60 * 1000 // 1 day

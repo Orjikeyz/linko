@@ -37,7 +37,7 @@ const login = async (req, res) => {
 
         console.log(token)
         // ✅ Return vendor info (without token)
-        return responseData(res, 'success', 200, 'Login successful', [], '');
+        return responseData(res, 'success', 200, 'Login successful', {token: token}, '');
 
     } catch (error) {
         console.error(error);

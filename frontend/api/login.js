@@ -1,5 +1,6 @@
 let loginBtn = document.getElementById("loginBtn");
 
+
 loginBtn.addEventListener("click", async function (e) {
     let loginError = document.getElementById("loginError")
     function showAlert(message, error) {

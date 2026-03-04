@@ -4,11 +4,13 @@ const app = express();
 const connectDB = require("./config/connect")
 connectDB() //connect DB
 const cors = require("cors");
+const cookieParser = require("cookie-parser");
 
 /* ===== Middleware ===== */
 app.use(cors());               // ✅ enable CORS
 app.use(express.json());       // ✅ parse JSON bodies
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser()); // ✅ This is required to read cookies
 
 // auth 
 const authRoutes = require("./router/authRoutes")

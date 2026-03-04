@@ -1,6 +1,10 @@
 const express = require("express")
 const router = express.Router()
 
+
+// Middleware
+const authMiddleware = require("../middleware/auth")
+
 // vendor controller
 const vendorController = require("../controller/vendor")
 

@@ -28,16 +28,22 @@ const login = async (req, res) => {
 
         const token = jwt.sign({ id: vendor._id }, process.env.JWT_SECRET, { expiresIn: "1h" });
 
+        // res.cookie("token", token, {
+        //     httpOnly: true,           // JS cannot access it
+        //     secure: true,             // only over HTTPS
+        //     sameSite: "None",         // needed if frontend is on a different domain (Vercel)
+        //     maxAge: 24 * 60 * 60 * 1000 // 1 day
+        // });
+
         res.cookie("token", token, {
-            httpOnly: false,           // JS cannot access it
-            secure: true,             // only over HTTPS
-            sameSite: "None",         // needed if frontend is on a different domain (Vercel)
-            maxAge: 24 * 60 * 60 * 1000 // 1 day
+            httpOnly: false,
+            secure: false,    // must be false for HTTP
+            sameSite: "Lax",  // works for localhost / 127.0.0.1
+            maxAge: 24 * 60 * 60 * 1000
         });
 
-        console.log(token)
         // ✅ Return vendor info (without token)
-        return responseData(res, 'success', 200, 'Login successful', {token: token}, '');
+        return responseData(res, 'success', 200, 'Login successful', [], '');
 
     } catch (error) {
         console.error(error);

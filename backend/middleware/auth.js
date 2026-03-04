@@ -1,10 +1,11 @@
 const jwt = require('jsonwebtoken');
+const responseData = require('../middleware/response')
+
 
 const authenticate = (req, res, next) => {
     const authHeader = req.headers['authorization'];
-    if (!authHeader) return responseData(res, 'error', 401, "Unauthorized", [], '');
-
-    const token = authHeader.split(' ')[1]; // "Bearer TOKEN"
+    const token = req.cookies.token;
+    console.log(token)
 
     if (!token) return responseData(res, 'error', 401, "Unauthorized", [], '');
 

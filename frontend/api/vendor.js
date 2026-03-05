@@ -10,6 +10,7 @@ const getVendorData = async () => {
   try {
     const response = await fetch(`${backendUrl}/${paramsValue}`, {
       method: 'GET',
+      credentials: "include", // IMPORTANT for cookies
       headers: { 'Content-Type': 'application/json' }
     })
 

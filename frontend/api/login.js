@@ -1,6 +1,5 @@
 let loginBtn = document.getElementById("loginBtn");
 
-
 loginBtn.addEventListener("click", async function (e) {
     let loginError = document.getElementById("loginError")
     function showAlert(message, error) {
@@ -42,6 +41,7 @@ loginBtn.addEventListener("click", async function (e) {
             headers: {
                 "Content-Type": "application/json",
             },
+            credentials: "include", // IMPORTANT for cookies
             body: JSON.stringify({
                 email: loginEmail,
                 password: loginPassword,

@@ -3,6 +3,7 @@ const Vendor = require('../model/Vendors')
 const responseData = require('../middleware/response')
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken")
+
 require("dotenv").config();
 
 
@@ -26,22 +27,16 @@ const login = async (req, res) => {
             return responseData(res, 'error', 401, 'Invalid email or password', [], '');
         }
 
-        const token = jwt.sign({ id: vendor._id }, process.env.JWT_SECRET, { expiresIn: "1h" });
-
-        // res.cookie("token", token, {
-        //     httpOnly: true,           // JS cannot access it
-        //     secure: true,             // only over HTTPS
-        //     sameSite: "None",         // needed if frontend is on a different domain (Vercel)
-        //     maxAge: 24 * 60 * 60 * 1000 // 1 day
-        // });
+        const token = jwt.sign({ id: vendor._id }, process.env.JWT_SECRET, { expiresIn: "1h", algorithm: 'HS256' });
 
         res.cookie("token", token, {
-            httpOnly: false,
-            secure: false,    // must be false for HTTP
-            sameSite: "Lax",  // works for localhost / 127.0.0.1
-            maxAge: 24 * 60 * 60 * 1000
+            httpOnly: true,
+            secure: false, // false on HTTP
+            sameSite: "lax", // works for dev
+            maxAge: 1000 * 60 * 60 // 1 hour in milliseconds
         });
 
+        console.log(token)
         // ✅ Return vendor info (without token)
         return responseData(res, 'success', 200, 'Login successful', [], '');
 

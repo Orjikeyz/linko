@@ -8,7 +8,7 @@ const cookieParser = require("cookie-parser");
 
 
 app.use(cors({
-    origin: ["http://localhost", "http://127.0.0.1:5500"],
+    origin: ["http://localhost", "http://127.0.0.1:5500", "https://linko-ng.vercel.app/"],
     credentials: true
 }));
 

@@ -4,5 +4,5 @@ const productId = params.get('pid') || ""
 
 if (paramsValue === '' || !paramsValue) {
     document.getElementsByTagName("body")[0].style.display = "none"
-    window.location.href = '404'
+    // window.location.href = '404'
 }

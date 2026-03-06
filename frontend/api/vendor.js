@@ -60,7 +60,7 @@ const getVendorDashboardData = async () => {
 
       if (data.message === "Vendor not found") {
         localStorage.removeItem('vendorData');
-        window.location.href = "../404.html"
+        // window.location.href = "../404.html"
       }
       return
     }

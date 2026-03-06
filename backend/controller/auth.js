@@ -36,9 +36,7 @@ const login = async (req, res) => {
             maxAge: 1000 * 60 * 60 // 1 hour in milliseconds
         });
 
-        console.log(token)
-        // ✅ Return vendor info (without token)
-        return responseData(res, 'success', 200, 'Login successful', [], '');
+        return responseData(res, 'success', 200, 'Login successful', { id: vendor.username }, '');
 
     } catch (error) {
         console.error(error);
@@ -46,6 +44,11 @@ const login = async (req, res) => {
     }
 }
 
+const logout = async (req, res) => {
+    res.clearCookie("token");
+    res.status(200).json({ message: "Logout successful" });
+}
 module.exports = {
-    login
+    login,
+    logout
 }

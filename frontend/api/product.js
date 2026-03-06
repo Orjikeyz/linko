@@ -41,12 +41,12 @@ const getProductsData = async () => {
 }
 
 const getProductById = async () => {
-    let backBtnHref = document.getElementById("backBtnHref")
-    backBtnHref.href = `index.html?id=${paramsValue}`
+    // let backBtnHref = document.getElementById("backBtnHref")
+    // backBtnHref.href = `index.html?id=${paramsValue}`
 
-    if (!productId) {
-        window.location.href = '404'
-    }
+    // if (!productId) {
+    //     window.location.href = '404.html'
+    // }
 
     try {
         const response = await fetch(`${backendUrl}/product/id/${productId}`, {

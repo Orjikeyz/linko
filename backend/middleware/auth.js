@@ -3,15 +3,12 @@ const responseData = require('../middleware/response')
 
 
 const authenticate = (req, res, next) => {
-    console.log(req.headers)
-    const authHeader = req.headers['authorization'];
     const token = req.cookies.token;
-
     if (!token) return responseData(res, 'error', 401, "Unauthorized", [], '');
 
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        req.user = decoded; // attach user info to request
+        // req.user = decoded; // attach user info to request
         next();
     } catch (err) {
         return responseData(res, 'error', 401, "Invalid or expired token", [], '');

@@ -52,6 +52,7 @@ const getAllVendorProduct = async (req, res) => {
         const { vendorUsername } = req.params
 
         const products = await Product.find({ vendor_id: vendorUsername }).populate("vendor", "plan")
+        console.log(products)
         if (!products) {
             return responseData(res, 'error', 400, 'Products not found', [], '')
         }

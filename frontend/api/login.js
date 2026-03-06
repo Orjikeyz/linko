@@ -1,11 +1,21 @@
 let loginBtn = document.getElementById("loginBtn");
 
 loginBtn.addEventListener("click", async function (e) {
+    loginBtn.disabled = true
+    loginBtn.textContent = "Authenticating..."
+    function loginMsg () {
+        loginBtn.disabled = false
+        loginBtn.textContent = "ACCESS PORTAL"
+    }
+
     let loginError = document.getElementById("loginError")
     function showAlert(message, error) {
         loginError.style.display = "block"
         loginError.textContent = message
 
+        setTimeout(() => {
+            loginMsg() 
+        }, 1500);        
         setTimeout(() => {
             loginError.style.display = "none"
         }, 2000);
@@ -41,7 +51,7 @@ loginBtn.addEventListener("click", async function (e) {
             headers: {
                 "Content-Type": "application/json",
             },
-            credentials: "include", // IMPORTANT for cookies
+            credentials: "include",
             body: JSON.stringify({
                 email: loginEmail,
                 password: loginPassword,
@@ -56,9 +66,16 @@ loginBtn.addEventListener("click", async function (e) {
         }
 
         showAlert("Login successful!", "success");
-
+        setTimeout(() => {
+            loginBtn.disabled = true
+            loginBtn.textContent = "ACCESS GRANTED"
+            window.location.href = `./?id=${data.result.id}`
+        }, 1501);
+        
     } catch (error) {
         console.error("Login error:", error);
         showAlert("Something went wrong. Please try again.", "error");
     }
 });
+
+

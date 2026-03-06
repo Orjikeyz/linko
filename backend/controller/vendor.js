@@ -4,7 +4,6 @@ const { param } = require('../router/productRoutes')
 const responseData = require('../middleware/response')
 
 const getVendor = async (req, res) => {
-
   try {
     const { vendorUsername } = req.params
 

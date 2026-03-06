@@ -399,6 +399,27 @@ function settingsTabBtn(section, index) {
     <script src="../api/transaction.js"></script>
     <script src="./assets/script.js"></script>
 
+    <script>
+        async function logout() {
+            console.log(23)
+            try {
+                const res = await fetch(`${backendUrl}/auth/logout`, {
+                    method: "POST",
+                    credentials: "include"
+                });
+
+                const data = await res.json();
+
+                if (res.ok) {
+                    window.location.href = "./login.html";
+                }
+            } catch (error) {
+                console.error("Logout failed:", error);
+                showAlert("Sorry an error occurred", "error")
+            }
+        }
+    </script>
+
 
 </body>
 

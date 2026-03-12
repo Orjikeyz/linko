@@ -132,6 +132,7 @@ const getAllVendorProduct = async () => {
         try {
             const response = await fetch(`${backendUrl}/product/vendor/${paramsValue}`, {
                 method: 'GET',
+                credentials: "include",
                 headers: { 'Content-Type': 'application/json' }
             })
 
@@ -168,11 +169,11 @@ function loadProducts(data) {
 
     const tbody = document.getElementById('productsTableBody');
     data.forEach(product => {
-        tbody.innerHTML += `<tr>
+        tbody.innerHTML += `<tr style='font-size: 12px'>
                     <td>${product.name}</td>
-                    <td><textarea rows='5' style='border: none; outline: none; background: transparent;'>${product.description}</textarea></td>
+                    <td><textarea rows='1' style='border: none; outline: none; background: transparent;'>${product.description}</textarea></td>
                     <td>₦${product.price.toFixed(2)}</td>
-                    <td><img src='${product.images[0]}' loading='lazy' data-img='${JSON.stringify(product.images)}' width='70px' height='70px' class='img-view'></td>
+                    <td><img src='${product.images[0]}' loading='lazy' data-img='${JSON.stringify(product.images)}' width='50px' height='50px' class='img-view'></td>
                     <td>
                         <div class="action-buttons">
                             <button class="btn btn-small btn-edit" onclick="editProduct('${product._id}')">Edit</button>
@@ -409,6 +410,7 @@ const addProduct = async () => {
         try {
             const response = await fetch(`${backendUrl}/product/vendor/${paramsValue}`, {
                 method: "POST",
+                credentials: "include",
                 headers: {
                     'Content-Type': 'application/json'
                 },
@@ -456,6 +458,7 @@ async function deleteProduct(id) {
         try {
             const response = await fetch(`${backendUrl}/product/vendor/${paramsValue}/${id}`, {
                 method: "DELETE",
+                credentials: "include",
                 headers: {
                     'Content-Type': 'application/json'
                 }
@@ -489,6 +492,7 @@ const getTotalProduct = async (id) => {
     try {
         const response = await fetch(`${backendUrl}/product/vendor/totalProduct/${id}`, {
             method: 'GET',
+            credentials: "include",
             headers: { 'Content-Type': 'application/json' }
         })
 

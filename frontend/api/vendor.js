@@ -10,7 +10,7 @@ const getVendorData = async () => {
   try {
     const response = await fetch(`${backendUrl}/${paramsValue}`, {
       method: 'GET',
-      credentials: "include", // IMPORTANT for cookies
+      // credentials: "include", // IMPORTANT for cookies
       headers: { 'Content-Type': 'application/json' }
     })
 
@@ -47,6 +47,7 @@ const getVendorDashboardData = async () => {
   try {
     const response = await fetch(`${backendUrl}/${paramsValue}`, {
       method: 'GET',
+      credentials: "include",
       headers: { 'Content-Type': 'application/json' }
     })
 
@@ -156,6 +157,7 @@ const updateVendorData = async (vendorName, vendorDescription, vendorPhone, vend
         "Content-Type": "application/json",
         "Accept": "application/json"
       },
+      credentials: "include",
       body: JSON.stringify(dataForm)
     })
 
@@ -297,6 +299,7 @@ async function sendToBackend(urls, uploadBrandLogoBtn) {
   try {
     const response = await fetch(`${backendUrl}/${paramsValue}/logoUpload`, {
       method: "PUT",
+      credentials: "include",
       headers: {
         'Content-Type': 'application/json'
       },

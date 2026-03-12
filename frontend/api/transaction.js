@@ -7,7 +7,8 @@ let totalPages = 1;
 async function getTransaction(vendor_id) {
     try {
         let response = await fetch(`${backendUrl}/transaction/getTransaction?id=${vendor_id}&limit=${limit}&page=${currentPage}`, {
-            method: "GET"
+            method: "GET",
+            credentials: "include"
         })
 
         if (!response.ok) {
@@ -106,6 +107,7 @@ async function selectPlan(plan) {
     try {
         const response = await fetch(`${backendUrl}/transaction/processPayment?id=${username}`, {
             method: "GET",
+            credentials: "include"
         });
 
         const data = await response.json();
@@ -135,6 +137,7 @@ async function verifySubscriptionPayment() {
     try {
         const response = await fetch(`${backendUrl}/transaction/verifyPayment?reference=${localStorage.getItem("payStackReference")}`, {
             method: "GET",
+            credentials: "include"
         });
 
         const data = await response.json();
@@ -184,7 +187,9 @@ function bankDataLoop() {
 const getAllBankData = async () => {
     if (!localStorage.getItem("allBankList")) {
         try {
-            let response = await fetch(`${backendUrl}/transaction/getAllBankData`)
+            let response = await fetch(`${backendUrl}/transaction/getAllBankData`, {
+                credentials: "include"
+            })
             let data = await response.json()
 
             if (data.status === "error") {
@@ -218,7 +223,9 @@ bankName.addEventListener("change", function (e) {
 
 const verifyBankAccountData = async (accountNumber, bankCode) => {
     try {
-        let response = await fetch(`${backendUrl}/transaction/verifyBankAccountData?accountNumber=${accountNumber}&bankCode=${bankCode}`)
+        let response = await fetch(`${backendUrl}/transaction/verifyBankAccountData?accountNumber=${accountNumber}&bankCode=${bankCode}`, {
+            credentials: "include"
+        })
         let data = await response.json()
 
         if (data.status === "error") {

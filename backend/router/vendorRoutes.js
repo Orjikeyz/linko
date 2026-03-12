@@ -10,7 +10,7 @@ const vendorController = require("../controller/vendor")
 
 // const vendorUsername = ":vendorUsername"
 router.get("/:vendorUsername", vendorController.getVendor)
-router.put("/:vendorUsername", vendorController.updateVendor)
-router.put("/:vendorUsername/logoUpload", authMiddleware,vendorController.updateVendorLogo)
+router.put("/:vendorUsername", authMiddleware, vendorController.updateVendor)
+router.put("/:vendorUsername/logoUpload",  authMiddleware, vendorController.updateVendorLogo)
 
 module.exports = router

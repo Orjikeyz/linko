@@ -49,7 +49,7 @@
             <main class="main-content">
 
                 <!-- Products Section -->
-                <div id="productsSection" class="dashboard-section" style="display: none;">
+                <div id="productsSection" class="dashboard-section" >
                     <h1 class="page-title" style="display: flex; align-items: center; justify-content: space-between;">
                         Product Management <button class="btn btn-primary"
                             onclick="refreshProductTable()">Refresh</button></h1>
@@ -175,10 +175,8 @@
 
                 </div>
 
-                <div id="settingsSection" class="dashboard-section" style="display: non; color: #2c2b2b;">
-                    <h1 class="page-title"
-                        style="display: flex; align-items: center; justify-content: space-between; margin: 10px 0 ; ">
-                        Store Settings </h1>
+                <div id="settingsSection" class="dashboard-section" style="display: none; color: #2c2b2b;">
+                    <h1 class="page-title" style="display: flex; align-items: center; justify-content: space-between; margin: 10px 0 ; "> Store Settings </h1>
                     <p>Manage your vendor profile, payment details, and store preferences.</p>
 
                     <ul class="settingsTabContainer">
@@ -187,7 +185,7 @@
                         <li onclick="settingsTabBtn('security', 2)" ><i class="fa-solid fa-building-lock"></i> Security</li>
                     </ul>
 
-                    <div class="profileSection settingsTabList" style="display: none;">
+                    <div class="profileSection settingsTabList">
                         <div class="profileContainer">
                             <div class="brandLogoContainer">
                                 <div>
@@ -280,7 +278,7 @@
                         </div>
                     </div>
 
-                    <div class="securitySection settingsTabList" style="display: non;">
+                    <div class="securitySection settingsTabList" style="display: none;">
                         <div class="storeDetailsContainer">
                             <h4><i class="fa-light fa-shield"></i> Account Security</h4> 
                             <p style="font-size: 13.5px; margin: 16px 0; line-height: 20px;"> Protect your Linko account by using a strong password and keeping your login details confidential. For your safety, you may be required to confirm your current password before making sensitive changes.</p>
@@ -320,26 +318,6 @@
             </main>
         </div>
     </div>
-
-<script>
-function settingsTabBtn(section, index) {
-
-    const tabs = document.querySelectorAll(".settingsTabList");
-    const buttons = document.querySelectorAll(".settingsTabContainer li");
-
-    // Hide all sections
-    tabs.forEach(tab => tab.style.display = "none");
-
-    // Remove active class from all buttons
-    buttons.forEach(btn => btn.classList.remove("activeSetTab"));
-
-    // Show selected section
-    document.querySelector("." + section + "Section").style.display = "block";
-
-    // Add active class to clicked button
-    buttons[index].classList.add("activeSetTab");
-}
-</script>
 
     <!-- Product Modal -->
     <div class="modal" id="productModal">
@@ -400,8 +378,25 @@ function settingsTabBtn(section, index) {
     <script src="./assets/script.js"></script>
 
     <script>
+        function settingsTabBtn(section, index) {
+
+            const tabs = document.querySelectorAll(".settingsTabList");
+            const buttons = document.querySelectorAll(".settingsTabContainer li");
+
+            // Hide all sections
+            tabs.forEach(tab => tab.style.display = "none");
+
+            // Remove active class from all buttons
+            buttons.forEach(btn => btn.classList.remove("activeSetTab"));
+
+            // Show selected section
+            document.querySelector("." + section + "Section").style.display = "block";
+
+            // Add active class to clicked button
+            buttons[index].classList.add("activeSetTab");
+        }
+
         async function logout() {
-            console.log(23)
             try {
                 const res = await fetch(`${backendUrl}/auth/logout`, {
                     method: "POST",

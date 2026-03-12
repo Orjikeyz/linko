@@ -118,7 +118,6 @@ const getProductById = async () => {
     }
 }
 
-
 // Vendor Dashboard Product API Call
 const getAllVendorProduct = async () => {
     getTotalProduct(paramsValue)
@@ -486,6 +485,7 @@ async function deleteProduct(id) {
 
 // Get total Product Count
 const getTotalProduct = async (id) => {
+
     try {
         const response = await fetch(`${backendUrl}/product/vendor/totalProduct/${id}`, {
             method: 'GET',

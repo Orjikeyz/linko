@@ -292,7 +292,7 @@
                             <label for="confirmPassword"><i class="fa-light fa-lock"></i> Confirm New Password</label>
                             <input type="password" id="confirmPassword">
                             
-                            <button id="submitPassword">Update Password</button>
+                            <button id="submitPassword" onclick="changePassword()">Update Password</button>
 
                             <hr style="margin: 10px 0; transform: translateY(15px); border: none; border-bottom: 1px solid #b1abab;">
 
@@ -375,6 +375,7 @@
     <script src="../api/product.js"></script>
     <script src="../api/vendor.js"></script>
     <script src="../api/transaction.js"></script>
+    <script src="../api/auth.js"></script>
     <script src="./assets/script.js"></script>
 
     <script>
@@ -396,23 +397,7 @@
             buttons[index].classList.add("activeSetTab");
         }
 
-        async function logout() {
-            try {
-                const res = await fetch(`${backendUrl}/auth/logout`, {
-                    method: "POST",
-                    credentials: "include"
-                });
 
-                const data = await res.json();
-
-                if (res.ok) {
-                    window.location.href = "./login.html";
-                }
-            } catch (error) {
-                console.error("Logout failed:", error);
-                showAlert("Sorry an error occurred", "error")
-            }
-        }
     </script>
 
 

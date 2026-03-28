@@ -11,6 +11,12 @@ function showAlert(message, status) {
         alertBox.textContent = message;
         alertBox.style.background = "#dc3545"; // custom color
         alertBox.classList.add("show");
+
+        if (message === "Unauthorized") {
+            const body = document.querySelector('body').style.display = ""
+            window.location.href = "./login.html"
+        }
+
     } else if (status === "success") {
         alertBox.textContent = message;
         alertBox.style.background = "#28a745"; // custom color

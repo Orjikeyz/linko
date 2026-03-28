@@ -44,11 +44,76 @@ const login = async (req, res) => {
     }
 }
 
+const changePassword = async (req, res) => {
+    try {
+        const { currentPassword, newPassword, confirmPassword } = req.body;
+
+        if (!currentPassword || !newPassword || !confirmPassword) {
+            return responseData(res, 'error', 400, 'All fields are required', [], '');
+        }
+
+        if (newPassword !== confirmPassword) {
+            return responseData(res, 'error', 400, 'Passwords do not match', [], '');
+        }
+
+        if (newPassword.length < 6) {
+            return responseData(res, 'error', 400, 'Password must be at least 6 characters', [], '');
+        }
+
+        if (!/[A-Z]/.test(newPassword)) {
+            return responseData(res, 'error', 400, 'Must include at least one uppercase letter', [], '');
+        }
+
+        if (!/[a-z]/.test(newPassword)) {
+            return responseData(res, 'error', 400, 'Must include at least one lowercase letter', [], '');
+        }
+
+        if (!/[0-9]/.test(newPassword)) {
+            return responseData(res, 'error', 400, 'Must include at least one number', [], '');
+        }
+
+        const user = await Vendor.findById(tokenId);
+
+        // if (!user) {
+        //     return responseData(res, 'error', 404, 'User not found', [], '');
+        // }
+
+        // const isMatch = await bcrypt.compare(currentPassword, user.password);
+
+        // if (!isMatch) {
+        //     return responseData(res, 'error', 401, 'Current password is incorrect', [], '');
+        // }
+
+        // // Prevent reuse
+        // const isSame = await bcrypt.compare(newPassword, user.password);
+        // if (isSame) {
+        //     return responseData(res, 'error', 400, 'New password must be different', [], '');
+        // }
+
+        // //Hash new password
+        // const hashedPassword = await bcrypt.hash(newPassword, 12);
+
+        // user.password = hashedPassword;
+        // await user.save();
+
+        // 9. Success
+        return responseData(res, 'success', 200, 'Password updated successfully', [], '');
+
+    } catch (error) {
+        console.error("Change password error:", error);
+        return responseData(res, 'error', 500, 'Internal server error', [], '');
+    }
+};
+
 const logout = async (req, res) => {
     res.clearCookie("token");
     res.status(200).json({ message: "Logout successful" });
 }
+
+
+
 module.exports = {
     login,
+    changePassword,
     logout
 }

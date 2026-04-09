@@ -169,9 +169,9 @@ const changePassword = async ()=> {
             errors.push("Must include at least one number.");
         }
 
-        if (!/[^A-Za-z0-9]/.test(newPass)) {
-            errors.push("Must include at least one special character.");
-        }
+        // if (!/[^A-Za-z0-9]/.test(newPass)) {
+        //     errors.push("Must include at least one special character.");
+        // }
 
         if (newPass === current) {
             errors.push("New password must be different from current password.");

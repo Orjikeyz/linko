@@ -27,7 +27,7 @@ const login = async (req, res) => {
             return responseData(res, 'error', 401, 'Invalid email or password', [], '');
         }
 
-        const token = jwt.sign({ id: vendor._id }, process.env.JWT_SECRET, { expiresIn: "1h", algorithm: 'HS256' });
+        const token = jwt.sign({ id: vendor._id, userId: vendor.username }, process.env.JWT_SECRET, { expiresIn: "1h", algorithm: 'HS256' });
 
         res.cookie("token", token, {
             httpOnly: true,
@@ -72,31 +72,30 @@ const changePassword = async (req, res) => {
             return responseData(res, 'error', 400, 'Must include at least one number', [], '');
         }
 
-        const user = await Vendor.findById(tokenId);
+        const vendor = await Vendor.findOne({ username: req.userId }, { username: 1, password: 1});
 
-        // if (!user) {
-        //     return responseData(res, 'error', 404, 'User not found', [], '');
-        // }
+        if (!vendor) {
+            return responseData(res, 'error', 404, 'User not found', [], '');
+        }
 
-        // const isMatch = await bcrypt.compare(currentPassword, user.password);
+        const isMatch = await bcrypt.compare(currentPassword, vendor.password);
 
-        // if (!isMatch) {
-        //     return responseData(res, 'error', 401, 'Current password is incorrect', [], '');
-        // }
+        if (!isMatch) {
+            return responseData(res, 'error', 401, 'Current password is incorrect', [], '');
+        }
 
-        // // Prevent reuse
-        // const isSame = await bcrypt.compare(newPassword, user.password);
-        // if (isSame) {
-        //     return responseData(res, 'error', 400, 'New password must be different', [], '');
-        // }
+        // Prevent reuse
+        const isSame = await bcrypt.compare(newPassword, vendor.password);
+        if (isSame) {
+            return responseData(res, 'error', 400, 'New password must be different', [], '');
+        }
 
-        // //Hash new password
-        // const hashedPassword = await bcrypt.hash(newPassword, 12);
+        //Hash new password
+        const hashedPassword = await bcrypt.hash(newPassword, 12);
 
-        // user.password = hashedPassword;
-        // await user.save();
+        vendor.password = hashedPassword;
+        await vendor.save();
 
-        // 9. Success
         return responseData(res, 'success', 200, 'Password updated successfully', [], '');
 
     } catch (error) {

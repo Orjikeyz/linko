@@ -123,52 +123,58 @@ const getAllVendorProduct = async () => {
     getTotalProduct(paramsValue)
     const tbody = document.getElementById('productsTableBody');
     tbody.innerHTML = ""
-    let cachedProduct = localStorage.getItem("products")
-    if (cachedProduct) {
-        loadProducts(JSON.parse(cachedProduct))
-        console.log("cached")
-    } else {
-        console.log("api")
-        try {
-            const response = await fetch(`${backendUrl}/product/vendor/${paramsValue}`, {
-                method: 'GET',
-                credentials: "include",
-                headers: { 'Content-Type': 'application/json' }
-            })
 
-            if (!response.ok) {
-                showAlert('No data available', "error")
-            }
+    let productCurrentPage = 1;
+    let productLimit = 10;
+    let ProductTotalPages = 1;
 
-            const data = await response.json()
-            if (data.status === 'error') {
-                showAlert(`${data.message}`, `${data.status}`)
-            }
 
-            if (data.status === 'success') {
-                localStorage.removeItem("products");
+    try {
+        const response = await fetch(`${backendUrl}/product/vendor/${paramsValue}?limit=${productLimit}&page=${productCurrentPage}`, {
+            method: 'GET',
+            credentials: "include",
+            headers: { 'Content-Type': 'application/json' }
+        })
 
-                cachedProduct = localStorage.setItem("products", JSON.stringify(data.result))
-                loadProducts(data.result)
-            }
-        } catch (error) {
-            showAlert('Server Error. Please try again later', "error")
+        if (!response.ok) {
+            showAlert('No data available', "error")
         }
-    }
 
+        const data = await response.json()
+        if (data.status === 'error') {
+            showAlert(`${data.message}`, `${data.status}`)
+        }
+
+        if (data.status === 'success') {
+            loadProducts(data.result)
+        }
+    } catch (error) {
+        console.log(error)
+        showAlert('Server Error. Please try again later', "error")
+    }
+}
+
+// Product Next Button pagination
+async function productNextBtn() {
+ console.log("next")
+}
+
+// Product Previou Button pagination
+async function productPrevBtn() {
+ console.log("prev")
 }
 
 // Load vendor product list
 function loadProducts(data) {
-    let vendorData = JSON.parse(localStorage.getItem("vendorData"))
+    let vendorData = data.data
     let status_plan = document.getElementById("status_plan")
     let account_status = document.getElementById("account_status")
 
-    status_plan.textContent = vendorData.plan.charAt(0).toUpperCase() + vendorData.plan.slice(1).toLowerCase();
-    account_status.textContent = vendorData.status.charAt(0).toUpperCase() + vendorData.status.slice(1).toLowerCase();
+    // status_plan.textContent = vendorData.plan.charAt(0).toUpperCase() + vendorData.plan.slice(1).toLowerCase();
+    // account_status.textContent = vendorData.status.charAt(0).toUpperCase() + vendorData.status.slice(1).toLowerCase();
 
     const tbody = document.getElementById('productsTableBody');
-    data.forEach(product => {
+    vendorData.forEach(product => {
         tbody.innerHTML += `<tr style='font-size: 12px'>
                     <td>${product.name}</td>
                     <td><textarea rows='1' style='border: none; outline: none; background: transparent;'>${product.description}</textarea></td>

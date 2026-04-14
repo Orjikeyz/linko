@@ -47,21 +47,61 @@ const getProductById = async (req, res) => {
 // =========================================
 
 // Get all Vendor Product
+// const getAllVendorProduct = async (req, res) => {
+//     try {
+//         const { vendorUsername } = req.params
+
+//         const products = await Product.find({ vendor_id: vendorUsername }).populate("vendor", "plan")
+//         if (!products) {
+//             return responseData(res, 'error', 400, 'Products not found', [], '')
+//         }
+
+//         return responseData(res, 'success', 200, 'Products data retrieved successfully', products, products[0].vendor.plan)
+//     } catch (error) {
+//         return responseData(res, 'error', 500, 'Server Error', [], '')
+
+//     }
+// }
+
 const getAllVendorProduct = async (req, res) => {
     try {
-        const { vendorUsername } = req.params
+        const vendor_id = req.userId;
+        const page = parseInt(req.query.page) || 1;     // current page
+        const limit = parseInt(req.query.limit) || 10;  // items per page
 
-        const products = await Product.find({ vendor_id: vendorUsername }).populate("vendor", "plan")
-        if (!products) {
-            return responseData(res, 'error', 400, 'Products not found', [], '')
+        if (!vendor_id) {
+            return responseData(res, 'error', 400, 'Vendor ID required', [], '');
         }
 
-        return responseData(res, 'success', 200, 'Products data retrieved successfully', products, products[0].vendor.plan)
-    } catch (error) {
-        return responseData(res, 'error', 500, 'Server Error', [], '')
+        const skip = (page - 1) * limit;
 
+        // Get total count for pagination
+        const total = await Product.countDocuments({ vendor_id });
+
+        if (total === 0) {
+            return responseData(res, 'error', 404, 'No product found', [], '');
+        }
+
+        // Fetch paginated data
+        const products = await Product.find({ vendor_id }).populate("vendor", "plan")
+            .sort({ createdAt: -1 }) // optional sorting
+            .skip(skip)
+            .limit(limit);
+            
+            console.log(products)
+
+        return responseData(res, 'success', 200, 'Products fetched successfully', {
+            data: products,
+            currentPage: page,
+            totalPages: Math.ceil(total / limit),
+            totalRecords: total
+        }, '');
+
+    } catch (error) {
+        console.error(error);
+        return responseData(res, 'error', 500, 'Internal server error', [], '');
     }
-}
+};
 
 // Get total Product Count
 const getTotalProduct = async (req, res) => {

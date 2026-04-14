@@ -58,13 +58,13 @@ const vendorSchema = new mongoose.Schema(
     { timestamps: true }
 );
 
-// Pre-save hook to generate username
-vendorSchema.pre("save", function (next) {
-    if (!this.username) {
-        const randomNum = Math.floor(1000 + Math.random() * 9000); // 4-digit random number
-        this.username = this.brand_name.toLowerCase().replace(/\s+/g, '') + "_" + randomNum;
-    }
-    next();
-});
+// // Pre-save hook to generate username
+// vendorSchema.pre("save", function (next) {
+//     if (!this.username) {
+//         const randomNum = Math.floor(1000 + Math.random() * 9000); // 4-digit random number
+//         this.username = this.brand_name.toLowerCase().replace(/\s+/g, '') + "_" + randomNum;
+//     }
+//     next();
+// });
 
 module.exports = mongoose.model("Vendor", vendorSchema);

@@ -130,9 +130,13 @@ const changePassword = async ()=> {
 
         const data = await response.json()
         if (data.status === "error") {
-            showAlert("Password is required", "error");
             showAlert(`${data.message}`, `${data.status}`)
         }else if (data.status === "success") {
+            // reset values to empty
+            currentPassword.value = "";
+            newPassword.value = "";
+            confirmPassword.value = "";
+
             showAlert(`${data.message}`, `${data.status}`)
         }           
         } catch (error) {

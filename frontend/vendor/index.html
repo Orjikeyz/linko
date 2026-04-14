@@ -88,7 +88,7 @@
                             <button class="btn btn-primary" onclick="openProductModal()">Add New Product</button>
                         </div>
                         <div class="table-container">
-                            <table>
+                            <table id="productTable">
                                 <thead>
                                     <tr>
                                         <th>Product Name</th>
@@ -103,8 +103,8 @@
                                 </tbody>
                             </table>
                             <div class="page-button">
-                                <button>Prev</button>
-                                <button>Next</button>
+                                <button onclick="productPrevBtn()">Prev</button>
+                                <button onclick="productNextBtn()">Next</button>
                             </div>
                         </div>
                     </div>

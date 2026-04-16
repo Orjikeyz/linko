@@ -88,8 +88,6 @@ const getAllVendorProduct = async (req, res) => {
             .skip(skip)
             .limit(limit);
             
-            console.log(products)
-
         return responseData(res, 'success', 200, 'Products fetched successfully', {
             data: products,
             currentPage: page,

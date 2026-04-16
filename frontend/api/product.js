@@ -119,15 +119,12 @@ const getProductById = async () => {
 }
 
 // Vendor Dashboard Product API Call
+let productCurrentPage = 1;
+let productLimit = 10;
+let ProductTotalPages = 1;
 const getAllVendorProduct = async () => {
-    getTotalProduct(paramsValue)
     const tbody = document.getElementById('productsTableBody');
     tbody.innerHTML = ""
-
-    let productCurrentPage = 1;
-    let productLimit = 10;
-    let ProductTotalPages = 1;
-
 
     try {
         const response = await fetch(`${backendUrl}/product/vendor/${paramsValue}?limit=${productLimit}&page=${productCurrentPage}`, {
@@ -146,6 +143,7 @@ const getAllVendorProduct = async () => {
         }
 
         if (data.status === 'success') {
+            ProductTotalPages = data.result.totalPages
             loadProducts(data.result)
         }
     } catch (error) {
@@ -156,12 +154,23 @@ const getAllVendorProduct = async () => {
 
 // Product Next Button pagination
 async function productNextBtn() {
- console.log("next")
+    if (productCurrentPage < ProductTotalPages) {
+        productCurrentPage++;
+        console.log(productCurrentPage, ProductTotalPages)
+        getAllVendorProduct();
+    } else {
+        showAlert("No more transactions to display", "info");
+    }
 }
 
 // Product Previou Button pagination
 async function productPrevBtn() {
- console.log("prev")
+    if (productCurrentPage > 1) {
+        productCurrentPage--;
+        getAllVendorProduct();
+    } else {
+        showAlert("No more transactions to display", "info");
+    }
 }
 
 // Load vendor product list

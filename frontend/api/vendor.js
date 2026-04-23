@@ -21,6 +21,9 @@ const getVendorData = async () => {
     const data = await response.json()
     if (data.status === 'error') {
       showAlert(`${data.message}`, `${data.status}`)
+      if (data.message === "Vendor not found") {
+        window.location.href = "./404.html"
+      }
     }
 
     if (data.status === "success") {
@@ -192,7 +195,7 @@ const updateVendorData = async (vendorName, vendorDescription, vendorPhone, vend
 let logoImage = document.getElementById('logoImage')
 let logoImageText = document.getElementById('logoImageText')
 
-document.getElementById("productImages").addEventListener("change", function (e) {
+document.getElementById("brandLogoImage").addEventListener("change", function (e) {
   logoImage.src = URL.createObjectURL(e.target.files[0])
   logoImageText.textContent = "Preview Brand Logo"
 })
@@ -202,7 +205,7 @@ const uploadBrandLogo = async () => {
   uploadBrandLogoBtn.disabled = true
 
   /* ================= FORM DATA ================= */
-  const productImagesInput = document.getElementById("productImages");
+  const productImagesInput = document.getElementById("brandLogoImage");
   const productImages = productImagesInput.files;
   let brandLogoUploadText = document.getElementById("brandLogoUploadText")
   brandLogoUploadText.textContent = "Uploading..."

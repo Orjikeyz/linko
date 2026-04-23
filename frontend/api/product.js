@@ -21,7 +21,7 @@ const getProductsData = async () => {
                 productGrid.innerHTML += `
                     <a href="products.html?id=${paramsValue}&pid=${item._id}">
                 <div class="product-card" data-price="${item.price}">
-                    <img src="https://www.wamdenim.com/cdn/shop/files/florence_black_shirt_01.jpg?v=1763378903&width=1500"
+                    <img src="${item.images[0]}"
                         class="product-image" loading="lazy">
                     <div class="product-content">
                         <h3 class="product-title">${item.name}</h3>
@@ -118,10 +118,14 @@ const getProductById = async () => {
     }
 }
 
+
+
+
 // Vendor Dashboard Product API Call
 let productCurrentPage = 1;
 let productLimit = 10;
 let ProductTotalPages = 1;
+let fetchedProduct ;
 const getAllVendorProduct = async () => {
     const tbody = document.getElementById('productsTableBody');
     tbody.innerHTML = ""
@@ -144,6 +148,8 @@ const getAllVendorProduct = async () => {
 
         if (data.status === 'success') {
             ProductTotalPages = data.result.totalPages
+            document.getElementById("totalProductCount").textContent = data.result.totalRecords
+            fetchedProduct  = data.result
             loadProducts(data.result)
         }
     } catch (error) {
@@ -234,13 +240,12 @@ function loadProducts(data) {
 function openProductModal(productId) {
     const modal = document.getElementById('productModal');
     const form = document.getElementById('productForm');
-    let cachedProduct = JSON.parse(localStorage.getItem("products"))
     let currentImage = document.querySelector(".currentImage")
 
     currentImage.innerHTML = ""
 
     if (productId) {
-        const product = cachedProduct.find(p => p._id === productId);
+        const product = fetchedProduct.data.find(p => p._id === productId);
         document.getElementById('modalTitle').textContent = 'Edit Product';
         document.getElementById('productName').value = product.name;
         document.getElementById('productPrice').value = product.price;
@@ -273,8 +278,6 @@ function openProductModal(productId) {
 
     modal.classList.add('active');
 }
-
-
 
 function escapeHTML(str) {
     return str
@@ -326,6 +329,7 @@ const addProduct = async () => {
     }
 
     if (!productImages || productImages.length === 0) {
+        console.log(productImagesInput)
         showAlert("Please upload at least one image", "error")
         loading()
         return;
@@ -460,7 +464,6 @@ const addProduct = async () => {
 
 }
 
-
 // Edit product
 function editProduct(id) {
     openProductModal(id);
@@ -499,38 +502,5 @@ async function deleteProduct(id) {
             showAlert("Sorry an error occurred.", "error")
         }
     }
-}
-
-// Get total Product Count
-const getTotalProduct = async (id) => {
-
-    try {
-        const response = await fetch(`${backendUrl}/product/vendor/totalProduct/${id}`, {
-            method: 'GET',
-            credentials: "include",
-            headers: { 'Content-Type': 'application/json' }
-        })
-
-        if (!response.ok) {
-            showAlert('No data available', "error")
-        }
-
-        const data = await response.json()
-        if (data.status === 'error') {
-            showAlert(`${data.message}`, `${data.status}`)
-        }
-
-        if (data.status === 'success') {
-            let totalProduct = document.getElementById("totalProduct")
-            totalProduct.textContent = data.result.totalProducts
-        }
-    } catch (error) {
-        showAlert('Server Error. Please try again later', "error")
-    }
-}
-
-function refreshProductTable() {
-    localStorage.removeItem("products");
-    getAllVendorProduct()
 }
 

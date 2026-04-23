@@ -123,6 +123,10 @@ async function selectPlan(plan) {
 
         localStorage.setItem("payStackReference", data.result.reference)
         window.location.href = `${data.result.authorization_url}`
+        setTimeout(() => {
+            subscribeBtn.disabled = false
+            subscribeBtn.textContent = "Choose Basic"
+        }, 2000);
 
     } catch (error) {
         subscribeBtn.disabled = false

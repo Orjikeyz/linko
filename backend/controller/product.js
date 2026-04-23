@@ -101,27 +101,6 @@ const getAllVendorProduct = async (req, res) => {
     }
 };
 
-// Get total Product Count
-const getTotalProduct = async (req, res) => {
-    try {
-        const { vendorUsername } = req.params;
-
-        // Optional: validate input
-        if (!vendorUsername || typeof vendorUsername !== 'string') {
-            return responseData(res, 'error', 400, 'Invalid vendor username', [], '');
-        }
-
-        const totalProducts = await Product.countDocuments({ vendor_id: vendorUsername });
-
-        // Always return success, even if totalProducts = 0
-        return responseData(res, 'success', 200, 'Data retrieved successfully', { totalProducts });
-
-    } catch (error) {
-        console.error('Error in getTotalProduct:', error);
-        return responseData(res, 'error', 500, 'Server Error', [], '');
-    }
-};
-
 //Add Product to Vendor 
 const addProduct = async (req, res) => {
     const { vendorUsername } = req.params
@@ -234,7 +213,6 @@ module.exports = {
     getProduct,
     getProductById,
     getAllVendorProduct,
-    getTotalProduct,
     addProduct,
     deleteProduct
 }

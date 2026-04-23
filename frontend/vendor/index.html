@@ -51,13 +51,12 @@
                 <!-- Products Section -->
                 <div id="productsSection" class="dashboard-section" >
                     <h1 class="page-title" style="display: flex; align-items: center; justify-content: space-between;">
-                        Product Management <button class="btn btn-primary"
-                            onclick="refreshProductTable()">Refresh</button></h1>
+                        Product Management </h1>
 
                     <div class="stats-grid">
                         <div class="stat-card">
                             <div class="stat-label">Total Product</div>
-                            <div class="stat-value" id="totalProduct">0</div>
+                            <div class="stat-value" id="totalProductCount">0</div>
                         </div>
                         <!-- <div class="stat-card">
                             <div class="stat-label">Total Orders</div>
@@ -164,7 +163,7 @@
                             <p>For growing vendors</p>
                             <ul>
                                 <li>WhatsApp purchase link</li>
-                                <li>Payment gateway (Online Payment)</li>
+                                <!-- <li>Payment gateway (Online Payment)</li> -->
                                 <li>Unlimited Products</li>
                                 <li>Up to 5 images per product</li>
                                 <li>Standard support</li>
@@ -181,7 +180,7 @@
 
                     <ul class="settingsTabContainer">
                         <li onclick="settingsTabBtn('profile', 0)" class="activeSetTab"><i class="fa-solid fa-address-card"></i> Profile</li>
-                        <li onclick="settingsTabBtn('payment', 1)" ><i class="fa-solid fa-address-card"></i> Payment</li>
+                        <li onclick="settingsTabBtn('payment', 1)" style="display: none;" ><i class="fa-solid fa-address-card"></i> Payment</li>
                         <li onclick="settingsTabBtn('security', 2)" ><i class="fa-solid fa-building-lock"></i> Security</li>
                     </ul>
 
@@ -192,8 +191,8 @@
                                     <h4><i class="fa-light fa-camera"></i> Brand Logo</h4>
                                     <ul>
                                         <li>
-                                            <label for="productImages" id="fileUploadLabel"><i class="fa-light fa-upload"></i></label>
-                                            <input type="file" id="productImages" name="images" accept="image/*" hidden>
+                                            <label for="brandLogoImage" id="fileUploadLabel"><i class="fa-light fa-upload"></i></label>
+                                            <input type="file" id="brandLogoImage" name="images" accept="image/*" hidden>
                                         </li>
                                         <li>
                                             <button type="button" id="uploadBrandLogoBtn" onclick="uploadBrandLogo()"><i class="fa-light fa-upload"></i> <span id="brandLogoUploadText">Upload Logo</span></button>

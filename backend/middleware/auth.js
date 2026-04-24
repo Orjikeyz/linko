@@ -5,7 +5,7 @@ const responseData = require('../middleware/response')
 const authenticate = (req, res, next) => {
     const token = req.cookies.token;
     // console.log(token)
-    if (!token) return responseData(res, 'error', 401, "Unauthorized", [], '');
+    if (!token) return responseData(res, 'error', 401, "Unauthorized", [], token);
 
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);

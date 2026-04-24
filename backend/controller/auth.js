@@ -36,7 +36,7 @@ const login = async (req, res) => {
             maxAge: 1000 * 60 * 60 // 1 hour in milliseconds
         });
 
-        return responseData(res, 'success', 200, 'Login successful', { id: vendor.username }, token);
+        return responseData(res, 'success', 200, 'Login successful', { id: vendor.username }, '');
 
     } catch (error) {
         console.error(error);

@@ -68,8 +68,7 @@ const loginAuth = async () => {
         setTimeout(() => {
             loginBtn.disabled = true
             loginBtn.textContent = "ACCESS GRANTED"
-            console.log(data)
-            // window.location.href = `./?id=${data.result.id}`
+            window.location.href = `./?id=${data.result.id}`
         }, 1501);
         
     } catch (error) {

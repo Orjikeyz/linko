@@ -14,7 +14,7 @@ function showAlert(message, status) {
 
         if (message === "Unauthorized") {
             const body = document.querySelector('body').style.display = ""
-            window.location.href = "./login.html"
+            // window.location.href = "./login.html"
         }
 
     } else if (status === "success") {

@@ -102,42 +102,504 @@
 },
 {
   "_id": {
-    "$oid": "696f4c87c7d0a8f85b6d4cb3"
+    "$oid": "692eb5b4d7afbc0220a28815"
   },
-  "name": "james",
-  "description": "welomc",
-  "price": 5000,
+  "name": "Digital Marketing Bootcamp",
+  "description": "Master SEO, ads, and social media marketing.",
+  "price": 79.99,
   "images": [
-    "https://judydoesbraids.com/linkostorage/uploads/images/1776f92ad9318445c3860c0cdb790a4f.png",
-    "https://judydoesbraids.com/linkostorage/uploads/images/5959afd20acee6150c06b36808e675ff.png",
-    "https://judydoesbraids.com/linkostorage/uploads/images/f96caa84b256c3a53395ea23bdc1a828.png"
+    "https://example.com/images/marketing1.jpg",
+    "https://example.com/images/marketing2.jpg"
   ],
-  "vendor_id": "empireclothing_4821",
-  "createdAt": {
-    "$date": "2026-01-20T09:36:07.252Z"
-  },
-  "updatedAt": {
-    "$date": "2026-01-20T09:36:07.252Z"
-  },
-  "__v": 0
+  "vendor_id": "marketguru_1001"
 },
 {
   "_id": {
-    "$oid": "696f553ac7d0a8f85b6d4d62"
+    "$oid": "692eb5b4d7afbc0220a28825"
   },
-  "name": "32423",
-  "description": "",
-  "price": 4355,
+  "name": "Digital Marketing Bootcamp",
+  "description": "Master SEO, ads, and social media marketing.",
+  "price": 79.99,
   "images": [
-    "https://judydoesbraids.com/linkostorage/uploads/images/75c81fa10c5dfe6e4216bfc24a9e8200.png",
-    "https://judydoesbraids.com/linkostorage/uploads/images/b3d5129d64e76f686efe8163c0ed715e.png"
+    "https://example.com/images/marketing1.jpg",
+    "https://example.com/images/marketing2.jpg"
+  ],
+  "vendor_id": "marketguru_1001"
+},
+{
+  "_id": {
+    "$oid": "692eb5b4d7afbc0220a28826"
+  },
+  "name": "Full Stack Web Development",
+  "description": "Become a full stack developer using MERN stack.",
+  "price": 129.99,
+  "images": [
+    "https://example.com/images/dev1.jpg",
+    "https://example.com/images/dev2.jpg"
+  ],
+  "vendor_id": "codehub_2201"
+},
+{
+  "_id": {
+    "$oid": "692eb5b4d7afbc0220a28827"
+  },
+  "name": "Photography Essentials",
+  "description": "Learn camera basics and composition techniques.",
+  "price": 49.99,
+  "images": [
+    "https://example.com/images/photo1.jpg"
+  ],
+  "vendor_id": "lenspro_8891"
+},
+{
+  "_id": {
+    "$oid": "692eb5b4d7afbc0220a28828"
+  },
+  "name": "Graphic Design Mastery",
+  "description": "Master Photoshop, Illustrator, and branding.",
+  "price": 89.99,
+  "images": [
+    "https://example.com/images/design1.jpg",
+    "https://example.com/images/design2.jpg"
+  ],
+  "vendor_id": "designlab_5542"
+},
+{
+  "_id": {
+    "$oid": "692eb5b4d7afbc0220a28829"
+  },
+  "name": "Python for Beginners",
+  "description": "Start coding in Python from scratch.",
+  "price": 59.99,
+  "images": [
+    "https://example.com/images/python1.jpg"
+  ],
+  "vendor_id": "pyacademy_3312"
+},
+{
+  "_id": {
+    "$oid": "692eb5b4d7afbc0220a2882a"
+  },
+  "name": "Advanced Java Programming",
+  "description": "Deep dive into Java and backend systems.",
+  "price": 109.99,
+  "images": [
+    "https://example.com/images/java1.jpg"
+  ],
+  "vendor_id": "javacore_1122"
+},
+{
+  "_id": {
+    "$oid": "692eb5b4d7afbc0220a2882b"
+  },
+  "name": "UI/UX Design Fundamentals",
+  "description": "Learn to design user-friendly interfaces.",
+  "price": 69.99,
+  "images": [
+    "https://example.com/images/uiux1.jpg"
+  ],
+  "vendor_id": "uxlab_9087"
+},
+{
+  "_id": {
+    "$oid": "692eb5b4d7afbc0220a2882c"
+  },
+  "name": "Video Editing Pro",
+  "description": "Edit videos like a professional using Premiere Pro.",
+  "price": 74.99,
+  "images": [
+    "https://example.com/images/video1.jpg"
+  ],
+  "vendor_id": "videomaster_5566"
+},
+{
+  "_id": {
+    "$oid": "692eb5b4d7afbc0220a2882d"
+  },
+  "name": "Data Science with Python",
+  "description": "Analyze data and build ML models.",
+  "price": 139.99,
+  "images": [
+    "https://example.com/images/datasci1.jpg"
+  ],
+  "vendor_id": "datasmart_6677"
+},
+{
+  "_id": {
+    "$oid": "692eb5b4d7afbc0220a2882e"
+  },
+  "name": "Cybersecurity Basics",
+  "description": "Learn how to protect systems and networks.",
+  "price": 89.99,
+  "images": [
+    "https://example.com/images/cyber1.jpg"
+  ],
+  "vendor_id": "secureit_4455"
+},
+{
+  "_id": {
+    "$oid": "692eb5b4d7afbc0220a2882f"
+  },
+  "name": "Mobile App Development",
+  "description": "Build Android and iOS apps from scratch.",
+  "price": 119.99,
+  "images": [
+    "https://example.com/images/mobile1.jpg"
+  ],
+  "vendor_id": "appforge_7788"
+},
+{
+  "_id": {
+    "$oid": "692eb5b4d7afbc0220a28830"
+  },
+  "name": "Cloud Computing Essentials",
+  "description": "Understand AWS, Azure, and cloud infrastructure.",
+  "price": 99.99,
+  "images": [
+    "https://example.com/images/cloud1.jpg"
+  ],
+  "vendor_id": "cloudtech_8822"
+},
+{
+  "_id": {
+    "$oid": "692eb5b4d7afbc0220a28831"
+  },
+  "name": "Blockchain Fundamentals",
+  "description": "Learn blockchain and cryptocurrency basics.",
+  "price": 109.99,
+  "images": [
+    "https://example.com/images/blockchain1.jpg"
+  ],
+  "vendor_id": "cryptolearn_9933"
+},
+{
+  "_id": {
+    "$oid": "692eb5b4d7afbc0220a28832"
+  },
+  "name": "Game Development with Unity",
+  "description": "Create 2D and 3D games using Unity engine.",
+  "price": 129.99,
+  "images": [
+    "https://example.com/images/game1.jpg"
+  ],
+  "vendor_id": "gamedev_5567"
+},
+{
+  "_id": {
+    "$oid": "692eb5b4d7afbc0220a28833"
+  },
+  "name": "AI & Machine Learning",
+  "description": "Build intelligent systems using ML algorithms.",
+  "price": 149.99,
+  "images": [
+    "https://example.com/images/ai1.jpg"
+  ],
+  "vendor_id": "aitech_7781"
+},
+{
+  "_id": {
+    "$oid": "692eb5b4d7afbc0220a28834"
+  },
+  "name": "Excel for Business",
+  "description": "Master Excel for data analysis and reporting.",
+  "price": 39.99,
+  "images": [
+    "https://example.com/images/excel1.jpg"
+  ],
+  "vendor_id": "biztools_3322"
+},
+{
+  "_id": {
+    "$oid": "692eb5b4d7afbc0220a28835"
+  },
+  "name": "Public Speaking Mastery",
+  "description": "Become a confident and effective speaker.",
+  "price": 44.99,
+  "images": [
+    "https://example.com/images/speaking1.jpg"
+  ],
+  "vendor_id": "speakwell_2211"
+},
+{
+  "_id": {
+    "$oid": "692eb5b4d7afbc0220a28836"
+  },
+  "name": "Entrepreneurship 101",
+  "description": "Start and grow your own business.",
+  "price": 59.99,
+  "images": [
+    "https://example.com/images/startup1.jpg"
+  ],
+  "vendor_id": "startuphub_7766"
+},
+{
+  "_id": {
+    "$oid": "692eb5b4d7afbc0220a28837"
+  },
+  "name": "Finance & Investing Basics",
+  "description": "Learn how to manage money and invest wisely.",
+  "price": 69.99,
+  "images": [
+    "https://example.com/images/finance1.jpg"
+  ],
+  "vendor_id": "finwise_9988"
+},
+{
+  "_id": {
+    "$oid": "692eb5b4d7afbc0220a28838"
+  },
+  "name": "Time Management Mastery",
+  "description": "Boost productivity and manage time effectively.",
+  "price": 29.99,
+  "images": [
+    "https://example.com/images/time1.jpg"
+  ],
+  "vendor_id": "productivity_4451"
+},
+{
+  "_id": {
+    "$oid": "692eb5b4d7afbc0220a28839"
+  },
+  "name": "Streetwear Branding Mastery",
+  "description": "Learn how to build and market a streetwear brand.",
+  "price": 89.99,
+  "images": [
+    "https://example.com/images/streetwear1.jpg"
+  ],
+  "vendor_id": "empireclothing_4821"
+},
+{
+  "_id": {
+    "$oid": "692eb5b4d7afbc0220a2883a"
+  },
+  "name": "Fashion Photography Essentials",
+  "description": "Capture stunning fashion shots for your brand.",
+  "price": 69.99,
+  "images": [
+    "https://example.com/images/fashionphoto1.jpg"
+  ],
+  "vendor_id": "empireclothing_4821"
+},
+{
+  "_id": {
+    "$oid": "692eb5b4d7afbc0220a2883b"
+  },
+  "name": "Clothing Line Startup Guide",
+  "description": "Step-by-step guide to launching your clothing brand.",
+  "price": 99.99,
+  "images": [
+    "https://example.com/images/startline1.jpg"
+  ],
+  "vendor_id": "empireclothing_4821"
+},
+{
+  "_id": {
+    "$oid": "692eb5b4d7afbc0220a2883c"
+  },
+  "name": "Ecommerce for Fashion Brands",
+  "description": "Sell your clothing online with Shopify and more.",
+  "price": 79.99,
+  "images": [
+    "https://example.com/images/ecomfashion1.jpg"
+  ],
+  "vendor_id": "empireclothing_4821"
+},
+{
+  "_id": {
+    "$oid": "692eb5b4d7afbc0220a2883d"
+  },
+  "name": "Print-on-Demand Business",
+  "description": "Create and sell custom apparel without inventory.",
+  "price": 59.99,
+  "images": [
+    "https://example.com/images/pod1.jpg"
+  ],
+  "vendor_id": "empireclothing_4821"
+},
+{
+  "_id": {
+    "$oid": "692eb5b4d7afbc0220a2883e"
+  },
+  "name": "T-Shirt Design Masterclass",
+  "description": "Design eye-catching t-shirts that sell.",
+  "price": 49.99,
+  "images": [
+    "https://example.com/images/tshirt1.jpg"
+  ],
+  "vendor_id": "empireclothing_4821"
+},
+{
+  "_id": {
+    "$oid": "692eb5b4d7afbc0220a2883f"
+  },
+  "name": "Brand Identity for Apparel",
+  "description": "Build a strong identity for your clothing brand.",
+  "price": 69.99,
+  "images": [
+    "https://example.com/images/brand1.jpg"
+  ],
+  "vendor_id": "empireclothing_4821"
+},
+{
+  "_id": {
+    "$oid": "692eb5b4d7afbc0220a28841"
+  },
+  "name": "Instagram Growth for Brands",
+  "description": "Build a loyal following on Instagram.",
+  "price": 39.99,
+  "images": [
+    "https://example.com/images/instagram1.jpg"
+  ],
+  "vendor_id": "empireclothing_4821"
+},
+{
+  "_id": {
+    "$oid": "692eb5b4d7afbc0220a28842"
+  },
+  "name": "Fashion Trend Forecasting",
+  "description": "Stay ahead by predicting fashion trends.",
+  "price": 59.99,
+  "images": [
+    "https://example.com/images/trends1.jpg"
+  ],
+  "vendor_id": "empireclothing_4821"
+},
+{
+  "_id": {
+    "$oid": "692eb5b4d7afbc0220a28843"
+  },
+  "name": "Garment Manufacturing Basics",
+  "description": "Understand how clothes are produced at scale.",
+  "price": 89.99,
+  "images": [
+    "https://example.com/images/manufacturing1.jpg"
+  ],
+  "vendor_id": "empireclothing_4821"
+},
+{
+  "_id": {
+    "$oid": "692eb5b4d7afbc0220a28844"
+  },
+  "name": "Fashion Retail Strategy",
+  "description": "Sell clothing in both online and offline stores.",
+  "price": 74.99,
+  "images": [
+    "https://example.com/images/retail1.jpg"
+  ],
+  "vendor_id": "empireclothing_4821"
+},
+{
+  "_id": {
+    "$oid": "692eb5b4d7afbc0220a28845"
+  },
+  "name": "Luxury Brand Positioning",
+  "description": "Position your clothing brand in the premium market.",
+  "price": 119.99,
+  "images": [
+    "https://example.com/images/luxury1.jpg"
+  ],
+  "vendor_id": "empireclothing_4821"
+},
+{
+  "_id": {
+    "$oid": "692eb5b4d7afbc0220a28846"
+  },
+  "name": "Fashion Copywriting",
+  "description": "Write compelling product descriptions and ads.",
+  "price": 44.99,
+  "images": [
+    "https://example.com/images/copy1.jpg"
+  ],
+  "vendor_id": "empireclothing_4821"
+},
+{
+  "_id": {
+    "$oid": "692eb5b4d7afbc0220a28847"
+  },
+  "name": "Dropshipping Clothing Business",
+  "description": "Launch a clothing store with no inventory.",
+  "price": 69.99,
+  "images": [
+    "https://example.com/images/dropship1.jpg"
+  ],
+  "vendor_id": "empireclothing_4821"
+},
+{
+  "_id": {
+    "$oid": "692eb5b4d7afbc0220a28848"
+  },
+  "name": "Fashion Lookbook Creation",
+  "description": "Create stunning lookbooks for your brand.",
+  "price": 54.99,
+  "images": [
+    "https://example.com/images/lookbook1.jpg"
+  ],
+  "vendor_id": "empireclothing_4821"
+},
+{
+  "_id": {
+    "$oid": "692eb5b4d7afbc0220a28849"
+  },
+  "name": "Clothing Brand Analytics",
+  "description": "Track performance and optimize your sales.",
+  "price": 64.99,
+  "images": [
+    "https://example.com/images/analytics1.jpg"
+  ],
+  "vendor_id": "empireclothing_4821"
+},
+{
+  "_id": {
+    "$oid": "692eb5b4d7afbc0220a2884a"
+  },
+  "name": "Sustainable Fashion Practices",
+  "description": "Build an eco-friendly clothing brand.",
+  "price": 59.99,
+  "images": [
+    "https://example.com/images/sustainable1.jpg"
+  ],
+  "vendor_id": "empireclothing_4821"
+},
+{
+  "_id": {
+    "$oid": "692eb5b4d7afbc0220a2884b"
+  },
+  "name": "Fashion Ads & Paid Media",
+  "description": "Run profitable ad campaigns for apparel brands.",
+  "price": 79.99,
+  "images": [
+    "https://example.com/images/ads1.jpg"
+  ],
+  "vendor_id": "empireclothing_4821"
+},
+{
+  "_id": {
+    "$oid": "692eb5b4d7afbc0220a2884c"
+  },
+  "name": "Customer Retention for Brands",
+  "description": "Turn buyers into loyal customers.",
+  "price": 49.99,
+  "images": [
+    "https://example.com/images/retention1.jpg"
+  ],
+  "vendor_id": "empireclothing_4821"
+},
+{
+  "_id": {
+    "$oid": "69ea5538044492971f88db8b"
+  },
+  "name": "asd",
+  "description": "adsf",
+  "price": 4353,
+  "images": [
+    "https://judydoesbraids.com/linkostorage/uploads/images/7104576a846718c8fc87a3de61ea2aee.png"
   ],
   "vendor_id": "empireclothing_4821",
   "createdAt": {
-    "$date": "2026-01-20T10:13:14.273Z"
+    "$date": "2026-04-23T17:22:00.798Z"
   },
   "updatedAt": {
-    "$date": "2026-01-20T10:13:14.273Z"
+    "$date": "2026-04-23T17:22:00.798Z"
   },
   "__v": 0
 }]

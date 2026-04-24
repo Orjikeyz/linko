@@ -29,11 +29,18 @@ const login = async (req, res) => {
 
         const token = jwt.sign({ id: vendor._id, userId: vendor.username }, process.env.JWT_SECRET, { expiresIn: "1h", algorithm: 'HS256' });
 
+        // res.cookie("token", token, {
+        //     httpOnly: true,
+        //     secure: false, // false on HTTP
+        //     sameSite: "lax", // works for dev
+        //     maxAge: 1000 * 60 * 60 // 1 hour in milliseconds
+        // });
+
         res.cookie("token", token, {
             httpOnly: true,
-            secure: false, // false on HTTP
-            sameSite: "lax", // works for dev
-            maxAge: 1000 * 60 * 60 // 1 hour in milliseconds
+            secure: true,        // ✅ MUST be true on HTTPS
+            sameSite: "None",    // ✅ MUST be None for cross-origin
+            maxAge: 1000 * 60 * 60
         });
 
         return responseData(res, 'success', 200, 'Login successful', { id: vendor.username }, '');

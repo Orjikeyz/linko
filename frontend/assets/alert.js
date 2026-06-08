@@ -14,12 +14,12 @@ function showAlert(message, status) {
 
         if (message === "Unauthorized") {
             const body = document.querySelector('body').style.display = ""
-            // window.location.href = "./login.html"
+            window.location.href = "./login.html"
         }
 
     } else if (status === "success") {
         alertBox.textContent = message;
-        alertBox.style.background = "#28a745"; // custom color
+        alertBox.style.background = "#28a745"; // custom color 
         alertBox.classList.add("show");
     } else if (status === "info") {
         alertBox.textContent = message;

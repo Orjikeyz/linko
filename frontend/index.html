@@ -5,8 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Linko Store Preview</title>
-    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v6.0.0-beta1/css/all.css"
-        integrity="SHA384-ABC123==" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v6.0.0-beta1/css/all.css"  crossorigin="anonymous">
     <link rel="stylesheet" href="./assets/alert.css">
     <style>
         * {
@@ -755,12 +754,12 @@
         </ul>
     </div>
 
-    <div class="filter-chips" id="filterChips">
+    <!-- <div class="filter-chips" id="filterChips">
         <div class="chip active" data-filter="all">All</div>
         <div class="chip" data-filter="new">New</div>
         <div class="chip" data-filter="low">Almost gone</div>
         <div class="chip" data-filter="sale">On sale</div>
-    </div>
+    </div> -->
 
     <section class="products" id="products">
         <div class="product-grid" id="productGrid"></div>
@@ -1005,34 +1004,33 @@
                         grandTotal += itemTotal;
 
                         const imageUrl = item.product.images?.[0] || '';
-                        const productUrl = item.product.url || '';
+                        const productId = item.product._id || 'N/A';
 
                         return `
-            • ${item.product.name}
-            Description: ${item.product.description || 'N/A'}
-            Price: ₦${formatNaira(item.product.price)}
-            Qty: ${item.qty}
-            Total: ₦${formatNaira(itemTotal)}
-            Product URL: ${productUrl}
-            Image: ${imageUrl}
-                        `.trim();
+        • ${item.product.name}
+        Product ID: ${productId}
+        Description: ${item.product.description || 'N/A'}
+        Price: ₦${formatNaira(item.product.price)}
+        Qty: ${item.qty}
+        Total: ₦${formatNaira(itemTotal)}
+        Image: ${imageUrl}
+                    `.trim();
                     })
                     .join('\n\n');
 
                 const message = `🛒 New Order
 
-            ${lines}
+        ${lines}
 
-            💰 Grand Total: ₦${formatNaira(grandTotal)}
+        💰 Grand Total: ₦${formatNaira(grandTotal)}
 
-            From: linko.store/aria`;
+        From: linko.store/aria`;
 
                 window.open(
-                    `https://wa.me/2349012527321?text=${encodeURIComponent(message)}`,
+                    `https://wa.me/15551234567?text=${encodeURIComponent(message)}`,
                     '_blank'
                 );
             });
-
         let toastTimeout = null;
         function showToast(text) {
             const toast = document.getElementById('toast');

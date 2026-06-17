@@ -1,0 +1,1184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Linko — Turn Every Vendor Into A Brand</title>
+<meta name="description" content="Build your online storefront, upload products, and start selling with one shareable link.">
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<!-- Three.js & GSAP -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --black: #000000;
+    --white: #FFFFFF;
+    --off-white: #F5F5F5;
+    --dim: #A0A0A0;
+    --muted: #3A3A3A;
+    --glass: rgba(255,255,255,0.04);
+    --glass-border: rgba(255,255,255,0.08);
+    --glow: rgba(255,255,255,0.12);
+    --accent-line: rgba(255,255,255,0.06);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: #000;
+    color: var(--white);
+    font-family: 'Inter', sans-serif;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* Custom cursor */
+  .cursor {
+    position: fixed;
+    width: 8px;
+    height: 8px;
+    background: #fff;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transition: transform 0.1s ease;
+    mix-blend-mode: difference;
+  }
+  .cursor-ring {
+    position: fixed;
+    width: 36px;
+    height: 36px;
+    border: 1px solid rgba(255,255,255,0.4);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9998;
+    transition: transform 0.25s ease, width 0.25s ease, height 0.25s ease;
+    mix-blend-mode: difference;
+  }
+
+  /* Nav */
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    padding: 24px 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.4s, background 0.4s, backdrop-filter 0.4s;
+  }
+  nav.scrolled {
+    border-color: var(--glass-border);
+    background: rgba(0,0,0,0.7);
+    backdrop-filter: blur(20px);
+  }
+  .nav-logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 22px;
+    letter-spacing: -0.5px;
+    color: #fff;
+    text-decoration: none;
+  }
+  .nav-logo span { color: var(--dim); }
+  .nav-links {
+    display: flex;
+    gap: 40px;
+    list-style: none;
+  }
+  .nav-links a {
+    color: var(--dim);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: #fff; }
+  .nav-cta {
+    background: #fff;
+    color: #000 !important;
+    padding: 10px 22px;
+    border-radius: 100px;
+    font-weight: 500 !important;
+    font-size: 13px !important;
+    transition: opacity 0.2s !important;
+  }
+  .nav-cta:hover { opacity: 0.85; }
+
+  /* Hero */
+  #hero {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  #hero-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+  .hero-content {
+    position: relative;
+    z-index: 10;
+    text-align: center;
+    max-width: 860px;
+    padding: 0 24px;
+  }
+  .hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+    border-radius: 100px;
+    padding: 6px 16px;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--dim);
+    margin-bottom: 32px;
+    backdrop-filter: blur(8px);
+    opacity: 0;
+  }
+  .hero-eyebrow-dot {
+    width: 5px;
+    height: 5px;
+    background: #fff;
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+  .hero-h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(42px, 6.5vw, 88px);
+    font-weight: 800;
+    line-height: 1.0;
+    letter-spacing: -0.03em;
+    color: #fff;
+    margin-bottom: 24px;
+    opacity: 0;
+  }
+  .hero-h1 .line { display: block; overflow: hidden; }
+  .hero-h1 .line-inner { display: block; transform: translateY(100%); }
+  .hero-sub {
+    font-size: clamp(15px, 1.4vw, 18px);
+    color: var(--dim);
+    font-weight: 300;
+    line-height: 1.7;
+    max-width: 520px;
+    margin: 0 auto 44px;
+    opacity: 0;
+  }
+  .hero-actions {
+    display: flex;
+    gap: 14px;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+  }
+  .btn-primary {
+    background: #fff;
+    color: #000;
+    padding: 14px 32px;
+    border-radius: 100px;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    letter-spacing: -0.01em;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 32px rgba(255,255,255,0.15);
+  }
+  .btn-ghost {
+    color: var(--dim);
+    padding: 14px 28px;
+    border-radius: 100px;
+    font-size: 14px;
+    font-weight: 400;
+    text-decoration: none;
+    border: 1px solid var(--glass-border);
+    transition: color 0.2s, border-color 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    backdrop-filter: blur(8px);
+  }
+  .btn-ghost:hover { color: #fff; border-color: rgba(255,255,255,0.2); }
+  .play-icon {
+    width: 16px;
+    height: 16px;
+    border: 1.5px solid currentColor;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .play-icon::after {
+    content: '';
+    width: 0;
+    height: 0;
+    border-top: 4px solid transparent;
+    border-bottom: 4px solid transparent;
+    border-left: 6px solid currentColor;
+    margin-left: 1px;
+  }
+  .scroll-hint {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    color: var(--muted);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    opacity: 0;
+    z-index: 10;
+  }
+  .scroll-line {
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(to bottom, var(--muted), transparent);
+    animation: scrollLine 1.8s ease infinite;
+  }
+  @keyframes scrollLine {
+    0% { transform: scaleY(0); transform-origin: top; }
+    50% { transform: scaleY(1); transform-origin: top; }
+    51% { transform: scaleY(1); transform-origin: bottom; }
+    100% { transform: scaleY(0); transform-origin: bottom; }
+  }
+
+  /* Marquee */
+  .marquee-section {
+    border-top: 1px solid var(--accent-line);
+    border-bottom: 1px solid var(--accent-line);
+    padding: 20px 0;
+    overflow: hidden;
+    background: var(--glass);
+  }
+  .marquee-track {
+    display: flex;
+    width: max-content;
+    animation: marquee 28s linear infinite;
+  }
+  .marquee-item {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    padding: 0 40px;
+    white-space: nowrap;
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .marquee-dot {
+    width: 3px;
+    height: 3px;
+    background: var(--muted);
+    border-radius: 50%;
+  }
+  @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+  /* Sections */
+  section { padding: 140px 48px; }
+  .section-inner { max-width: 1200px; margin: 0 auto; }
+  .section-label {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 20px;
+  }
+  .section-h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(32px, 4vw, 58px);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+    color: #fff;
+    margin-bottom: 20px;
+  }
+  .section-p {
+    font-size: 16px;
+    color: var(--dim);
+    line-height: 1.7;
+    max-width: 480px;
+    font-weight: 300;
+  }
+
+  /* How it works */
+  #how {
+    border-top: 1px solid var(--accent-line);
+  }
+  .how-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+    margin-top: 80px;
+  }
+  .how-steps { display: flex; flex-direction: column; gap: 0; }
+  .how-step {
+    padding: 32px 0;
+    border-bottom: 1px solid var(--accent-line);
+    display: flex;
+    gap: 28px;
+    align-items: flex-start;
+    cursor: default;
+    transition: all 0.3s;
+  }
+  .how-step:first-child { border-top: 1px solid var(--accent-line); }
+  .step-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--muted);
+    min-width: 24px;
+    padding-top: 2px;
+  }
+  .step-body h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    margin-bottom: 6px;
+    color: var(--dim);
+    transition: color 0.3s;
+  }
+  .how-step:hover h3 { color: #fff; }
+  .step-body p { font-size: 14px; color: var(--muted); line-height: 1.65; }
+  .how-visual {
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    height: 480px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(8px);
+  }
+  .mockup-store {
+    width: 280px;
+    background: rgba(20,20,20,0.9);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 32px 80px rgba(0,0,0,0.6);
+  }
+  .mockup-header {
+    background: rgba(255,255,255,0.03);
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-bottom: 1px solid var(--glass-border);
+  }
+  .mockup-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #333, #111);
+    border: 1px solid var(--glass-border);
+  }
+  .mockup-store-name { font-size: 13px; font-weight: 500; color: #fff; }
+  .mockup-store-tag { font-size: 10px; color: var(--muted); }
+  .mockup-products {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--glass-border);
+  }
+  .mockup-product {
+    background: rgba(15,15,15,0.95);
+    aspect-ratio: 1;
+    position: relative;
+    overflow: hidden;
+  }
+  .mockup-product-img {
+    width: 100%;
+    height: 75%;
+    background: linear-gradient(135deg, rgba(60,60,60,0.5), rgba(30,30,30,0.5));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .product-icon { font-size: 28px; }
+  .mockup-product-info { padding: 8px 10px; }
+  .mockup-product-title { font-size: 10px; color: #888; margin-bottom: 2px; }
+  .mockup-product-price { font-size: 11px; color: #fff; font-weight: 500; margin-bottom: 8px; }
+  .mockup-order-btn {
+    width: 100%;
+    background: #25D366;
+    color: #04210f;
+    border: none;
+    border-radius: 6px;
+    font-size: 9px;
+    font-weight: 600;
+    padding: 6px 0;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    transition: filter 0.2s;
+  }
+  .mockup-order-btn:hover { filter: brightness(1.08); }
+  .mockup-link-bar {
+    padding: 14px 18px;
+    border-top: 1px solid var(--glass-border);
+    background: rgba(37,211,102,0.06);
+  }
+  .wa-preview-label {
+    font-size: 9px;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .wa-bubble {
+    background: #DCF8C6;
+    color: #1a1a1a;
+    border-radius: 8px 8px 8px 2px;
+    padding: 10px 12px;
+    font-size: 10.5px;
+    line-height: 1.55;
+    max-width: 100%;
+  }
+  .wa-bubble strong { font-weight: 700; }
+  .wa-bubble-time { font-size: 8px; color: #5b8a4a; text-align: right; margin-top: 4px; }
+
+  /* Features grid */
+  #features {
+    border-top: 1px solid var(--accent-line);
+  }
+  .features-header {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: end;
+    margin-bottom: 80px;
+  }
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--accent-line);
+    border: 1px solid var(--accent-line);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+  .feature-card {
+    background: #000;
+    padding: 36px 32px;
+    transition: background 0.3s;
+    position: relative;
+  }
+  .feature-card:hover { background: rgba(255,255,255,0.02); }
+  .feature-icon {
+    width: 40px;
+    height: 40px;
+    border: 1px solid var(--glass-border);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    font-size: 18px;
+    background: var(--glass);
+  }
+  .feature-card h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+    color: #fff;
+  }
+  .feature-card p { font-size: 13px; color: var(--muted); line-height: 1.65; }
+
+  /* Social proof */
+  #proof {
+    border-top: 1px solid var(--accent-line);
+  }
+  .proof-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-top: 64px;
+  }
+  .proof-card {
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    padding: 36px 32px;
+    transition: border-color 0.3s, transform 0.3s;
+    backdrop-filter: blur(8px);
+  }
+  .proof-card:hover {
+    border-color: rgba(255,255,255,0.14);
+    transform: translateY(-4px);
+  }
+  .proof-quote {
+    font-size: 15px;
+    color: #c0c0c0;
+    line-height: 1.75;
+    margin-bottom: 24px;
+    font-weight: 300;
+  }
+  .proof-author { display: flex; align-items: center; gap: 12px; }
+  .proof-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1px solid var(--glass-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    background: var(--glass);
+  }
+  .proof-name { font-size: 13px; font-weight: 500; }
+  .proof-role { font-size: 11px; color: var(--muted); }
+
+  /* Stats */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--accent-line);
+    border: 1px solid var(--accent-line);
+    border-radius: 16px;
+    overflow: hidden;
+    margin-top: 80px;
+  }
+  .stat {
+    background: #000;
+    padding: 52px 40px;
+    text-align: center;
+  }
+  .stat-num {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(40px, 5vw, 64px);
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    color: #fff;
+    display: block;
+    line-height: 1;
+    margin-bottom: 10px;
+  }
+  .stat-label { font-size: 13px; color: var(--muted); letter-spacing: 0.04em; }
+
+  /* Footer CTA */
+  #footer-cta {
+    border-top: 1px solid var(--accent-line);
+    text-align: center;
+    padding: 160px 48px;
+    position: relative;
+    overflow: hidden;
+  }
+  .footer-cta-glow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 600px;
+    height: 300px;
+    background: radial-gradient(ellipse, rgba(255,255,255,0.04) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .footer-cta-inner { position: relative; z-index: 2; }
+  .footer-cta-label {
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 24px;
+  }
+  .footer-cta-h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(36px, 5.5vw, 76px);
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    line-height: 1.0;
+    color: #fff;
+    margin-bottom: 20px;
+  }
+  .footer-cta-sub {
+    font-size: 16px;
+    color: var(--dim);
+    margin-bottom: 48px;
+    font-weight: 300;
+    line-height: 1.7;
+  }
+  .footer-cta-actions { display: flex; gap: 14px; justify-content: center; }
+
+  /* Footer */
+  footer {
+    border-top: 1px solid var(--accent-line);
+    padding: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .footer-logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 18px;
+    color: #fff;
+  }
+  .footer-copy { font-size: 12px; color: var(--muted); }
+  .footer-links { display: flex; gap: 28px; }
+  .footer-links a { font-size: 12px; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: #fff; }
+
+  /* Animations */
+  .reveal { opacity: 0; transform: translateY(32px); }
+
+  @media (max-width: 768px) {
+    nav { padding: 20px 24px; }
+    .nav-links { display: none; }
+    section { padding: 80px 24px; }
+    .how-grid, .features-header, .proof-grid, .stats-row { grid-template-columns: 1fr; }
+    .features-grid { grid-template-columns: 1fr 1fr; }
+    footer { flex-direction: column; gap: 24px; text-align: center; }
+    .footer-cta-actions { flex-direction: column; align-items: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Custom cursor -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursor-ring"></div>
+
+<!-- Nav -->
+<nav id="nav">
+  <a href="#" class="nav-logo">Linko<span>.</span></a>
+  <ul class="nav-links">
+    <li><a href="#how">How it works</a></li>
+    <li><a href="#features">Features</a></li>
+    <li><a href="#proof">Stories</a></li>
+    <li><a href="#footer-cta" class="nav-cta">Create Your Store</a></li>
+  </ul>
+</nav>
+
+<!-- Hero -->
+<section id="hero">
+  <canvas id="hero-canvas"></canvas>
+  <div class="hero-content">
+    <div class="hero-eyebrow" id="hero-eyebrow">
+      <span class="hero-eyebrow-dot"></span>
+      Vendor Commerce, Reimagined
+    </div>
+    <h1 class="hero-h1" id="hero-h1">
+      <span class="line"><span class="line-inner">Build Your Store.</span></span>
+      <span class="line"><span class="line-inner">Share One Link.</span></span>
+      <span class="line"><span class="line-inner">Sell Everywhere.</span></span>
+    </h1>
+    <p class="hero-sub" id="hero-sub">
+      Upload products, share your link, and let customers order straight to your WhatsApp — no cart, no checkout page.
+    </p>
+    <div class="hero-actions" id="hero-actions">
+      <a href="#" class="btn-primary">Start Selling Free</a>
+      <a href="#" class="btn-ghost">
+        <span class="play-icon"></span>
+        Watch Demo
+      </a>
+    </div>
+  </div>
+  <div class="scroll-hint" id="scroll-hint">
+    <div class="scroll-line"></div>
+    Scroll
+  </div>
+</section>
+
+<!-- Marquee -->
+<div class="marquee-section">
+  <div class="marquee-track">
+    <div class="marquee-item">
+      Thousands of products uploaded <span class="marquee-dot"></span>
+      Growing vendor community <span class="marquee-dot"></span>
+      Fastest storefront setup <span class="marquee-dot"></span>
+      Built for modern businesses <span class="marquee-dot"></span>
+      One link. Infinite reach. <span class="marquee-dot"></span>
+      No tech skills needed <span class="marquee-dot"></span>
+      Mobile-first experience <span class="marquee-dot"></span>
+      WhatsApp integration <span class="marquee-dot"></span>
+    </div>
+    <div class="marquee-item" aria-hidden="true">
+      Thousands of products uploaded <span class="marquee-dot"></span>
+      Growing vendor community <span class="marquee-dot"></span>
+      Fastest storefront setup <span class="marquee-dot"></span>
+      Built for modern businesses <span class="marquee-dot"></span>
+      One link. Infinite reach. <span class="marquee-dot"></span>
+      No tech skills needed <span class="marquee-dot"></span>
+      Mobile-first experience <span class="marquee-dot"></span>
+      WhatsApp integration <span class="marquee-dot"></span>
+    </div>
+  </div>
+</div>
+
+<!-- How it works -->
+<section id="how">
+  <div class="section-inner">
+    <p class="section-label reveal">How It Works</p>
+    <h2 class="section-h2 reveal">No cart. No checkout form.<br>Just a chat.</h2>
+
+    <div class="how-grid">
+      <div class="how-steps">
+        <div class="how-step reveal">
+          <span class="step-num">01</span>
+          <div class="step-body">
+            <h3>Create Your Storefront</h3>
+            <p>Choose your store name, add your brand details, and launch your professional online presence instantly. No design skills needed.</p>
+          </div>
+        </div>
+        <div class="how-step reveal">
+          <span class="step-num">02</span>
+          <div class="step-body">
+            <h3>Upload Products</h3>
+            <p>Add photos, write descriptions, and set prices. Your product catalog organizes itself beautifully for customers to browse.</p>
+          </div>
+        </div>
+        <div class="how-step reveal">
+          <span class="step-num">03</span>
+          <div class="step-body">
+            <h3>Share One Link</h3>
+            <p>Get your unique Linko URL. Share it on WhatsApp, Instagram, anywhere — customers land on your store, ready to buy.</p>
+          </div>
+        </div>
+        <div class="how-step reveal">
+          <span class="step-num">04</span>
+          <div class="step-body">
+            <h3>Customer Taps "Order"</h3>
+            <p>No cart, no checkout form. Tapping a product opens WhatsApp with the item, price, and quantity already typed out — sent straight to you.</p>
+          </div>
+        </div>
+        <div class="how-step reveal">
+          <span class="step-num">05</span>
+          <div class="step-body">
+            <h3>Close The Sale Yourself</h3>
+            <p>Confirm details, arrange payment and delivery, all in the chat you already use every day. You stay in control of every order.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="how-visual reveal">
+        <div class="mockup-store">
+          <div class="mockup-header">
+            <div class="mockup-avatar"></div>
+            <div>
+              <div class="mockup-store-name">Aria Collective</div>
+              <div class="mockup-store-tag">linko.store/aria</div>
+            </div>
+          </div>
+          <div class="mockup-products">
+            <div class="mockup-product">
+              <div class="mockup-product-img"><span class="product-icon">👜</span></div>
+              <div class="mockup-product-info">
+                <div class="mockup-product-title">Leather Tote</div>
+                <div class="mockup-product-price">$128</div>
+                <button class="mockup-order-btn" data-product="Leather Tote" data-price="$128">Order on WhatsApp</button>
+              </div>
+            </div>
+            <div class="mockup-product">
+              <div class="mockup-product-img"><span class="product-icon">🧣</span></div>
+              <div class="mockup-product-info">
+                <div class="mockup-product-title">Silk Scarf</div>
+                <div class="mockup-product-price">$64</div>
+                <button class="mockup-order-btn" data-product="Silk Scarf" data-price="$64">Order on WhatsApp</button>
+              </div>
+            </div>
+            <div class="mockup-product">
+              <div class="mockup-product-img"><span class="product-icon">💍</span></div>
+              <div class="mockup-product-info">
+                <div class="mockup-product-title">Gold Ring</div>
+                <div class="mockup-product-price">$95</div>
+                <button class="mockup-order-btn" data-product="Gold Ring" data-price="$95">Order on WhatsApp</button>
+              </div>
+            </div>
+            <div class="mockup-product">
+              <div class="mockup-product-img"><span class="product-icon">👟</span></div>
+              <div class="mockup-product-info">
+                <div class="mockup-product-title">Sneakers</div>
+                <div class="mockup-product-price">$210</div>
+                <button class="mockup-order-btn" data-product="Sneakers" data-price="$210">Order on WhatsApp</button>
+              </div>
+            </div>
+          </div>
+          <div class="mockup-link-bar">
+            <div class="wa-preview-label">Sent to vendor on WhatsApp</div>
+            <div class="wa-bubble">
+              Hi! I'd like to order:<br>
+              <strong>Leather Tote</strong> — Qty: 1 — $128<br>
+              From: linko.store/aria
+              <div class="wa-bubble-time">11:42</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Features -->
+<section id="features">
+  <div class="section-inner">
+    <div class="features-header">
+      <div>
+        <p class="section-label reveal">Everything You Need</p>
+        <h2 class="section-h2 reveal">Built for vendors<br>who move fast</h2>
+      </div>
+      <p class="section-p reveal">Every tool you need to launch, manage, and grow your business online — without the complexity of traditional e-commerce platforms.</p>
+    </div>
+
+    <div class="features-grid">
+      <div class="feature-card reveal">
+        <div class="feature-icon">🏪</div>
+        <h3>Custom Storefronts</h3>
+        <p>A beautiful branded store that represents your business professionally every time.</p>
+      </div>
+      <div class="feature-card reveal">
+        <div class="feature-icon">📦</div>
+        <h3>Product Management</h3>
+        <p>Upload, edit, and organize your catalog with an intuitive dashboard built for speed.</p>
+      </div>
+      <div class="feature-card reveal">
+        <div class="feature-icon">🔗</div>
+        <h3>Shareable Store Link</h3>
+        <p>One link to your entire business. Share it anywhere, reach customers everywhere.</p>
+      </div>
+      <div class="feature-card reveal">
+        <div class="feature-icon">💬</div>
+        <h3>One-Tap WhatsApp Orders</h3>
+        <p>Every "Order" button opens WhatsApp with the product, price, and quantity pre-filled — no cart, no checkout, just a chat with you.</p>
+      </div>
+      <div class="feature-card reveal">
+        <div class="feature-icon">📊</div>
+        <h3>Vendor Analytics</h3>
+        <p>Understand your store's performance with real-time traffic and engagement data.</p>
+      </div>
+      <div class="feature-card reveal">
+        <div class="feature-icon">📱</div>
+        <h3>Mobile-First</h3>
+        <p>Your store looks stunning on every device. Customers shop seamlessly on mobile.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Stats + Social proof -->
+<section id="proof">
+  <div class="section-inner">
+    <p class="section-label reveal">Vendor Stories</p>
+    <h2 class="section-h2 reveal">Real businesses,<br>real results</h2>
+
+    <div class="stats-row reveal">
+      <div class="stat">
+        <span class="stat-num">12K+</span>
+        <span class="stat-label">Active Storefronts</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num">98K+</span>
+        <span class="stat-label">Products Listed</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num">4 min</span>
+        <span class="stat-label">Avg. Setup Time</span>
+      </div>
+    </div>
+
+    <div class="proof-grid">
+      <div class="proof-card reveal">
+        <p class="proof-quote">"I had my store live with 20 products in under 10 minutes. My customers keep asking what platform I use — they assume it cost a fortune."</p>
+        <div class="proof-author">
+          <div class="proof-avatar">🧕</div>
+          <div>
+            <div class="proof-name">Fatima A.</div>
+            <div class="proof-role">Fashion & Accessories, Lagos</div>
+          </div>
+        </div>
+      </div>
+      <div class="proof-card reveal">
+        <p class="proof-quote">"Linko turned my Instagram DMs into a real business. Sharing one link changed everything — orders tripled in the first month."</p>
+        <div class="proof-author">
+          <div class="proof-avatar">👨</div>
+          <div>
+            <div class="proof-name">Daniel M.</div>
+            <div class="proof-role">Sneaker Reseller, Accra</div>
+          </div>
+        </div>
+      </div>
+      <div class="proof-card reveal">
+        <p class="proof-quote">"Finally a platform that works as fast as I do. Upload a product, share the link, done. It feels built for how vendors actually work."</p>
+        <div class="proof-author">
+          <div class="proof-avatar">👩</div>
+          <div>
+            <div class="proof-name">Amara T.</div>
+            <div class="proof-role">Beauty & Skincare, Nairobi</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer CTA -->
+<section id="footer-cta">
+  <div class="footer-cta-glow"></div>
+  <div class="footer-cta-inner">
+    <p class="footer-cta-label reveal">Get Started — It's Free</p>
+    <h2 class="footer-cta-h2 reveal">The Future Of<br>Vendor Commerce<br>Starts Here</h2>
+    <p class="footer-cta-sub reveal">Create your storefront, upload products, and start selling in minutes.</p>
+    <div class="footer-cta-actions reveal">
+      <a href="#" class="btn-primary">Launch Your Store</a>
+      <a href="#" class="btn-ghost">Talk to Sales</a>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<!-- <footer>
+  <div class="footer-logo">Linko.</div>
+  <p class="footer-copy">© 2025 Linko. Turn Every Vendor Into A Brand.</p>
+  <nav class="footer-links">
+    <a href="#">Privacy</a>
+    <a href="#">Terms</a>
+    <a href="#">Contact</a>
+  </nav>
+</footer> -->
+
+<script>
+// ─── Cursor ───────────────────────────────────────────────────
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursor-ring');
+let mx = 0, my = 0, rx = 0, ry = 0;
+document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+function animateCursor() {
+  rx += (mx - rx) * 0.12;
+  ry += (my - ry) * 0.12;
+  cursor.style.left = mx - 4 + 'px';
+  cursor.style.top = my - 4 + 'px';
+  ring.style.left = rx - 18 + 'px';
+  ring.style.top = ry - 18 + 'px';
+  requestAnimationFrame(animateCursor);
+}
+animateCursor();
+document.querySelectorAll('a, button, .how-step, .feature-card, .proof-card').forEach(el => {
+  el.addEventListener('mouseenter', () => {
+    ring.style.width = '56px'; ring.style.height = '56px';
+    ring.style.marginLeft = '-10px'; ring.style.marginTop = '-10px';
+    ring.style.borderColor = 'rgba(255,255,255,0.6)';
+  });
+  el.addEventListener('mouseleave', () => {
+    ring.style.width = '36px'; ring.style.height = '36px';
+    ring.style.marginLeft = '0'; ring.style.marginTop = '0';
+    ring.style.borderColor = 'rgba(255,255,255,0.4)';
+  });
+});
+
+// ─── Nav scroll ───────────────────────────────────────────────
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 60);
+});
+
+// ─── Three.js Hero ────────────────────────────────────────────
+(function() {
+  const canvas = document.getElementById('hero-canvas');
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setSize(window.innerWidth, window.innerHeight);
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 100);
+  camera.position.z = 5;
+
+  // Central glow sphere
+  const coreGeo = new THREE.SphereGeometry(0.18, 32, 32);
+  const coreMat = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.9 });
+  const core = new THREE.Mesh(coreGeo, coreMat);
+  scene.add(core);
+
+  // Halo rings
+  for (let i = 0; i < 3; i++) {
+    const ring = new THREE.RingGeometry(0.28 + i * 0.12, 0.30 + i * 0.12, 64);
+    const rMat = new THREE.MeshBasicMaterial({ color: 0xffffff, side: THREE.DoubleSide, transparent: true, opacity: 0.06 - i * 0.015 });
+    const rMesh = new THREE.Mesh(ring, rMat);
+    rMesh.rotation.x = Math.PI / 2 + i * 0.3;
+    scene.add(rMesh);
+  }
+
+  // Floating cards
+  const cards = [];
+  const cardPositions = [
+    [-2.6, 0.8, -1.5], [2.4, 1.0, -1.8],
+    [-1.8, -1.3, -1.2], [2.0, -0.9, -1.0],
+    [-0.6, 1.8, -2.2], [0.8, -1.9, -1.6],
+    [3.0, 0.2, -2.5], [-2.8, -0.2, -2.0],
+  ];
+  const emojis = ['👜', '👟', '💍', '🧣', '👗', '⌚', '🕶️', '🧴'];
+  cardPositions.forEach(([x, y, z], i) => {
+    const geo = new THREE.PlaneGeometry(0.75, 0.95);
+    const mat = new THREE.MeshBasicMaterial({
+      color: 0x111111,
+      transparent: true,
+      opacity: 0.7,
+      side: THREE.DoubleSide
+    });
+    const mesh = new THREE.Mesh(geo, mat);
+    mesh.position.set(x, y, z);
+    mesh.rotation.z = (Math.random() - 0.5) * 0.3;
+    mesh.rotation.x = (Math.random() - 0.5) * 0.2;
+    // Edge highlight
+    const edges = new THREE.EdgesGeometry(geo);
+    const lineMat = new THREE.LineBasicMaterial({ color: 0x333333, transparent: true, opacity: 0.5 });
+    const wireframe = new THREE.LineSegments(edges, lineMat);
+    mesh.add(wireframe);
+    scene.add(mesh);
+    cards.push({ mesh, speed: 0.3 + Math.random() * 0.4, offset: Math.random() * Math.PI * 2, amp: 0.08 + Math.random() * 0.12 });
+  });
+
+  // Particles
+  const particleGeo = new THREE.BufferGeometry();
+  const pCount = 280;
+  const pPositions = new Float32Array(pCount * 3);
+  for (let i = 0; i < pCount; i++) {
+    pPositions[i*3] = (Math.random() - 0.5) * 14;
+    pPositions[i*3+1] = (Math.random() - 0.5) * 10;
+    pPositions[i*3+2] = (Math.random() - 0.5) * 8 - 2;
+  }
+  particleGeo.setAttribute('position', new THREE.BufferAttribute(pPositions, 3));
+  const pMat = new THREE.PointsMaterial({ color: 0xffffff, size: 0.018, transparent: true, opacity: 0.35 });
+  const particles = new THREE.Points(particleGeo, pMat);
+  scene.add(particles);
+
+  // Connecting lines
+  const lineGroup = new THREE.Group();
+  scene.add(lineGroup);
+  function createLine(from, to, opacity) {
+    const pts = [new THREE.Vector3(...from), new THREE.Vector3(...to)];
+    const geo = new THREE.BufferGeometry().setFromPoints(pts);
+    const mat = new THREE.LineBasicMaterial({ color: 0x333333, transparent: true, opacity });
+    return new THREE.Line(geo, mat);
+  }
+  for (let i = 0; i < cardPositions.length; i++) {
+    if (i % 3 === 0) {
+      lineGroup.add(createLine(cardPositions[i], [0,0,0], 0.12));
+    }
+  }
+
+  // Mouse parallax
+  let targetX = 0, targetY = 0;
+  document.addEventListener('mousemove', e => {
+    targetX = (e.clientX / window.innerWidth - 0.5) * 0.6;
+    targetY = (e.clientY / window.innerHeight - 0.5) * -0.4;
+  });
+
+  let t = 0;
+  function animate() {
+    requestAnimationFrame(animate);
+    t += 0.01;
+    camera.position.x += (targetX - camera.position.x) * 0.04;
+    camera.position.y += (targetY - camera.position.y) * 0.04;
+    camera.lookAt(0, 0, 0);
+    cards.forEach(({ mesh, speed, offset, amp }) => {
+      mesh.position.y += Math.sin(t * speed + offset) * amp * 0.012;
+      mesh.rotation.z += 0.001;
+    });
+    particles.rotation.y += 0.0008;
+    core.scale.setScalar(1 + Math.sin(t * 2.5) * 0.06);
+    renderer.render(scene, camera);
+  }
+  animate();
+
+  window.addEventListener('resize', () => {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+  });
+})();
+
+// ─── WhatsApp order demo ──────────────────────────────────────
+(function() {
+  const VENDOR_NUMBER = '15551234567'; // demo number, no country code symbols
+  const STORE_URL = 'linko.store/aria';
+  const bubble = document.querySelector('.wa-bubble');
+  const buttons = document.querySelectorAll('.mockup-order-btn');
+
+  function buildMessage(product, price) {
+    return `Hi! I'd like to order:\n*${product}* — Qty: 1 — ${price}\nFrom: ${STORE_URL}`;
+  }
+
+  buttons.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      const product = btn.dataset.product;
+      const price = btn.dataset.price;
+      const msg = buildMessage(product, price);
+
+      // Update the live preview bubble
+      if (bubble) {
+        bubble.innerHTML = `Hi! I'd like to order:<br><strong>${product}</strong> — Qty: 1 — ${price}<br>From: ${STORE_URL}<div class="wa-bubble-time">${new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</div>`;
+        gsap.fromTo(bubble, { opacity: 0.3, y: 6 }, { opacity: 1, y: 0, duration: 0.35, ease: 'power2.out' });
+      }
+
+      // Real deep link — opens WhatsApp with the order pre-filled
+      const waUrl = `https://wa.me/${VENDOR_NUMBER}?text=${encodeURIComponent(msg)}`;
+      window.open(waUrl, '_blank');
+    });
+  });
+})();
+
+
+gsap.registerPlugin(ScrollTrigger);
+
+gsap.timeline({ delay: 0.3 })
+  .to('#hero-eyebrow', { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' })
+  .to('#hero-h1', { opacity: 1, duration: 0 }, '-=0.3')
+  .to('#hero-h1 .line-inner', { y: '0%', duration: 0.9, stagger: 0.1, ease: 'power4.out' }, '-=0.3')
+  .to('#hero-sub', { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' }, '-=0.4')
+  .to('#hero-actions', { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' }, '-=0.4')
+  .to('#scroll-hint', { opacity: 1, duration: 0.6 }, '-=0.2');
+
+// ─── Scroll reveals ───────────────────────────────────────────
+gsap.utils.toArray('.reveal').forEach(el => {
+  gsap.fromTo(el,
+    { opacity: 0, y: 36 },
+    {
+      opacity: 1, y: 0, duration: 0.85, ease: 'power3.out',
+      scrollTrigger: { trigger: el, start: 'top 85%', once: true }
+    }
+  );
+});
+</script>
+</body>
+</html>

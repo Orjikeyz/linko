@@ -27,7 +27,6 @@ const getVendorData = async () => {
     }
 
     if (data.status === "success") {
-      getProductsData() //Get vendor products
 
       profile_name.textContent = data.result.brand_name
       profile_image.src = data.result.brand_image
@@ -328,7 +327,7 @@ async function sendToBackend(urls, uploadBrandLogoBtn) {
     }
 
   } catch (error) {
-    showAlert(`Server Error`, "error")
+    showAlert(`Server Error while   uploading brand logo`, "error")
     loading()
   }
 }

@@ -20,7 +20,6 @@ const getVendor = async (req, res) => {
   }
 }
 
-
 const updateVendor = async (req, res) => {
   try {
     const { vendorUsername } = req.params
@@ -139,6 +138,7 @@ const updateVendorLogo = async (req, res) => {
     return responseData(res, "error", 500, "Internal server error", [], "");
   }
 };
+
 module.exports = {
   getVendor,
   updateVendor,

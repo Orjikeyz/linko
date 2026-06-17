@@ -12,6 +12,7 @@ router.get("/id/:vendorUsername", productController.getProductById)
 // Vendor dashboard api routes
 router.get("/vendor/:vendorUsername", authMiddleware, productController.getAllVendorProduct)
 router.post("/vendor/:vendorUsername", authMiddleware, productController.addProduct)
+router.put("/vendor/:vendorUsername/:productId", authMiddleware, productController.updateProduct)
 router.delete("/vendor/:vendorUsername/:productId", authMiddleware, productController.deleteProduct)
 
 

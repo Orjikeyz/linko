@@ -602,4 +602,23 @@
     "$date": "2026-04-23T17:22:00.798Z"
   },
   "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a2b2645d0e7a97fcb1e0fa0"
+  },
+  "name": "Ecommerce for Fashion Brands",
+  "description": "Sell your clothing online with Shopify and more.",
+  "price": 79.99,
+  "images": [
+    "https://judydoesbraids.com/linkostorage/uploads/images/bea62f2e1c227ee43b7868b68f3b050a.jpeg"
+  ],
+  "vendor_id": "empireclothing_4821",
+  "createdAt": {
+    "$date": "2026-06-11T21:19:01.740Z"
+  },
+  "updatedAt": {
+    "$date": "2026-06-11T21:19:01.740Z"
+  },
+  "__v": 0
 }]

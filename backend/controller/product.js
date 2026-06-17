@@ -87,7 +87,7 @@ const getAllVendorProduct = async (req, res) => {
             .sort({ createdAt: -1 }) // optional sorting
             .skip(skip)
             .limit(limit);
-            
+
         return responseData(res, 'success', 200, 'Products fetched successfully', {
             data: products,
             currentPage: page,
@@ -175,6 +175,84 @@ const addProduct = async (req, res) => {
     }
 }
 
+// Update Product
+const updateProduct = async (req, res) => {
+    const { vendorUsername , productId} = req.params
+    const allowedFields = ['name', 'price', 'description', 'image'];
+    const cleanData = {};
+
+    allowedFields.forEach(field => {
+        if (req.body[field] !== undefined) {
+            cleanData[field] = req.body[field];
+        }
+    });
+
+    const cleanName = cleanData.name
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .trim();
+
+    cleanData.name = cleanName;
+
+    if (!cleanName || cleanName.length < 3) {
+        return responseData(res, 'error', 400, 'Product name must be at least 3 characters', [], '');
+    }
+
+    if (!cleanData.price || isNaN(cleanData.price) || Number(cleanData.price) <= 0) {
+        return responseData(res, 'error', 400, 'Enter a valid product price', [], '');
+    }
+
+    if (cleanData.description) {
+        if (typeof cleanData.description !== 'string') {
+            return responseData(res, 'error', 400, 'Invalid description', [], '');
+        }
+
+        const cleanDesc = cleanData.description
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .trim();
+
+
+        cleanData.description = cleanDesc;
+    }
+
+    if (!Array.isArray(cleanData.image)) {
+        return responseData(res, 'error', 400, 'Images must be an array', [], '');
+    }
+
+    let invalidUrl = false;
+
+    cleanData.image.forEach(url => {
+        if (!url.startsWith('https://')) {
+            invalidUrl = true;
+        }
+    });
+
+    if (invalidUrl) {
+        return responseData(res, 'error', 400, 'Invalid image url', [], '');
+    }
+
+    // Update into product table
+    try {
+        const updatedProduct = await Product.findByIdAndUpdate(productId,{
+                vendor_id: vendorUsername,
+                name: cleanData.name,
+                price: Number(cleanData.price),
+                description: cleanData.description,
+                images: cleanData.image
+            }, { new: true }
+        );
+
+        if (!updatedProduct) {
+            return responseData(res, 'error', 404, 'Product not found', [], '');
+        }
+
+        return responseData(res, 'success', 200, 'Product updated successfully', updatedProduct, '');
+    } catch (err) {
+        console.error(err);
+        return responseData(res, 'error', 500, 'Server error', [], '');
+    }
+}
 // Delete Product 
 const deleteProduct = async (req, res) => {
     const { vendorUsername, productId } = req.params;
@@ -214,5 +292,6 @@ module.exports = {
     getProductById,
     getAllVendorProduct,
     addProduct,
+    updateProduct,
     deleteProduct
 }

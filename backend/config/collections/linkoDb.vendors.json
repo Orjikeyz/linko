@@ -2,17 +2,23 @@
   "_id": {
     "$oid": "692ec5f3d7afbc0220a28824"
   },
-  "brand_name": "Empire Clothing",
-  "brand_image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRLat8bZvhXD3ChSXyzGsFVh6qgplm1KhYPKA&s",
-  "brand_cover_image": "https://shorthand.com/the-craft/raster-images/assets/5kVrMqC0wp/sh-unsplash_5qt09yibrok-4096x2731.jpeg",
-  "brand_description": "Sales of Cloths | Bags | Shoes",
+  "brand_name": "Empire Clothinghub",
+  "brand_image": "https://judydoesbraids.com/linkostorage/uploads/images/ea44521b3e0fd3df4618b4d439e42846.jpg",
+  "brand_description": "sell - buy - delivery",
   "instagram": "https://instagram.com/empireclothing",
   "facebook": "https://facebook.com/empireclothing",
   "x": "https://x.com/empireclothing",
   "phone_number": "+1234567890",
-  "plan": "free",
+  "plan": "basic",
   "status": "active",
-  "username": "empireclothing_4821"
+  "username": "empireclothing_4821",
+  "brand_email": "admin@gmail.com",
+  "password": "$2b$12$/603ImwFSN78gHgFhuLENepKkQLHE2E087JGwYRHNT2NxPh2KgFTe",
+  "twofactorToken": "on",
+  "token": "123456toekn",
+  "updatedAt": {
+    "$date": "2026-04-23T17:29:07.819Z"
+  }
 },
 {
   "_id": {

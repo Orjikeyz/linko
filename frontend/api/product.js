@@ -1,45 +1,33 @@
-const getProductsData = async () => {
-    try {
-        const response = await fetch(`${backendUrl}/product/${paramsValue}`, {
-            method: 'GET',
-            headers: { 'Content-Type': 'application/json' }
-        })
+        const getProductsData = async () => {
+            renderSkeletons(6);
+            await new Promise(r => setTimeout(r, 650)); // simulate network latency
 
-        if (!response.ok) {
-            showAlert('No data available', "error")
-        }
+                try {
+                    const response = await fetch(`${backendUrl}/product/${paramsValue}`, {
+                        method: 'GET',
+                        headers: { 'Content-Type': 'application/json' }
+                    })
 
-        const data = await response.json()
-        if (data.status === 'error') {
-            showAlert(`${data.message}`, `${data.status}`)
-        }
+                    if (!response.ok) {
+                        showAlert('No data available', "error")
+                    }
 
-        if (data.status === 'success') {
+                    const data = await response.json()
+                    if (data.status === 'error') {
+                        showAlert(`${data.message}`, `${data.status}`)
+                    }
 
-            data.result.forEach(item => {
-                let productGrid = document.getElementById("productGrid")
-                productGrid.innerHTML += `
-                    <a href="products.html?id=${paramsValue}&pid=${item._id}">
-                <div class="product-card" data-price="${item.price}">
-                    <img src="${item.images[0]}"
-                        class="product-image" loading="lazy">
-                    <div class="product-content">
-                        <h3 class="product-title">${item.name}</h3>
-                        <div class="product-footer">
-                            <span class="product-price">₦${item.price}</span>
-                            <button class="buy-btn">Buy Now</button>
-                        </div>
-                    </div>
-                </div>
-            </a>
-        `
-            });
-        }
-    } catch (error) {
-        showAlert('Server Error. Please try again later', "error")
-    }
-}
-
+                    if (data.status === 'success') {
+                        
+                            window.__productsById = {};
+                            data.result.forEach(item => { window.__productsById[item._id] = item; });
+                            renderGrid();
+                    }
+                } catch (error) {
+                    console.log(error)
+                    showAlert('Server Error. Please try again later', "error")
+                }
+        };
 const getProductById = async () => {
     // let backBtnHref = document.getElementById("backBtnHref")
     // backBtnHref.href = `index.html?id=${paramsValue}`
@@ -108,6 +96,7 @@ const getProductById = async () => {
                     generateWhatsAppMessage(productName.textContent, productDescription.textContent, price.textContent, productUrl, vendorNumber)
                 } else {
                     console.log("dffernet plan")
+                    generateWhatsAppMessage(productName.textContent, productDescription.textContent, price.textContent, productUrl, vendorNumber)
                 }
             })
 
@@ -117,8 +106,6 @@ const getProductById = async () => {
         showAlert('Server Error. Please try again later', "error")
     }
 }
-
-
 
 
 // Vendor Dashboard Product API Call
@@ -184,6 +171,8 @@ function loadProducts(data) {
     let vendorData = data.data
     let status_plan = document.getElementById("status_plan")
     let account_status = document.getElementById("account_status")
+    localStorage.removeItem("currentProductId"); // Clear currentProductId from localStorage when loading products list NOTE: this was setup on edit product to determine whether to add or update a product, so it must be cleared when loading the products list to prevent unintended updates when adding a new product after editing. 
+
 
     // status_plan.textContent = vendorData.plan.charAt(0).toUpperCase() + vendorData.plan.slice(1).toLowerCase();
     // account_status.textContent = vendorData.status.charAt(0).toUpperCase() + vendorData.status.slice(1).toLowerCase();
@@ -241,6 +230,7 @@ function openProductModal(productId) {
     const modal = document.getElementById('productModal');
     const form = document.getElementById('productForm');
     let currentImage = document.querySelector(".currentImage")
+    
 
     currentImage.innerHTML = ""
 
@@ -315,7 +305,6 @@ const addProduct = async () => {
     const productImages = productImagesInput.files;
 
     /* ================= VALIDATION ================= */
-
     if (!productName || productName.length < 3) {
         showAlert("Product name must be at least 3 characters", "error")
         loading()
@@ -348,8 +337,6 @@ const addProduct = async () => {
         return;
     }
 
-
-
     // Image validation
     const allowedTypes = ["image/jpeg", "image/png", "image/webp"];
     const maxSize = 2 * 1024 * 1024; // 2MB
@@ -369,7 +356,6 @@ const addProduct = async () => {
     }
 
     /* ================= SANITIZE ================= */
-
     const safeName = escapeHTML(productName);
     const safeDescription = escapeHTML(productDescription);
 
@@ -401,71 +387,83 @@ const addProduct = async () => {
             if (StorageData.count <= 0) {
                 showAlert(StorageData.message || "Upload failed. Please try again later", "error");
                 loading()
-                return
+                return;
             }
 
-            sendToBackend(StorageData.urls)
+            console.log(localStorage.getItem("currentProductId"))
+            sendDataToBackend(StorageData.urls)
+            return;
         } else {
             showAlert(StorageData.message || "Upload failed", "error");
             loading()
+            return;
         }
 
     } catch (error) {
         console.error(error);
-        showAlert("Server error occurred", "error");
+        showAlert("Server error occurred while uploading images", "error");
         loading()
+        return;
     }
-
 
     /* ================= SEND TO BACKEND ================= */
-    async function sendToBackend(urls) {
-        let JSONFormData = {
-            name: safeName,
-            price: productPrice,
-            description: safeDescription,
-            image: urls,
-        }
-
-        try {
-            const response = await fetch(`${backendUrl}/product/vendor/${paramsValue}`, {
-                method: "POST",
-                credentials: "include",
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(JSONFormData),
-            });
-
-            // Handle non-2xx HTTP responses
-            if (!response.ok) {
-                showAlert(`HTTP Error: ${response.status}`, "error")
-                loading()
+    // Check if the modal title is "Edit Product" to determine whether to update or add a new product
+    
+        async function sendDataToBackend(urls) {
+            const currentProductId = localStorage.getItem("currentProductId");
+            let JSONFormData = {
+                name: safeName,
+                price: productPrice,
+                description: safeDescription,
+                image: urls,
             }
 
-            const data = await response.json();
+            const endpoint = currentProductId ? `${backendUrl}/product/vendor/${paramsValue}/${currentProductId}` : `${backendUrl}/product/vendor/${paramsValue}`;
+            const method = currentProductId ? "PUT" : "POST";
+            const action = currentProductId ? "updating" : "adding";
 
-            if (data.status === "success") {
-                showAlert(data.message, data.status)
-                localStorage.removeItem("products")
-                setTimeout(() => {
-                    window.location.href = ""
-                }, 2000);
+            try {
+                const response = await fetch(endpoint, {
+                    method: method,
+                    credentials: "include",
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(JSONFormData),
+                });
 
-            } else {
-                showAlert(data.message, data.status)
+                // Handle non-2xx HTTP responses
+                if (!response.ok) {
+                    showAlert(`HTTP Error: ${response.status}`, "error")
+                    loading()
+                }
+
+                const data = await response.json();
+
+                if (data.status === "success") {
+                    showAlert(data.message, data.status)
+                    localStorage.removeItem("products")
+                    localStorage.removeItem("currentProductId");
+                    setTimeout(() => {
+                        window.location.href = ""
+                    }, 2000);
+
+                } else {
+                    showAlert(data.message, data.status)
+                    loading()
+                }
+
+            } catch (error) {
+                console.log(error)
+                showAlert(`Server error occurred while ${action} product`, "error")
                 loading()
             }
-
-        } catch (error) {
-            showAlert(`Server Error`, "error")
-            loading()
         }
-    }
-
 }
 
 // Edit product
 function editProduct(id) {
+    localStorage.setItem("currentProductId", id);
     openProductModal(id);
 }
 

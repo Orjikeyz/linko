@@ -20,8 +20,17 @@ const getProduct = async (req, res) => {
 }
 
 const getProductById = async (req, res) => {
-    const product_id = req.headers.product_id;
-    const vendorUsername = req.headers.vendor_username;
+    const safeString = (str) => {
+        if (typeof str !== 'string') return '';
+        return str.replace(/[<>$'"]/g, '').trim();
+    };
+
+    const product_id = safeString(req.headers.product_id);
+    const vendorUsername = safeString(req.headers.vendor_username);
+
+    if (!mongoose.Types.ObjectId.isValid(product_id)) {
+        return responseData(res, "error", 400, "Invalid product ID", [], "");
+    }
 
     // Check if headers are provided
     if (!product_id || !vendorUsername) {

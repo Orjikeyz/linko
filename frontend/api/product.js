@@ -1,4 +1,4 @@
-        const getProductsData = async () => {
+const getProductsData = async () => {
             renderSkeletons(6);
             await new Promise(r => setTimeout(r, 650)); // simulate network latency
 
@@ -25,17 +25,11 @@
                     }
                 } catch (error) {
                     console.log(error)
-                    showAlert('Server Error. Please try again later', "error")
+                    showAlert('Server Error: Error getting product data', "error")
                 }
         };
-const getProductById = async () => {
-    // let backBtnHref = document.getElementById("backBtnHref")
-    // backBtnHref.href = `index.html?id=${paramsValue}`
 
-    // if (!productId) {
-    //     window.location.href = '404.html'
-    // }
-
+const getProductById = async (productId) => {
     try {
         const response = await fetch(`${backendUrl}/product/id/${productId}`, {
             method: 'GET',
@@ -56,54 +50,57 @@ const getProductById = async () => {
         }
 
         if (data.status === 'success') {
-            let productName = document.getElementById("productName")
-            let productDescription = document.getElementById("productDescription")
-            let price = document.getElementById("price")
-            let img_list = document.querySelector(".img-list")
-            let main_img = document.getElementById("main-img")
+            // let productName = document.getElementById("productName") || ""
+            // let productDescription = document.getElementById("productDescription") || ""
+            // let price = document.getElementById("price") || ""
+            // let img_list = document.querySelector(".img-list") || ""
+            // let main_img = document.getElementById("main-img") || ""
 
-            productName.textContent = data.result[0].name
-            productDescription.textContent = data.result[0].description
-            price.textContent = data.result[0].price
-            let vendorNumber = data.result[0].vendor.phone_number;
-            main_img.src = data.result[0].images[0]
+            // productName.textContent = data.result[0].name
+            // productDescription.textContent = data.result[0].description
+            // price.textContent = data.result[0].price
+            // let vendorNumber = data.result[0].vendor.phone_number;
+            // main_img.src = data.result[0].images[0]
 
-            let buy = document.querySelector("#buy")
+            // console.log(data.result)
 
-            data.result[0].images.forEach(img => {
-                img_list.innerHTML += `<img src="${img}" loading="lazy" class="img-list-item">`
+            // let buy = document.querySelector("#buy")
 
-                let img_list_item = document.querySelectorAll(".img-list-item")
+            // data.result[0].images.forEach(img => {
+            //     img_list.innerHTML += `<img src="${img}" loading="lazy" class="img-list-item">`
 
-
-                img_list_item.forEach(item => {
-                    main_img.classList.remove("main-img-toggle")
-                    item.addEventListener("click", function () {
-                        if (main_img.src === item.src) return;
-                        main_img.classList.remove("main-img-toggle")
-                        void main_img.offsetWidth;
-                        main_img.classList.add("main-img-toggle")
-                        main_img.src = item.src
-                    })
-                });
-            });
+            //     let img_list_item = document.querySelectorAll(".img-list-item")
 
 
-            // Check plan flow 
+            //     img_list_item.forEach(item => {
+            //         main_img.classList.remove("main-img-toggle")
+            //         item.addEventListener("click", function () {
+            //             if (main_img.src === item.src) return;
+            //             main_img.classList.remove("main-img-toggle")
+            //             void main_img.offsetWidth;
+            //             main_img.classList.add("main-img-toggle")
+            //             main_img.src = item.src
+            //         })
+            //     });
+            // });
 
-            buy.addEventListener("click", function () {
-                if (data.plan === "free") {
-                    generateWhatsAppMessage(productName.textContent, productDescription.textContent, price.textContent, productUrl, vendorNumber)
-                } else {
-                    console.log("dffernet plan")
-                    generateWhatsAppMessage(productName.textContent, productDescription.textContent, price.textContent, productUrl, vendorNumber)
-                }
-            })
 
+            // // Check plan flow 
 
+            // buy.addEventListener("click", function () {
+            //     if (data.plan === "free") {
+            //         generateWhatsAppMessage(productName.textContent, productDescription.textContent, price.textContent, productUrl, vendorNumber)
+            //     } else {
+            //         console.log("dffernet plan")
+            //         generateWhatsAppMessage(productName.textContent, productDescription.textContent, price.textContent, productUrl, vendorNumber)
+            //     }
+            // })
+
+            return data.result[0]
         }
     } catch (error) {
-        showAlert('Server Error. Please try again later', "error")
+        console.log(error)
+        showAlert('Server Error: Error getting product data by ID', "error")
     }
 }
 
@@ -141,7 +138,7 @@ const getAllVendorProduct = async () => {
         }
     } catch (error) {
         console.log(error)
-        showAlert('Server Error. Please try again later', "error")
+        showAlert('Server Error: Error getting all vendor products', "error")
     }
 }
 
@@ -233,34 +230,52 @@ function openProductModal(productId) {
     
 
     currentImage.innerHTML = ""
+    function imagePreviewBlog() {
+        document.getElementById("productImages").addEventListener("change", function () {
+            Array.from(this.files).forEach(file => {
+                console.log(URL.createObjectURL(file));
+                currentImage.innerHTML += `
+            <div class="currentimageItem">
+                <img src="${URL.createObjectURL(file)}"
+                    loading="lazy" width="70px" height="70px" style="border-radius: 10px; margin: 0 10px;" class="imageName">
+                <i class="fa-solid fa-x removeImage" style="font-size: 10px; position: absolute; transform: translateX(-30px); background: #e3e3e3; padding: 5px; border-radius: 5px;"></i>
+            </div>
+            `
+            });
+        });
+    }
 
     if (productId) {
+        console.log(productId, "fale")
         const product = fetchedProduct.data.find(p => p._id === productId);
         document.getElementById('modalTitle').textContent = 'Edit Product';
         document.getElementById('productName').value = product.name;
         document.getElementById('productPrice').value = product.price;
         document.getElementById('productDescription').value = product.description || '';
         currentEditId = productId;
-        let removeImage = document.querySelectorAll(".removeImage")
         let imageName = document.querySelectorAll(".imageName")
 
 
-        product.images.forEach(item => {
-            currentImage.innerHTML += `
-            <div class="currentimageItem">
-                <img src="${item}"
-                    loading="lazy" width="70px" height="70px" style="border-radius: 10px; margin: 0 10px;" class="imageName">
-                <i class="fa-solid fa-x removeImage" style="font-size: 10px; position: absolute; transform: translateX(-30px); background: #e3e3e3; padding: 5px; border-radius: 5px;"></i>
-            </div>
-        `
-        });
+        // product.images.forEach(item => {
+        //     currentImage.innerHTML += `
+        //     <div class="currentimageItem">
+        //         <img src="${item}"
+        //             loading="lazy" width="70px" height="70px" style="border-radius: 10px; margin: 0 10px;" class="imageName">
+        //         <i class="fa-solid fa-x removeImage" style="font-size: 10px; position: absolute; transform: translateX(-30px); background: #e3e3e3; padding: 5px; border-radius: 5px;"></i>
+        //     </div>
+        // `
+        // });
 
+
+        let removeImage = document.querySelectorAll(".removeImage")
         removeImage.forEach((removeImageItem, index) => {
             removeImageItem.addEventListener("click", () => {
                 console.log(index)
             })
         });
     } else {
+        console.log(productId)
+        imagePreviewBlog()
         document.getElementById('modalTitle').textContent = 'Add New Product';
         form.reset();
         currentEditId = null;
@@ -303,6 +318,7 @@ const addProduct = async () => {
     const productPrice = productPriceInput.value.trim();
     const productDescription = productDescriptionInput.value.trim();
     const productImages = productImagesInput.files;
+
 
     /* ================= VALIDATION ================= */
     if (!productName || productName.length < 3) {

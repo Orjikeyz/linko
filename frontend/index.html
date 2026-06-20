@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Linko Store Preview</title>
-    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v6.0.0-beta1/css/all.css"  crossorigin="anonymous">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v6.0.0-beta1/css/all.css" integrity="SHA384-ABC123==" crossorigin="anonymous">
     <link rel="stylesheet" href="./assets/alert.css">
     <style>
         * {
@@ -718,21 +718,21 @@
 
 <body>
     <div class="top-header">
-        <div class="logo-circle">L</div>
+        <div class="logo-circl" style="transform: translateX(15px);"><img src="./assets/images/logo.png" width="40px"> </div>
         <span>Linko.ng</span>
     </div>
 
     <section class="hero" id="heroImage">
         <div class="hero-content">
-            <img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?w=200&h=200&fit=crop" id='logoImage' alt=""
+            <img src="" id='logoImage' alt=""
                 class="profile-image">
-            <h1 id="profile-name">Aria Collective</h1>
-            <p style="font-size: 14px;" class="profile-description">Handmade leather goods & accessories, made in Lagos.</p>
-            <div class="hero-stats">
+            <h1 id="profile-name"></h1>
+            <p style="font-size: 14px;" class="profile-description"></p>
+            <!-- <div class="hero-stats">
                 <div class="hero-stat"><strong>4.9</strong><span>Rating</span></div>
                 <div class="hero-stat"><strong>1.2k</strong><span>Orders</span></div>
                 <div class="hero-stat"><strong>6</strong><span>Products</span></div>
-            </div>
+            </div> -->
             <div class="social-links">
                 <a href="#" id="profile-instagram" class="social-btn"><i class="fab fa-instagram"></i></a>
                 <a href="#" id="profile-twitter" class="social-btn"><i class="fab fa-twitter"></i></a>
@@ -777,7 +777,7 @@
 
     <footer>
         <div class="top-header" style="position: static; border-bottom: none;">
-            Powered by <div class="logo-circle">L</div> <span>Linko.ng</span>
+            Powered by <div class="logo-circl"><img src="./assets/images/logo.png" width="40px"> </div> <span style="transform: translateX(-15px);">Linko.ng</span>
         </div>
         <p>© <span id="yearText">2025</span> Linko-ng . All Rights Reserved.</p>
     </footer>
@@ -1027,7 +1027,7 @@
         From: linko.store/aria`;
 
                 window.open(
-                    `https://wa.me/15551234567?text=${encodeURIComponent(message)}`,
+                    `https://wa.me/${JSON.parse(localStorage.getItem("vendorData")).phone_number}?text=${encodeURIComponent(message)}`,
                     '_blank'
                 );
             });

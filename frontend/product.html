@@ -5,9 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Linko — Product Card</title>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Syne:wght@700;800&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
             <link rel="stylesheet" href="./assets/alert.css">
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -409,7 +407,7 @@
             height: 100%;
             object-fit: cover;
             display: block;
-            transition: opacity 0.5s ease;
+            transition: opacity 0.4s ease;
         }
 
         .img-overlay {
@@ -433,6 +431,58 @@
             border: 1px solid;
         }
 
+        /* ── Carousel thumbnail strip ── */
+        .carousel-strip {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 5;
+            display: flex;
+            gap: 6px;
+            align-items: center;
+            padding: 6px 8px;
+            background: rgba(0, 0, 0, 0.45);
+            border-radius: 12px;
+            backdrop-filter: blur(8px);
+            max-width: 90%;
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+
+        .carousel-strip::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* hide strip when only 1 image */
+        .carousel-strip:empty,
+        .carousel-strip.single {
+            display: none;
+        }
+
+        .carousel-thumb {
+            width: 36px;
+            height: 36px;
+            border-radius: 7px;
+            object-fit: cover;
+            flex-shrink: 0;
+            cursor: pointer;
+            border: 2px solid transparent;
+            opacity: 0.6;
+            transition: opacity 0.2s, border-color 0.2s, transform 0.2s;
+        }
+
+        .carousel-thumb:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+
+        .carousel-thumb.active {
+            border-color: #ffffff;
+            opacity: 1;
+        }
+
+        /* ── Card content ── */
         .card-content {
             position: absolute;
             bottom: 0;
@@ -671,15 +721,18 @@
 
         <div class="card-image-area">
             <img class="card-img" id="cardImg"
-                src="./assets/images/logo.png" crossorigin="anonymous" alt="Product image">
+                src="./assets/images/logo.png" alt="Product image">
             <div class="img-overlay"></div>
             <!-- <div class="corner-tag" id="cornerTag">New Arrival</div> -->
+ 
+            <!-- Carousel thumbnail strip — populated by buildCarousel() -->
+            <div class="carousel-strip" id="carouselStrip"></div>
         </div>
 
         <div class="card-content">
             <div class="product-id" id="cardId">-</div>
-            <div class="product-name" id="cardName">-</div>
-            <div class="product-desc" id="cardDesc">-</div>
+            <div class="product-name" id="cardName"></div>
+            <div class="product-desc" id="cardDesc"></div>
 
             <div class="card-row">
                 <div class="price-tag" id="cardPrice">0</div>
@@ -716,7 +769,48 @@
     <script src="./assets/url.js"></script>
     <script src="./api/vendor.js"></script>
     <script src="./api/product.js"></script>
+
     <script>
+        // ── Carousel ───────────────────────────────────────────────────
+        // Call this after you have the images array from your API.
+        // It builds the thumbnail strip and wires click-to-swap.
+        function buildCarousel(images) {
+            const strip = document.getElementById('carouselStrip');
+            const mainImg = document.getElementById('cardImg');
+            strip.innerHTML = '';
+
+            // Only show strip when there is more than one image
+            if (!images || images.length <= 1) {
+                strip.classList.add('single');
+                return;
+            }
+            strip.classList.remove('single');
+
+            images.forEach((src, index) => {
+                const thumb = document.createElement('img');
+                thumb.src = src;
+                thumb.alt = 'Product image ' + (index + 1);
+                thumb.className = 'carousel-thumb' + (index === 0 ? ' active' : '');
+
+                thumb.addEventListener('click', () => {
+                    // Swap main image with fade
+                    mainImg.style.opacity = '0';
+                    setTimeout(() => {
+                        mainImg.src = src;
+                        mainImg.style.opacity = '1';
+                        syncBackground(src);
+                    }, 200);
+
+                    // Update active thumb
+                    strip.querySelectorAll('.carousel-thumb').forEach(t => t.classList.remove('active'));
+                    thumb.classList.add('active');
+                });
+
+                strip.appendChild(thumb);
+            });
+        }
+
+        // ── Init ───────────────────────────────────────────────────────
         async function initVendorData() {
             const productId = params.get('pid') || ""
             await getVendorData()
@@ -729,8 +823,11 @@
             document.getElementById('cardStore').textContent = JSON.parse(localStorage.getItem('vendorData')).brand_name || '';
             document.getElementById('cardImg').src = getProductDataById.images[0] || './assets/images/logo.png';
 
+            // Build carousel from all images
+            buildCarousel(getProductDataById.images);
         }
         initVendorData()
+
         // ── Set blurred background to match card image ─────────────────
         function syncBackground(src) {
             document.getElementById('bgBlur').style.backgroundImage = `url('${src}')`;
@@ -793,8 +890,6 @@
             clearTimeout(toastTimer);
             toastTimer = setTimeout(() => toast.classList.remove('show'), 2500);
         }
-
-
     </script>
 </body>
 

@@ -31,14 +31,7 @@ const getProductsData = async () => {
 
 const getProductById = async (productId) => {
     try {
-        const response = await fetch(`${backendUrl}/product/id/${productId}`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'product_id': productId,
-                'vendor_username': paramsValue
-            }
-        })
+        const response = await fetch(`${backendUrl}/product/id/${paramsValue}?product_id=${productId}`)
 
         if (!response.ok) {
             showAlert('No data available', "error")
@@ -50,53 +43,8 @@ const getProductById = async (productId) => {
         }
 
         if (data.status === 'success') {
-            // let productName = document.getElementById("productName") || ""
-            // let productDescription = document.getElementById("productDescription") || ""
-            // let price = document.getElementById("price") || ""
-            // let img_list = document.querySelector(".img-list") || ""
-            // let main_img = document.getElementById("main-img") || ""
-
-            // productName.textContent = data.result[0].name
-            // productDescription.textContent = data.result[0].description
-            // price.textContent = data.result[0].price
-            // let vendorNumber = data.result[0].vendor.phone_number;
-            // main_img.src = data.result[0].images[0]
-
-            // console.log(data.result)
-
-            // let buy = document.querySelector("#buy")
-
-            // data.result[0].images.forEach(img => {
-            //     img_list.innerHTML += `<img src="${img}" loading="lazy" class="img-list-item">`
-
-            //     let img_list_item = document.querySelectorAll(".img-list-item")
-
-
-            //     img_list_item.forEach(item => {
-            //         main_img.classList.remove("main-img-toggle")
-            //         item.addEventListener("click", function () {
-            //             if (main_img.src === item.src) return;
-            //             main_img.classList.remove("main-img-toggle")
-            //             void main_img.offsetWidth;
-            //             main_img.classList.add("main-img-toggle")
-            //             main_img.src = item.src
-            //         })
-            //     });
-            // });
-
-
-            // // Check plan flow 
-
-            // buy.addEventListener("click", function () {
-            //     if (data.plan === "free") {
-            //         generateWhatsAppMessage(productName.textContent, productDescription.textContent, price.textContent, productUrl, vendorNumber)
-            //     } else {
-            //         console.log("dffernet plan")
-            //         generateWhatsAppMessage(productName.textContent, productDescription.textContent, price.textContent, productUrl, vendorNumber)
-            //     }
-            // })
-
             return data.result[0]
+            
         }
     } catch (error) {
         console.log(error)

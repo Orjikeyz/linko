@@ -25,14 +25,14 @@ const getProductById = async (req, res) => {
         return str.replace(/[<>$'"]/g, '').trim();
     };
 
-    const product_id = safeString(req.headers.product_id);
-    const vendorUsername = safeString(req.headers.vendor_username);
+    const product_id = safeString(req.query.product_id);
+    const vendorUsername = safeString(req.params.vendorUsername);
 
     if (!mongoose.Types.ObjectId.isValid(product_id)) {
         return responseData(res, "error", 400, "Invalid product ID", [], "");
     }
 
-    // Check if headers are provided
+    // Check if params are provided
     if (!product_id || !vendorUsername) {
         return responseData(res, "error", 400, "Missing required headers", [], "");
     }

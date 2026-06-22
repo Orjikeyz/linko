@@ -5,7 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Linko Store Preview</title>
-    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v6.0.0-beta1/css/all.css" integrity="SHA384-ABC123==" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v6.0.0-beta1/css/all.css" integrity="SHA384-ABC123==" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="./assets/alert.css">
     <style>
         * {
@@ -734,9 +735,9 @@
                 <div class="hero-stat"><strong>6</strong><span>Products</span></div>
             </div> -->
             <div class="social-links">
-                <a href="#" id="profile-instagram" class="social-btn"><i class="fab fa-instagram"></i></a>
-                <a href="#" id="profile-twitter" class="social-btn"><i class="fab fa-twitter"></i></a>
-                <a href="#" id="profile-facebook" class="social-btn"><i class="fab fa-facebook"></i></a>
+                <a href="#" id="profile-instagram" class="social-btn"><i class="fa fa-instagram"></i></a>
+                <a href="#" id="profile-twitter" class="social-btn"><i class="fa fa-twitter"></i></a>
+                <a href="#" id="profile-facebook" class="social-btn"><i class="fa fa-facebook"></i></a>
                 <a href="#" id="profile-phone-number" class="social-btn"><i class="fa fa-phone"></i></a>
             </div>
         </div>
@@ -807,9 +808,10 @@
                         <span id="qtyValue">1</span>
                         <button id="qtyPlus">+</button>
                     </div>
+                    <span id='snapShotBtn' class="qty-label" style="background: black; border-radius: 5px; border: none; padding: 5px 10px; color: white"><i class="fa fa-camera"></i></span>
                 </div>
 
-                <button class="product-modal-buy-btn" id="modalBuyBtn"><i class="fab fa-whatsapp"></i> Order on WhatsApp</button>
+                <button class="product-modal-buy-btn" id="modalBuyBtn"><i class="fab fa-whatsapp"></i> Order on WhatsApp</button> 
             </div>
         </div>
     </div>
@@ -847,6 +849,9 @@
         getVendorData()
         getProductsData();
 
+
+
+
         function passesFilters(item) {
             const matchesSearch = item.name.toLowerCase().includes(searchTerm.toLowerCase());
             if (!matchesSearch) return false;
@@ -869,6 +874,7 @@
                 return;
             }
 
+            
             visible.forEach(item => {
                 const card = document.createElement('div');
                 card.className = 'product-card';
@@ -1069,6 +1075,10 @@
             const description = document.getElementById('modalProductDescription');
             const stockEl = document.getElementById('modalProductStock');
 
+            document.getElementById("snapShotBtn").addEventListener("click", function() {
+                window.location.href = `${productUrl}/frontend/product.html?id=${product.vendor_id}&pid=${product._id}`
+            });
+            
             const images = Array.isArray(product.images) && product.images.length ? product.images : [];
 
             name.textContent = product.name || 'Untitled product';
@@ -1125,6 +1135,9 @@
             currentImageIndex = (index + images.length) % images.length;
             images.forEach((img, i) => img.classList.toggle('active', i === currentImageIndex));
             thumbs.forEach((t, i) => t.classList.toggle('active', i === currentImageIndex));
+            
+            
+
         }
 
         document.getElementById('galleryPrev').addEventListener('click', (e) => {

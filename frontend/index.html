@@ -1006,41 +1006,50 @@
             tray.classList.toggle('show', count > 0);
         }
 
-            document.getElementById('trayCheckoutBtn').addEventListener('click', () => {
-                const formatNaira = amount => amount.toLocaleString('en-NG');
+document.getElementById('trayCheckoutBtn').addEventListener('click', () => {
+    const formatNaira = amount => amount.toLocaleString('en-NG');
 
-                let grandTotal = 0;
+    let grandTotal = 0;
 
-                const lines = [...orderItems.values()]
-                    .map(item => {
-                        const itemTotal = item.qty * item.product.price;
-                        grandTotal += itemTotal;
+    const vendorData = JSON.parse(localStorage.getItem("vendorData"));
 
-                        const imageUrl = item.product.images?.[0] || '';
-                        const productId = item.product._id || 'N/A';
-                        const productUrlData = `${productUrl}frontend/product.html?id=${JSON.parse(localStorage.getItem("vendorData")).username}&pid=${productId}`;
-                        return `
-        • ${item.product.name}
-        Product ID: ${productId}
-        Description: ${item.product.description || 'N/A'}
-        Price: ₦${formatNaira(item.product.price)}
-        Qty: ${item.qty}
-        Total: ₦${formatNaira(itemTotal)}
-        URL: ${productUrlData}`.trim();}).join('\n\n');
+    const lines = [...orderItems.values()]
+        .map(item => {
+            const itemTotal = item.qty * item.product.price;
+            grandTotal += itemTotal;
 
-                const message = `🛒 New Order
+            const productId = item.product._id || 'N/A';
 
-        ${lines}
+            const productUrlData =
+                `${productUrl}frontend/product.html?id=${vendorData.username}&pid=${productId}`;
 
-        💰 Grand Total: ₦${formatNaira(grandTotal)}
+            return [
+                `• ${item.product.name}`,
+                `ID: ${productId}`,
+                `Price: ₦${formatNaira(item.product.price)}`,
+                `Qty: ${item.qty}`,
+                `Total: ₦${formatNaira(itemTotal)}`,
+                `Link: ${productUrlData}`
+            ].join('\n');
+        })
+        .join('\n\n');
 
-        From: linko.store/aria`;
+    const message =
+`🛒 NEW ORDER
 
-                window.open(
-                    `https://wa.me/${JSON.parse(localStorage.getItem("vendorData")).phone_number}?text=${encodeURIComponent(message)}`,
-                    '_blank'
-                );
-            });
+${lines}
+
+━━━━━━━━━━━━━━
+💰 TOTAL: ₦${formatNaira(grandTotal)}
+━━━━━━━━━━━━━━
+
+📦 From: linko.store`;
+
+    window.open(
+        `https://wa.me/${vendorData.phone_number}?text=${encodeURIComponent(message)}`,
+        '_blank'
+    );
+});
 
             
         let toastTimeout = null;

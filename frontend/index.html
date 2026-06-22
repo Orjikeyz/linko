@@ -772,6 +772,7 @@
             <span id="trayLabel">items selected</span>
         </div>
         <button id="trayCheckoutBtn"><i class="fab fa-whatsapp"></i> Send order on WhatsApp</button>
+        <i class="fa fa-close" onclick="clearOrder()" style="position: absolute; right: 0; cursor: pointer; transform: translate(-2px, -15px)"></i>
     </div>
 
     <div class="toast" id="toast"><i class="fa fa-check-circle"></i><span id="toastText">Added</span></div>
@@ -811,7 +812,7 @@
                     <span id='snapShotBtn' class="qty-label" style="background: black; border-radius: 5px; border: none; padding: 5px 10px; color: white"><i class="fa fa-camera"></i></span>
                 </div>
 
-                <button class="product-modal-buy-btn" id="modalBuyBtn"><i class="fab fa-whatsapp"></i> Order on WhatsApp</button> 
+                <button class="product-modal-buy-btn" id="modalBuyBtn"><i class="fa fa-whatsapp"></i> Order on WhatsApp</button> 
             </div>
         </div>
     </div>
@@ -991,6 +992,12 @@
             updateTray();
         }
 
+            function clearOrder() {
+                orderItems.clear();
+                updateTray();
+            }
+
+
         function updateTray() {
             const tray = document.getElementById('orderTray');
             const count = [...orderItems.values()].reduce((sum, i) => sum + i.qty, 0);
@@ -1034,6 +1041,8 @@
                     '_blank'
                 );
             });
+
+            
         let toastTimeout = null;
         function showToast(text) {
             const toast = document.getElementById('toast');

@@ -78,6 +78,12 @@ const getAllVendorProduct = async (req, res) => {
         const page = parseInt(req.query.page) || 1;     // current page
         const limit = parseInt(req.query.limit) || 10;  // items per page
 
+        if (req.params.vendorUsername !== req.userId) {
+            console.log(req.params.vendorUsername, req.userId)
+            res.clearCookie("token");
+            return responseData(res, 'error', 403, 'Unauthorized - logging out', [], '');
+        }
+
         if (!vendor_id) {
             return responseData(res, 'error', 400, 'Vendor ID required', [], '');
         }

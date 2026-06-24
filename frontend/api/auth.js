@@ -69,13 +69,115 @@ const loginAuth = async () => {
             loginBtn.disabled = true
             loginBtn.textContent = "ACCESS GRANTED"
             window.location.href = `./?id=${data.result.id}`
-        }, 1501);
-        
+        }, 1500);
+        return;        
     } catch (error) {
         console.error("Login error:", error);
         showAlert("Something went wrong. Please try again.", "error");
+        return;
     }
 }
+
+const registrationAuth = async () => {
+    let registerBtn = document.getElementById("registerBtn");
+    registerBtn.disabled = true;
+    registerBtn.textContent = "Creating Account...";
+
+    function resetBtn() {
+        registerBtn.disabled = false;
+        registerBtn.textContent = "CREATE ACCOUNT";
+    }
+
+    let registerError = document.getElementById("registerError");
+
+    function showAlert(message) {
+        registerError.style.display = "block";
+        registerError.textContent = message;
+
+        setTimeout(() => {
+            resetBtn();
+        }, 1500);
+
+        setTimeout(() => {
+            registerError.style.display = "none";
+        }, 2000);
+    }
+
+    const brandName = document.getElementById("registerBrandName").value.trim();
+    const email = document.getElementById("registerEmail").value.trim();
+    const password = document.getElementById("registerPassword").value.trim();
+
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!brandName) {
+        showAlert("Brand name is required");
+        return;
+    }
+
+    if (brandName.length < 3) {
+        showAlert("Brand name must be at least 3 characters");
+        return;
+    }
+
+    if (!email) {
+        showAlert("Email is required");
+        return;
+    }
+
+    if (!emailPattern.test(email)) {
+        showAlert("Please enter a valid email address");
+        return;
+    }
+
+    if (!password) {
+        showAlert("Password is required");
+        return;
+    }
+
+    if (password.length < 6) {
+        showAlert("Password must be at least 6 characters");
+        return;
+    }
+
+    try {
+        const response = await fetch(`${backendUrl}/auth/register`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            credentials: "include",
+            body: JSON.stringify({
+                brandName,
+                email,
+                password,
+            }),
+        });
+
+        const data = await response.json();
+
+        if (data.status === "error") {
+            showAlert(data.message || "Registration failed");
+            return;
+        }
+
+        registerError.style.display = "block";
+        registerError.textContent = "Registration successful!";
+
+        setTimeout(() => {
+            registerBtn.disabled = true;
+            registerBtn.textContent = "ACCOUNT CREATED";
+
+            window.location.href = "/login.html";
+
+            // Option 2: If backend returns user id
+            // window.location.href = `./?id=${data.result.id}`;
+        }, 1500);
+
+    } catch (error) {
+        console.error("Registration error:", error);
+        showAlert("Something went wrong. Please try again.");
+    }
+};
 
 const logout = async () => {
     try {
@@ -161,17 +263,17 @@ const changePassword = async ()=> {
             errors.push("Password must be at least 6 characters.");
         }
 
-        if (!/[A-Z]/.test(newPass)) {
-            errors.push("Must include at least one uppercase letter.");
-        }
+        // if (!/[A-Z]/.test(newPass)) {
+        //     errors.push("Must include at least one uppercase letter.");
+        // }
 
-        if (!/[a-z]/.test(newPass)) {
-            errors.push("Must include at least one lowercase letter.");
-        }
+        // if (!/[a-z]/.test(newPass)) {
+        //     errors.push("Must include at least one lowercase letter.");
+        // }
 
-        if (!/[0-9]/.test(newPass)) {
-            errors.push("Must include at least one number.");
-        }
+        // if (!/[0-9]/.test(newPass)) {
+        //     errors.push("Must include at least one number.");
+        // }
 
         // if (!/[^A-Za-z0-9]/.test(newPass)) {
         //     errors.push("Must include at least one special character.");

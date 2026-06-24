@@ -10,6 +10,7 @@ const getVendor = async (req, res) => {
     const vendor = await Vendor.findOne({ username: vendorUsername })
 
     if (!vendor) {
+      res.clearCookie("token");
       return responseData(res, 'error', 400, 'Vendor not found', [], '')
     }
 
@@ -89,6 +90,7 @@ const updateVendor = async (req, res) => {
     const updatedVendor = await Vendor.findOneAndUpdate({username: vendorUsername }, { $set: updateFields }, { new: true, runValidators: true });
 
     if (!updatedVendor) {
+        res.clearCookie("token");
         return responseData(res, "error", 404, "Vendor not found", [], '');
     }
 
@@ -128,6 +130,7 @@ const updateVendorLogo = async (req, res) => {
     const updatedVendor = await Vendor.findOneAndUpdate({ username: vendorUsername }, {$set: { brand_image: logoUrl } }, {new: true, runValidators: true });
 
     if (!updatedVendor) {
+      res.clearCookie("token");
       return responseData(res, "error", 404, "Vendor not found", [], "");
     }
 

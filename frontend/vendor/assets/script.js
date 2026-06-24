@@ -24,6 +24,8 @@ async function showSection(section) {
             await getTransaction(paramsValue);  // load only once
             transactionLoaded = true;           // mark as loaded
         }
+    }else if (section === "settings") {
+        editVendorData()
     }
 }
 

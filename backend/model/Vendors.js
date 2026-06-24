@@ -12,7 +12,7 @@ const vendorSchema = new mongoose.Schema(
         },
         brand_image: {
             type: String, // URL
-            required: true,
+            required: false,
         },
         brand_email: {
             type: String, // URL

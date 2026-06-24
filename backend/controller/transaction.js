@@ -6,7 +6,7 @@ require("dotenv").config();
 // Get Transaction
 const getTransaction = async (req, res) => {
     try {
-        const vendor_id = req.query.id;
+        const vendor_id = req.userId;
         const page = parseInt(req.query.page) || 1;     // current page
         const limit = parseInt(req.query.limit) || 10;  // items per page
 

@@ -67,10 +67,6 @@
                             <div class="stat-value">24</div>
                         </div> -->
                         <div class="stat-card">
-                            <div class="stat-label">Store Views / Visits</div>
-                            <div class="stat-value">24</div>
-                        </div>
-                        <div class="stat-card">
                             <div class="stat-label">Account Status</div>
                             <div class="stat-value stat-change positive" id="account_status">Active</div>
                         </div>
@@ -78,6 +74,13 @@
                         <div class="stat-card">
                             <div class="stat-label">Subscription Plan</div>
                             <div class="stat-value stat-change" id="status_plan">-</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label" style="display: flex; justify-content: space-between; align-items: center;">
+                                <span>Store Access Link</span>
+                                <span><i class="fa fa-copy"  onclick="copyShopLink()"></i></span>
+                            </div>
+                            <div class="stat-value" style="font-size: 11px; word-wrap: normal;"><a href="#" style="color: dodgerblue; text-decoration: none;" id="storeLink"></a></div>
                         </div>
                     </div>
 
@@ -396,6 +399,19 @@
             buttons[index].classList.add("activeSetTab");
         }
 
+        const storeLink = document.getElementById('storeLink');
+        storeLink.textContent = productUrl+`/frontend/?id=${paramsValue}`
+        storeLink.href  = productUrl+`/frontend/?id=${paramsValue}`
+        function copyShopLink() {
+            navigator.clipboard.writeText(storeLink.textContent.trim())
+                .then(() => {
+                    showAlert('Store link copied!', "info");
+                })
+                .catch(err => {
+                    showAlert('Failed to copy:', "error");
+                    console.error('Failed to copy:', err);
+                });
+            }
 
     </script>
 

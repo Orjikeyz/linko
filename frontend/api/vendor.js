@@ -46,6 +46,7 @@ const getVendorData = async () => {
 
 // Vendor Dashboard Product API Call
 const getVendorDashboardData = async () => {
+  localStorage.removeItem('vendorData');
   try {
     const response = await fetch(`${backendUrl}/${paramsValue}`, {
       method: 'GET',
@@ -63,7 +64,8 @@ const getVendorDashboardData = async () => {
 
       if (data.message === "Vendor not found") {
         localStorage.removeItem('vendorData');
-        // window.location.href = "../404.html"
+        console.log(12)
+        window.location.href = "../404.html"
       }
       return
     }
@@ -91,7 +93,7 @@ const editVendorData = async () => {
   let vendorX = document.getElementById("vendorX")
   let saveChanges = document.getElementById("saveChanges")
 
-  logoImage.src = storeData.brand_image || ""
+  logoImage.src = storeData.brand_image || "../assets/images/emptyimage.avif"
   vendorName.value = storeData.brand_name || ""
   vendorDescription.value = storeData.brand_description || ""
   vendorPhone.value = storeData.phone_number || ""
@@ -332,4 +334,3 @@ async function sendToBackend(urls, uploadBrandLogoBtn) {
   }
 }
 
-editVendorData()

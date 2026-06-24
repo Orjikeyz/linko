@@ -3,9 +3,9 @@ const Vendor = require('../model/Vendors')
 const responseData = require('../middleware/response')
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken")
+const crypto = require("crypto")
 
 require("dotenv").config();
-
 
 const login = async (req, res) => {
     try {
@@ -51,6 +51,78 @@ const login = async (req, res) => {
     }
 }
 
+const register = async (req, res) => {
+    try {
+        const { brandName, email, password } = req.body;
+
+        // 1. Validate input
+        if (!brandName || !email || !password) {
+            return responseData(res, 'error', 400, 'All fields are required', [], '');
+        }
+
+        if (password.length < 6) {
+            return responseData(res, 'error', 400, 'Password must be at least 6 characters', [], '');
+        }
+
+        function generateUsername(name) {
+            const cleanName = name
+                .toLowerCase()
+                .replace(/\s+/g, "")        // remove spaces
+                .replace(/[^a-z0-9]/g, "");  // remove special chars
+
+            const randomBytes = crypto.randomInt(1000, 99999);
+
+            return `${cleanName}_${randomBytes}`;
+        }
+
+        let username = generateUsername(brandName)
+
+        // 2. Check if user already exists
+        const existingVendor = await Vendor.findOne({
+            $or: [
+                { brand_email: email },
+                { username: username }
+            ]
+        });
+        
+
+        if (existingVendor) {
+            return responseData(res, 'error', 409, 'User already exists', [], '');
+        }
+
+        // 3. Hash password
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        // 4. Create user
+        const newVendor = await Vendor.create({
+            brand_name: brandName,
+            username: username,
+            brand_email: email,
+            password: hashedPassword
+        });
+
+        // 5. Create JWT (optional but common)
+        const token = jwt.sign({ id: newVendor._id, userId: newVendor.username}, process.env.JWT_SECRET, { expiresIn: "1h", algorithm: 'HS256' });
+
+        // 6. Set cookie (same as login)
+        res.cookie("token", token, {
+            httpOnly: true,
+            secure: true,       // HTTPS only
+            sameSite: "None",   // cross-site safe
+            maxAge: 1000 * 60 * 60
+        });
+
+        return responseData(res, 'success', 201, 'Registration successful', { id: newVendor.username }, '');
+
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({
+            status: "error",
+            message: "Server error"
+        });
+    }
+};
+
 const changePassword = async (req, res) => {
     try {
         const { currentPassword, newPassword, confirmPassword } = req.body;
@@ -67,17 +139,17 @@ const changePassword = async (req, res) => {
             return responseData(res, 'error', 400, 'Password must be at least 6 characters', [], '');
         }
 
-        if (!/[A-Z]/.test(newPassword)) {
-            return responseData(res, 'error', 400, 'Must include at least one uppercase letter', [], '');
-        }
+        // if (!/[A-Z]/.test(newPassword)) {
+        //     return responseData(res, 'error', 400, 'Must include at least one uppercase letter', [], '');
+        // }
 
-        if (!/[a-z]/.test(newPassword)) {
-            return responseData(res, 'error', 400, 'Must include at least one lowercase letter', [], '');
-        }
+        // if (!/[a-z]/.test(newPassword)) {
+        //     return responseData(res, 'error', 400, 'Must include at least one lowercase letter', [], '');
+        // }
 
-        if (!/[0-9]/.test(newPassword)) {
-            return responseData(res, 'error', 400, 'Must include at least one number', [], '');
-        }
+        // if (!/[0-9]/.test(newPassword)) {
+        //     return responseData(res, 'error', 400, 'Must include at least one number', [], '');
+        // }
 
         const vendor = await Vendor.findOne({ username: req.userId }, { username: 1, password: 1});
 
@@ -120,6 +192,7 @@ const logout = async (req, res) => {
 
 module.exports = {
     login,
+    register,
     changePassword,
     logout
 }

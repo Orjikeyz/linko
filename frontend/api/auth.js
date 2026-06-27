@@ -164,10 +164,10 @@ const registrationAuth = async () => {
         registerError.textContent = "Registration successful!";
 
         setTimeout(() => {
+            localStorage.setItem("verificationEmail", email)
             registerBtn.disabled = true;
             registerBtn.textContent = "ACCOUNT CREATED";
-
-            window.location.href = "/login.html";
+            window.location.href = "accountVerification.html";
 
             // Option 2: If backend returns user id
             // window.location.href = `./?id=${data.result.id}`;

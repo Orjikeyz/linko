@@ -24,9 +24,8 @@ const productRoutes = require("./router/productRoutes")
 const vendorRoutes = require("./router/vendorRoutes")
 const transactionRoutes = require("./router/transactionRoutes")
 
-app.use("/auth", authRoutes);
-
 app.use("/", vendorRoutes);
+app.use("/auth", authRoutes);
 app.use("/product", productRoutes);
 app.use("/transaction", transactionRoutes);
 

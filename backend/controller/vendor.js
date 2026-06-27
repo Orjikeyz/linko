@@ -87,7 +87,7 @@ const updateVendor = async (req, res) => {
       facebook: vendorFacebook,
       x: vendorX
     };
-    const updatedVendor = await Vendor.findOneAndUpdate({username: vendorUsername }, { $set: updateFields }, { new: true, runValidators: true });
+    const updatedVendor = await Vendor.findOneAndUpdate({username: vendorUsername }, { $set: updateFields }, { returnDocument: "after", runValidators: true });
 
     if (!updatedVendor) {
         res.clearCookie("token");

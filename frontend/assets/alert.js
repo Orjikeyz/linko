@@ -16,6 +16,11 @@ function showAlert(message, status) {
             const body = document.querySelector('body').style.display = ""
             window.location.href = "./login.html"
         }
+
+        if (message === "Account verification required") {
+            const body = document.querySelector('body').style.display = ""
+            window.location.href = "./accountVerification.html" 
+        }
         
 
     } else if (status === "success") {

@@ -133,14 +133,20 @@ const updateVendorData = async (vendorName, vendorDescription, vendorPhone, vend
 
 
   if (!vendorName) {
+    saveChanges.disabled = false
+    saveChanges.textContent = "Save Changes"
     return showAlert("Vendor brand Name cannot be empty", "error")
   }
 
   if (!vendorDescription) {
+    saveChanges.disabled = false
+    saveChanges.textContent = "Save Changes"
     return showAlert("Vendor brand description cannot be empty", "error")
   }
 
   if (!vendorPhone) {
+    saveChanges.disabled = false
+    saveChanges.textContent = "Save Changes"
     return showAlert("Vendor brand phone number cannot be empty", "error")
   }
 

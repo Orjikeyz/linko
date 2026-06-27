@@ -27,7 +27,7 @@ const login = async (req, res) => {
             return responseData(res, 'error', 401, 'Invalid email or password', [], '');
         }
 
-        const token = jwt.sign({ id: vendor._id, userId: vendor.username }, process.env.JWT_SECRET, { expiresIn: "1h", algorithm: 'HS256' });
+        const token = jwt.sign({ id: vendor._id, userId: vendor.username, status: vendor.status}, process.env.JWT_SECRET, { expiresIn: "1h", algorithm: 'HS256' });
 
         // res.cookie("token", token, {
         //     httpOnly: true,
@@ -91,14 +91,16 @@ const register = async (req, res) => {
         }
 
         // 3. Hash password
-        const hashedPassword = await bcrypt.hash(password, 10);
+        const hashedPassword = await bcrypt.hash(password, 12);
+        const codeToken = Math.floor(100000 + Math.random() * 900000).toString(); //generate random code token 
 
         // 4. Create user
         const newVendor = await Vendor.create({
             brand_name: brandName,
             username: username,
-            brand_email: email,
-            password: hashedPassword
+            brand_email: email.toLowerCase(),
+            password: hashedPassword,
+            token: codeToken
         });
 
         // 5. Create JWT (optional but common)
@@ -112,14 +114,76 @@ const register = async (req, res) => {
             maxAge: 1000 * 60 * 60
         });
 
-        return responseData(res, 'success', 201, 'Registration successful', { id: newVendor.username }, '');
+        try {
+
+            const response = await fetch(`${process.env.PHP_URL}verification_code.php`, {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({
+                    email: email,
+                    name: brandName,
+                    code: codeToken,
+                    link: `${process.env.FRONTEND_URL}accountVerification`
+                })
+            });
+
+            return responseData(res, 'success', 201, 'Registration successful', { id: newVendor.username }, '');
+
+        } catch (error) {
+            return responseData(res, "error", 500, "An error occurred while processing your registration.", [], "");
+        }
 
     } catch (error) {
         console.error(error);
-        return res.status(500).json({
-            status: "error",
-            message: "Server error"
-        });
+        return responseData(res, "error", 500, "Sorry an error occurred while creating an account. Please try again later", [], "");
+    }
+};
+
+const accountVerification = async (req, res) => {
+    try {
+
+        let { email, code } = req.body;
+
+        // Validate input
+        if (typeof email !== "string" || !code) {
+            return responseData(res, "error", 400, "Invalid request.", [], "");
+        }
+
+        email = email.trim().toLowerCase();
+        code = code.trim();
+
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            return responseData(res, "error", 400, "Invalid email address.", [], "");
+        }
+
+        if (!/^\d{6}$/.test(code)) {
+            return responseData(res, "error", 400, "Invalid verification code.", [], "");
+        }
+
+        const vendor = await Vendor.findOne({ brand_email: email });
+
+        // Do not reveal whether the account exists
+        if (!vendor) {
+            return responseData(res, "error", 400, "Invalid verification code.", [], "");
+        }
+
+        if (vendor.status === "active") {
+            return responseData(res, "error", 409, "Account has already been verified.", [], "");
+        }
+
+        if (vendor.token !== code) {
+            return responseData(res, "error", 400, "Invalid verification code.", [], "");
+        }
+
+        const newToken = Math.floor(100000 + Math.random() * 900000).toString(); //generate random code token 
+
+        await Vendor.findByIdAndUpdate(vendor._id, {status: "active",token: newToken}, {returnDocument: "after"});
+
+        return responseData(res, "success", 200, "Account verified successfully.", [], "");
+
+    } catch (err) {
+        console.error(err);
+        return responseData(res, "error", 500, "Error processing account verification.", [], "");
     }
 };
 
@@ -193,6 +257,7 @@ const logout = async (req, res) => {
 module.exports = {
     login,
     register,
+    accountVerification,
     changePassword,
     logout
 }

@@ -40,7 +40,7 @@ const vendorSchema = new mongoose.Schema(
         status: {
             type: String,
             enum: ["active", "inactive", "pending"],
-            default: "active",
+            default: "pending",
         },
         password: {
             type: String,

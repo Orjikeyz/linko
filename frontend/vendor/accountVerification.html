@@ -253,6 +253,10 @@
     <script>
         const inputs = document.querySelectorAll(".otp-input");
         let email = new URLSearchParams(window.location.search).get('mail') || localStorage.getItem("verificationEmail")
+
+        if (!email) {
+            window.location.href = "../404.html"
+        }
         inputs.forEach((input, index) => {
 
             input.addEventListener("input", () => {
@@ -299,7 +303,6 @@
             }
 
             try {
-
                 const response = await fetch(`${backendUrl}/auth/accountVerification`, {
                     method: "POST",
                     headers: {
@@ -336,6 +339,32 @@
         let time = 3;
 
         const timer = document.getElementById("timer");
+        async function resendVerificationMail() {
+            try {
+                const response = await fetch(`${backendUrl}/auth/resendVerificationMail`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    credentials: "include",
+                    body: JSON.stringify({email: email})
+                });
+
+                const result = await response.json();
+
+                if (result.status === "error") {
+                    showAlert(result.message, result.status)
+                    return;
+                }
+
+                showAlert(result.message, result.status)
+                return;
+
+            } catch (err) {
+                showAlert("Network error. Please try again.", "error");
+                return;
+            }
+        }
 
         setInterval(() => {
 
@@ -343,15 +372,6 @@
                 let resendBtn = document.getElementById("resendBtn")
                 timer.innerHTML = "Expired";
                 resendBtn.style.display = "block"
-
-                resendBtn.addEventListener("click", function () {
-                    resendBtn.style.display = "none"
-                    time = 120
-                    const m = String(Math.floor(time / 60)).padStart(2, "0");
-                    const s = String(time % 60).padStart(2, "0");
-
-                    timer.innerHTML = `${m}:${s}`;
-                })
                 return;
             }
 
@@ -363,6 +383,16 @@
             timer.innerHTML = `${m}:${s}`;
 
         }, 1000);
+
+        resendBtn.addEventListener("click", function () {
+            resendVerificationMail()
+            resendBtn.style.display = "none"
+            time = 12
+            const m = String(Math.floor(time / 60)).padStart(2, "0");
+            const s = String(time % 60).padStart(2, "0");
+
+            timer.innerHTML = `${m}:${s}`;
+        })
     </script>
 
 </body>

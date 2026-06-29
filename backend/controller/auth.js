@@ -9,7 +9,8 @@ require("dotenv").config();
 
 const login = async (req, res) => {
     try {
-        const { email, password } = req.body;
+        let { email, password } = req.body;
+        email = email.trim().toLowerCase();
 
         if (!email || !password) {
             return responseData(res, 'error', 400, 'Email and password are required', [], '');
@@ -115,7 +116,6 @@ const register = async (req, res) => {
         });
 
         try {
-
             const response = await fetch(`${process.env.PHP_URL}verification_code.php`, {
                 method: "POST",
                 headers: {"Content-Type": "application/json"},
@@ -138,6 +138,46 @@ const register = async (req, res) => {
         return responseData(res, "error", 500, "Sorry an error occurred while creating an account. Please try again later", [], "");
     }
 };
+
+const resendVerificationMail = async (req, res) => {
+    let {email} = req.body
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        return responseData(res, "error", 400, "Invalid email address.", [], "");
+    }
+
+    if (!email) {
+        return responseData(res, 'error', 400, 'Invalid Request. Please try again later or contact customer service', [], '');
+    }
+
+    email = email.trim().toLowerCase();
+
+    const codeToken = Math.floor(100000 + Math.random() * 900000).toString(); //generate random code token 
+    const vendor = await Vendor.findOneAndUpdate({ brand_email: email }, {token: codeToken,}, {returnDocument: "after"});
+    
+    if (!vendor) {
+        return responseData(res, "error", 400, "Invalid request.", [], "");
+    }
+
+    try {
+        const response = await fetch(`${process.env.PHP_URL}verification_code.php`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                email: email,
+                name: "",
+                code: codeToken,
+                link: `${process.env.FRONTEND_URL}accountVerification`
+            })
+        });
+
+        return responseData(res, 'success', 201, 'Verification code sent. Please check your email', [], '');
+
+    } catch (error) {
+        console.log(error)
+        return responseData(res, "error", 500, "An error occurred while sending verification mail. Please try again later.", [], "");
+    }
+}
 
 const accountVerification = async (req, res) => {
     try {
@@ -257,6 +297,7 @@ const logout = async (req, res) => {
 module.exports = {
     login,
     register,
+    resendVerificationMail,
     accountVerification,
     changePassword,
     logout

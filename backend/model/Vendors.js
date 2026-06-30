@@ -35,7 +35,7 @@ const vendorSchema = new mongoose.Schema(
         plan: {
             type: String,
             enum: ["free", "basic", "pro"],
-            default: "basic",
+            default: "free",
         },
         status: {
             type: String,

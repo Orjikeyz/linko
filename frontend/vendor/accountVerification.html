@@ -336,7 +336,7 @@
         }
 
         // Countdown
-        let time = 3;
+        let time = 120;
 
         const timer = document.getElementById("timer");
         async function resendVerificationMail() {
@@ -387,7 +387,7 @@
         resendBtn.addEventListener("click", function () {
             resendVerificationMail()
             resendBtn.style.display = "none"
-            time = 12
+            time = 120
             const m = String(Math.floor(time / 60)).padStart(2, "0");
             const s = String(time % 60).padStart(2, "0");
 

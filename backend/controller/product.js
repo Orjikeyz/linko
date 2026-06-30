@@ -135,6 +135,21 @@ const addProduct = async (req, res) => {
 
     cleanData.name = cleanName;
 
+    let vendor = await Product.findOne({ vendor_id: req.userId }).populate("vendor");
+
+    if (!vendor) {
+        return responseData(res, 'error', 404, 'No product found', [], '');
+    }
+
+    let vendorPlan = vendor.vendor.plan
+
+    const totalProducts = await Product.countDocuments({ vendor_id: req.userId });
+
+    if (vendorPlan === "free" && totalProducts >= 10) {
+        return responseData(res, 'error', 403, 'You have reached your product limit.', [], '');
+    }
+
+
     if (!cleanName || cleanName.length < 3) {
         return responseData(res, 'error', 400, 'Product name must be at least 3 characters', [], '');
     }
@@ -172,6 +187,8 @@ const addProduct = async (req, res) => {
     if (invalidUrl) {
         return responseData(res, 'error', 400, 'Invalid image url', [], '');
     }
+
+
 
     // INsert into product table
     try {

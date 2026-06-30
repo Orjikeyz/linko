@@ -159,6 +159,10 @@ const resendVerificationMail = async (req, res) => {
         return responseData(res, "error", 400, "Invalid request.", [], "");
     }
 
+    if (vendor.status === "active") {
+        return responseData(res, "error", 409, "Account has already been verified.", [], "");
+    }
+
     try {
         const response = await fetch(`${process.env.PHP_URL}verification_code.php`, {
             method: "POST",

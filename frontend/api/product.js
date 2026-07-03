@@ -1,33 +1,33 @@
-const getProductsData = async () => {
-            renderSkeletons(6);
-            await new Promise(r => setTimeout(r, 650)); // simulate network latency
+// const getProductsData = async () => {
+//             renderSkeletons(6);
+//             await new Promise(r => setTimeout(r, 650)); // simulate network latency
 
-                try {
-                    const response = await fetch(`${backendUrl}/product/${paramsValue}`, {
-                        method: 'GET',
-                        headers: { 'Content-Type': 'application/json' }
-                    })
+//                 try {
+//                     const response = await fetch(`${backendUrl}/product/${paramsValue}`, {
+//                         method: 'GET',
+//                         headers: { 'Content-Type': 'application/json' }
+//                     })
 
-                    if (!response.ok) {
-                        showAlert('No data available', "error")
-                    }
+//                     if (!response.ok) {
+//                         showAlert('No data available', "error")
+//                     }
 
-                    const data = await response.json()
-                    if (data.status === 'error') {
-                        showAlert(`${data.message}`, `${data.status}`)
-                    }
+//                     const data = await response.json()
+//                     if (data.status === 'error') {
+//                         showAlert(`${data.message}`, `${data.status}`)
+//                     }
 
-                    if (data.status === 'success') {
+//                     if (data.status === 'success') {
                         
-                            window.__productsById = {};
-                            data.result.forEach(item => { window.__productsById[item._id] = item; });
-                            renderGrid();
-                    }
-                } catch (error) {
-                    console.log(error)
-                    showAlert('Server Error: Error getting product data', "error")
-                }
-        };
+//                             window.__productsById = {};
+//                             data.result.forEach(item => { window.__productsById[item._id] = item; });
+//                             renderGrid();
+//                     }
+//                 } catch (error) {
+//                     console.log(error)
+//                     showAlert('Server Error: Error getting product data', "error")
+//                 }
+//         };
 
 const getProductById = async (productId) => {
     try {
@@ -183,7 +183,7 @@ function openProductModal(productId) {
             Array.from(this.files).forEach(file => {
                 console.log(URL.createObjectURL(file));
                 currentImage.innerHTML += `
-            <div class="currentimageItem">
+            <div class="currentimageItem" style='display: none'>
                 <img src="${URL.createObjectURL(file)}"
                     loading="lazy" width="70px" height="70px" style="border-radius: 10px; margin: 0 10px;" class="imageName">
                 <i class="fa-solid fa-x removeImage" style="font-size: 10px; position: absolute; transform: translateX(-30px); background: #e3e3e3; padding: 5px; border-radius: 5px;"></i>

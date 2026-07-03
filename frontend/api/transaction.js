@@ -115,7 +115,7 @@ async function selectPlan(plan) {
         if (data.status === "error") {
             showAlert(data.message, data.status);
             subscribeBtn.disabled = false
-            subscribeBtn.textContent = "Choose Basic"
+            subscribeBtn.textContent = "Choose Pro"
             return;
         }
 
@@ -125,12 +125,12 @@ async function selectPlan(plan) {
         window.location.href = `${data.result.authorization_url}`
         setTimeout(() => {
             subscribeBtn.disabled = false
-            subscribeBtn.textContent = "Choose Basic"
+            subscribeBtn.textContent = "Choose Pro"
         }, 2000);
 
     } catch (error) {
         subscribeBtn.disabled = false
-        subscribeBtn.textContent = "Choose Basic"
+        subscribeBtn.textContent = "Choose Pro"
         console.error(error);
         showAlert("Network error. Please try again.");
     }

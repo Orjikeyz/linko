@@ -145,18 +145,26 @@ const addProduct = async (req, res) => {
     cleanData.name = cleanName;
 
     let vendor = await Product.findOne({ vendor_id: req.userId }).populate("vendor");
+    console.log(vendor)
 
-    if (!vendor) {
-        return responseData(res, 'error', 404, 'No product found', [], '');
+    // let vendorPlan = vendor.vendor.plan 
+
+    // const totalProducts = await Product.countDocuments({ vendor_id: req.userId });
+
+    // if (vendorPlan === "free" && totalProducts >= 10) {
+    //     return responseData(res, 'error', 403, 'You have reached your product limit.', [], '');
+    // }
+
+    const vendorPlan = vendor?.vendor?.plan;
+
+    if (vendorPlan !== null && vendorPlan !== undefined) {
+        const totalProducts = await Product.countDocuments({ vendor_id: req.userId });
+
+        if (vendorPlan === "free" && totalProducts >= 10) {
+            return responseData(res, 'error', 403, 'You have reached your product limit.', [], '');
+        }
     }
 
-    let vendorPlan = vendor.vendor.plan
-
-    const totalProducts = await Product.countDocuments({ vendor_id: req.userId });
-
-    if (vendorPlan === "free" && totalProducts >= 10) {
-        return responseData(res, 'error', 403, 'You have reached your product limit.', [], '');
-    }
 
 
     if (!cleanName || cleanName.length < 3) {

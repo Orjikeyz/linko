@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Linko — Product Card</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+            <link rel="stylesheet" href="./assets/alert.css">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+            gap: 32px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* ── Blurred background image ── */
+        .bg-blur {
+            position: fixed;
+            inset: -40px;
+            background-image: var(--bg-img);
+            background-size: cover;
+            background-position: center;
+            filter: blur(32px) brightness(0.35) saturate(1.4);
+            transform: scale(1.08);
+            z-index: 0;
+            transition: background-image 0.8s ease;
+        }
+
+        .bg-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.45);
+            z-index: 1;
+        }
+
+        /* ── Style picker ── */
+        .style-picker {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+            position: relative;
+            z-index: 10;
+        }
+
+        .style-btn {
+            padding: 8px 18px;
+            border-radius: 100px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.06);
+            color: rgba(255, 255, 255, 0.5);
+            font-family: 'Inter', sans-serif;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            backdrop-filter: blur(8px);
+        }
+
+        .style-btn:hover {
+            border-color: rgba(255, 255, 255, 0.35);
+            color: #fff;
+        }
+
+        .style-btn.active {
+            background: #fff;
+            color: #000;
+            border-color: #fff;
+        }
+
+        /* ── Card wrapper ── */
+        #cardTarget {
+            position: relative;
+            width: 420px;
+            height: 520px;
+            border-radius: 24px;
+            overflow: hidden;
+            flex-shrink: 0;
+            z-index: 10;
+        }
+
+        /* ── THEME: Dark Luxury ── */
+        .theme-dark #cardTarget {
+            background: #0d0d0d;
+            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.06);
+        }
+
+        .theme-dark .card-bg-layer {
+            background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(255, 255, 255, 0.06), transparent 70%),
+                radial-gradient(ellipse 60% 50% at 80% 80%, rgba(37, 211, 102, 0.07), transparent 60%);
+        }
+
+        .theme-dark .card-grid {
+            background-image: linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+        }
+
+        .theme-dark .product-id {
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        .theme-dark .product-name {
+            color: #fff;
+        }
+
+        .theme-dark .product-desc {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .theme-dark .price-tag {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+
+        .theme-dark .store-badge {
+            background: rgba(255, 255, 255, 0.04);
+            border-color: rgba(255, 255, 255, 0.08);
+        }
+
+        .theme-dark .store-badge-dot {
+            background: #25D366;
+        }
+
+        .theme-dark .store-badge-text {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .theme-dark .store-name {
+            color: #fff;
+        }
+
+        .theme-dark .logo-text {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .theme-dark .logo-mark {
+            background: #fff;
+            color: #000;
+        }
+
+        .theme-dark .img-overlay {
+            background: linear-gradient(to top, #0d0d0d 0%, transparent 55%);
+        }
+
+        .theme-dark .corner-tag {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        /* ── THEME: Blaze ── */
+        .theme-blaze #cardTarget {
+            background: #0f0800;
+            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 140, 0, 0.12);
+        }
+
+        .theme-blaze .card-bg-layer {
+            background: radial-gradient(ellipse 100% 70% at 50% -10%, rgba(255, 140, 0, 0.25), transparent 65%),
+                radial-gradient(ellipse 70% 50% at 90% 90%, rgba(255, 60, 0, 0.12), transparent 60%);
+        }
+
+        .theme-blaze .card-grid {
+            background-image: linear-gradient(rgba(255, 140, 0, 0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 140, 0, 0.04) 1px, transparent 1px);
+        }
+
+        .theme-blaze .product-id {
+            color: rgba(255, 160, 40, 0.5);
+        }
+
+        .theme-blaze .product-name {
+            color: #fff;
+        }
+
+        .theme-blaze .product-desc {
+            color: rgba(255, 200, 120, 0.6);
+        }
+
+        .theme-blaze .price-tag {
+            background: rgba(255, 140, 0, 0.12);
+            border-color: rgba(255, 140, 0, 0.2);
+            color: #ffaa30;
+        }
+
+        .theme-blaze .store-badge {
+            background: rgba(255, 140, 0, 0.06);
+            border-color: rgba(255, 140, 0, 0.15);
+        }
+
+        .theme-blaze .store-badge-dot {
+            background: #ff8c00;
+        }
+
+        .theme-blaze .store-badge-text {
+            color: rgba(255, 180, 80, 0.5);
+        }
+
+        .theme-blaze .store-name {
+            color: rgba(255, 200, 120, 0.9);
+        }
+
+        .theme-blaze .logo-text {
+            color: rgba(255, 160, 40, 0.45);
+        }
+
+        .theme-blaze .logo-mark {
+            background: #ff8c00;
+            color: #000;
+        }
+
+        .theme-blaze .img-overlay {
+            background: linear-gradient(to top, #0f0800 0%, transparent 55%);
+        }
+
+        .theme-blaze .corner-tag {
+            background: rgba(255, 140, 0, 0.1);
+            border-color: rgba(255, 140, 0, 0.2);
+            color: rgba(255, 180, 80, 0.8);
+        }
+
+        /* ── THEME: Neon ── */
+        .theme-neon #cardTarget {
+            background: #040410;
+            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(100, 60, 255, 0.15);
+        }
+
+        .theme-neon .card-bg-layer {
+            background: radial-gradient(ellipse 80% 60% at 30% 20%, rgba(100, 60, 255, 0.2), transparent 60%),
+                radial-gradient(ellipse 70% 50% at 80% 80%, rgba(0, 220, 255, 0.12), transparent 60%);
+        }
+
+        .theme-neon .card-grid {
+            background-image: linear-gradient(rgba(100, 60, 255, 0.06) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(100, 60, 255, 0.06) 1px, transparent 1px);
+        }
+
+        .theme-neon .product-id {
+            color: rgba(140, 100, 255, 0.6);
+        }
+
+        .theme-neon .product-name {
+            color: #fff;
+        }
+
+        .theme-neon .product-desc {
+            color: rgba(180, 160, 255, 0.55);
+        }
+
+        .theme-neon .price-tag {
+            background: rgba(100, 60, 255, 0.12);
+            border-color: rgba(100, 60, 255, 0.25);
+            color: #a880ff;
+        }
+
+        .theme-neon .store-badge {
+            background: rgba(100, 60, 255, 0.06);
+            border-color: rgba(100, 60, 255, 0.15);
+        }
+
+        .theme-neon .store-badge-dot {
+            background: #00dcff;
+        }
+
+        .theme-neon .store-badge-text {
+            color: rgba(160, 140, 255, 0.5);
+        }
+
+        .theme-neon .store-name {
+            color: rgba(200, 180, 255, 0.9);
+        }
+
+        .theme-neon .logo-text {
+            color: rgba(140, 100, 255, 0.45);
+        }
+
+        .theme-neon .logo-mark {
+            background: linear-gradient(135deg, #6440ff, #00dcff);
+            color: #fff;
+        }
+
+        .theme-neon .img-overlay {
+            background: linear-gradient(to top, #040410 0%, transparent 55%);
+        }
+
+        .theme-neon .corner-tag {
+            background: rgba(100, 60, 255, 0.1);
+            border-color: rgba(100, 60, 255, 0.2);
+            color: rgba(160, 140, 255, 0.8);
+        }
+
+        /* ── THEME: Pearl ── */
+        .theme-pearl #cardTarget {
+            background: #f8f6f1;
+            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(0, 0, 0, 0.06);
+        }
+
+        .theme-pearl .card-bg-layer {
+            background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(0, 0, 0, 0.03), transparent 70%);
+        }
+
+        .theme-pearl .card-grid {
+            background-image: linear-gradient(rgba(0, 0, 0, 0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 0, 0, 0.04) 1px, transparent 1px);
+        }
+
+        .theme-pearl .product-id {
+            color: rgba(0, 0, 0, 0.3);
+        }
+
+        .theme-pearl .product-name {
+            color: #111;
+        }
+
+        .theme-pearl .product-desc {
+            color: rgba(0, 0, 0, 0.45);
+        }
+
+        .theme-pearl .price-tag {
+            background: rgba(0, 0, 0, 0.05);
+            border-color: rgba(0, 0, 0, 0.1);
+            color: #111;
+        }
+
+        .theme-pearl .store-badge {
+            background: rgba(0, 0, 0, 0.04);
+            border-color: rgba(0, 0, 0, 0.08);
+        }
+
+        .theme-pearl .store-badge-dot {
+            background: #25D366;
+        }
+
+        .theme-pearl .store-badge-text {
+            color: rgba(0, 0, 0, 0.35);
+        }
+
+        .theme-pearl .store-name {
+            color: #111;
+        }
+
+        .theme-pearl .logo-text {
+            color: rgba(0, 0, 0, 0.3);
+        }
+
+        .theme-pearl .logo-mark {
+            background: #111;
+            color: #fff;
+        }
+
+        .theme-pearl .img-overlay {
+            background: linear-gradient(to top, #f8f6f1 0%, transparent 55%);
+        }
+
+        .theme-pearl .corner-tag {
+            background: rgba(0, 0, 0, 0.05);
+            border-color: rgba(0, 0, 0, 0.08);
+            color: rgba(0, 0, 0, 0.45);
+        }
+
+        /* ── Card internals ── */
+        .card-bg-layer {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .card-grid {
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+            pointer-events: none;
+            background-size: 32px 32px;
+        }
+
+        .card-image-area {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 58%;
+            z-index: 2;
+            overflow: hidden;
+        }
+
+        .card-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: opacity 0.4s ease;
+        }
+
+        .img-overlay {
+            position: absolute;
+            inset: 0;
+            z-index: 3;
+        }
+
+        .corner-tag {
+            position: absolute;
+            top: 14px;
+            right: 14px;
+            z-index: 4;
+            border-radius: 100px;
+            padding: 5px 12px;
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            backdrop-filter: blur(8px);
+            border: 1px solid;
+        }
+
+        /* ── Carousel thumbnail strip ── */
+        .carousel-strip {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 5;
+            display: flex;
+            gap: 6px;
+            align-items: center;
+            padding: 6px 8px;
+            background: rgba(0, 0, 0, 0.45);
+            border-radius: 12px;
+            backdrop-filter: blur(8px);
+            max-width: 90%;
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+
+        .carousel-strip::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* hide strip when only 1 image */
+        .carousel-strip:empty,
+        .carousel-strip.single {
+            display: none;
+        }
+
+        .carousel-thumb {
+            width: 36px;
+            height: 36px;
+            border-radius: 7px;
+            object-fit: cover;
+            flex-shrink: 0;
+            cursor: pointer;
+            border: 2px solid transparent;
+            opacity: 0.6;
+            transition: opacity 0.2s, border-color 0.2s, transform 0.2s;
+        }
+
+        .carousel-thumb:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+
+        .carousel-thumb.active {
+            border-color: #ffffff;
+            opacity: 1;
+        }
+
+        /* ── Card content ── */
+        .card-content {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 5;
+            padding: 22px 24px 22px;
+        }
+
+        .product-id {
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .product-name {
+            font-family: 'Syne', sans-serif;
+            font-size: 24px;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            line-height: 1.1;
+            margin-bottom: 10px;
+        }
+
+        .product-desc {
+            font-size: 12.5px;
+            font-weight: 300;
+            line-height: 1.6;
+            margin-bottom: 16px;
+            max-width: 90%;
+        }
+
+        .card-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 18px;
+        }
+
+        .price-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            border-radius: 100px;
+            padding: 7px 16px;
+            font-family: 'Syne', sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            border: 1px solid;
+        }
+
+        .store-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            border-radius: 100px;
+            padding: 7px 14px 7px 10px;
+            border: 1px solid;
+        }
+
+        .store-badge-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .store-badge-left {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .store-badge-text {
+            font-size: 9px;
+            font-weight: 500;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            line-height: 1;
+            margin-bottom: 2px;
+        }
+
+        .store-name {
+            font-size: 11.5px;
+            font-weight: 600;
+            line-height: 1;
+        }
+
+        .card-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+        }
+
+        .logo-mark {
+            width: 20px;
+            height: 20px;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: 11px;
+            flex-shrink: 0;
+        }
+
+        .logo-text {
+            font-family: 'Syne', sans-serif;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: -0.01em;
+        }
+
+        /* ── Screenshot button ── */
+        .card-actions {
+            display: flex;
+            justify-content: center;
+            position: relative;
+            z-index: 10;
+        }
+
+        .action-btn {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            padding: 14px 32px;
+            border-radius: 100px;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            background: #fff;
+            color: #000;
+            transition: box-shadow 0.25s, transform 0.2s;
+            backdrop-filter: blur(8px);
+        }
+
+        .action-btn:hover {
+            box-shadow: 0 10px 32px rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .action-btn:active {
+            transform: scale(0.97);
+        }
+
+        .action-btn.loading {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        /* ── Flash ── */
+        .saving-flash {
+            position: fixed;
+            inset: 0;
+            background: rgba(255, 255, 255, 0.12);
+            z-index: 9999;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.12s;
+        }
+
+        .saving-flash.flash {
+            opacity: 1;
+        }
+
+        /* ── Toast ── */
+        .toast {
+            position: fixed;
+            bottom: 32px;
+            left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            background: rgba(10, 10, 10, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #fff;
+            padding: 12px 24px;
+            border-radius: 100px;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            opacity: 0;
+            transition: opacity 0.3s, transform 0.3s;
+            z-index: 9999;
+            pointer-events: none;
+            backdrop-filter: blur(12px);
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .toast-icon {
+            color: #25D366;
+            font-size: 15px;
+        }
+
+        @media (max-width: 480px) {
+            #cardTarget {
+                width: 340px;
+                height: 440px;
+            }
+
+            .product-name {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body class="theme-dark">
+
+    <div class="bg-blur" id="bgBlur"></div>
+    <div class="bg-overlay"></div>
+    <div class="saving-flash" id="savingFlash"></div>
+    <div class="toast" id="toast"><span class="toast-icon">✓</span><span id="toastMsg">Image saved!</span></div>
+
+    <!-- Theme picker -->
+    <div class="style-picker">
+        <button class="style-btn active" onclick="setTheme('dark',this)">Dark Luxury</button>
+        <button class="style-btn" onclick="setTheme('blaze',this)">Blaze</button>
+        <button class="style-btn" onclick="setTheme('neon',this)">Neon</button>
+        <button class="style-btn" onclick="setTheme('pearl',this)">Pearl</button>
+    </div>
+
+    <!-- Card — what gets screenshotted -->
+    <div id="cardTarget">
+        <div class="card-bg-layer"></div>
+        <div class="card-grid"></div>
+
+        <div class="card-image-area">
+            <img class="card-img" id="cardImg"
+                src="./assets/images/logo.png" alt="Product image">
+            <div class="img-overlay"></div>
+            <!-- <div class="corner-tag" id="cornerTag">New Arrival</div> -->
+
+            <!-- Carousel thumbnail strip — populated by buildCarousel() -->
+            <div class="carousel-strip" id="carouselStrip"></div>
+        </div>
+
+        <div class="card-content">
+            <div class="product-id" id="cardId">-</div>
+            <div class="product-name" id="cardName"></div>
+            <div class="product-desc" id="cardDesc"></div>
+
+            <div class="card-row">
+                <div class="price-tag" id="cardPrice">0</div>
+                <div class="store-badge">
+                    <div class="store-badge-dot"></div>
+                    <div class="store-badge-left">
+                        <span class="store-badge-text">Available at</span>
+                        <span class="store-name" id="cardStore">-</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-logo">
+                <div class="logo-mark">L</div>
+                <span class="logo-text">linko.ng</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Single action -->
+    <div class="card-actions">
+        <button class="action-btn" id="screenshotBtn" onclick="takeScreenshot()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
+                <circle cx="12" cy="13" r="4" />
+            </svg>
+            Screenshot
+        </button>
+    </div>
+
+    <div id="alertBox" class="alert">Saved successfully!</div>
+    <script src="./assets/alert.js"></script>
+    <script src="./assets/urlParams.js"></script>
+    <script src="./assets/url.js"></script>
+    <script src="./api/vendor.js"></script>
+    <script src="./api/product.js"></script>
+
+    <script>
+        // ── Carousel ───────────────────────────────────────────────────
+        // Call this after you have the images array from your API.
+        // It builds the thumbnail strip and wires click-to-swap.
+        function buildCarousel(images) {
+            const strip = document.getElementById('carouselStrip');
+            const mainImg = document.getElementById('cardImg');
+            strip.innerHTML = '';
+
+            // Only show strip when there is more than one image
+            if (!images || images.length <= 1) {
+                strip.classList.add('single');
+                return;
+            }
+            strip.classList.remove('single');
+
+            images.forEach((src, index) => {
+                const thumb = document.createElement('img');
+                thumb.src = src;
+                thumb.alt = 'Product image ' + (index + 1);
+                thumb.className = 'carousel-thumb' + (index === 0 ? ' active' : '');
+
+                thumb.addEventListener('click', () => {
+                    // Swap main image with fade
+                    mainImg.style.opacity = '0';
+                    setTimeout(() => {
+                        mainImg.src = src;
+                        mainImg.style.opacity = '1';
+                        syncBackground(src);
+                    }, 200);
+
+                    // Update active thumb
+                    strip.querySelectorAll('.carousel-thumb').forEach(t => t.classList.remove('active'));
+                    thumb.classList.add('active');
+                });
+
+                strip.appendChild(thumb);
+            });
+        }
+
+        // ── Init ───────────────────────────────────────────────────────
+        async function initVendorData() {
+            const productId = params.get('pid') || ""
+            await getVendorData()
+            let getProductDataById = await getProductById(productId)
+
+            document.getElementById('cardId').textContent = getProductDataById._id || '';
+            document.getElementById('cardName').textContent = getProductDataById.name || '';
+            document.getElementById('cardDesc').textContent = getProductDataById.description || '';
+            document.getElementById('cardPrice').textContent = `₦${getProductDataById.price || "0"}`;
+            document.getElementById('cardStore').textContent = JSON.parse(localStorage.getItem('vendorData')).brand_name || '';
+            document.getElementById('cardImg').src = getProductDataById.images[0] || './assets/images/logo.png';
+
+            // Build carousel from all images
+            buildCarousel(getProductDataById.images);
+        }
+        initVendorData()
+
+        // ── Set blurred background to match card image ─────────────────
+        function syncBackground(src) {
+            document.getElementById('bgBlur').style.backgroundImage = `url('${src}')`;
+        }
+
+        // Init background on load
+        const initialImg = document.getElementById('cardImg');
+        initialImg.addEventListener('load', () => syncBackground(initialImg.src));
+        if (initialImg.complete) syncBackground(initialImg.src);
+
+        // ── Theme switcher ─────────────────────────────────────────────
+        function setTheme(name, btn) {
+            document.body.className = 'theme-' + name;
+            document.querySelectorAll('.style-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+        }
+
+        // ── Screenshot & download ──────────────────────────────────────
+        async function takeScreenshot() {
+            const btn = document.getElementById('screenshotBtn');
+            btn.classList.add('loading');
+            btn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg> Saving…`;
+
+            // White flash
+            const flash = document.getElementById('savingFlash');
+            flash.classList.add('flash');
+            setTimeout(() => flash.classList.remove('flash'), 200);
+
+            try {
+                const canvas = await html2canvas(document.getElementById('cardTarget'), {
+                    scale: 3,
+                    useCORS: true,
+                    allowTaint: true,
+                    backgroundColor: null,
+                    logging: false,
+                });
+
+                const link = document.createElement('a');
+                const productId = document.getElementById('cardId').textContent.replace(/[^a-z0-9]/gi, '-').toLowerCase();
+                link.download = `linko-${productId}.png`;
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+
+                showToast('Image downloaded!');
+            } catch (err) {
+                showToast('Screenshot failed — try again.');
+                console.error(err);
+            } finally {
+                btn.classList.remove('loading');
+                btn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg> Screenshot`;
+            }
+        }
+
+        // ── Toast ──────────────────────────────────────────────────────
+        let toastTimer = null;
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toastMsg').textContent = msg;
+            toast.classList.add('show');
+            clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => toast.classList.remove('show'), 2500);
+        }
+    </script>
+</body>
+
+</html>

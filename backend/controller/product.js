@@ -145,7 +145,6 @@ const addProduct = async (req, res) => {
     cleanData.name = cleanName;
 
     let vendor = await Product.findOne({ vendor_id: req.userId }).populate("vendor");
-    console.log(vendor)
 
     // let vendorPlan = vendor.vendor.plan 
 

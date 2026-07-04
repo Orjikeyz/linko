@@ -75,26 +75,12 @@ const getProductById = async (req, res) => {
     }
 };
 
+
+// ===========================================================
 // Vendor Backend Product API Call
-// =========================================
+// ===========================================================
 
 // Get all Vendor Product
-// const getAllVendorProduct = async (req, res) => {
-//     try {
-//         const { vendorUsername } = req.params
-
-//         const products = await Product.find({ vendor_id: vendorUsername }).populate("vendor", "plan")
-//         if (!products) {
-//             return responseData(res, 'error', 400, 'Products not found', [], '')
-//         }
-
-//         return responseData(res, 'success', 200, 'Products data retrieved successfully', products, products[0].vendor.plan)
-//     } catch (error) {
-//         return responseData(res, 'error', 500, 'Server Error', [], '')
-
-//     }
-// }
-
 const getAllVendorProduct = async (req, res) => {
     try {
         const vendor_id = req.userId;

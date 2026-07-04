@@ -52,8 +52,10 @@ const getProductById = async (productId) => {
     }
 }
 
-
+// ============================================
 // Vendor Dashboard Product API Call
+// ============================================
+
 let productCurrentPage = 1;
 let productLimit = 10;
 let ProductTotalPages = 1;

@@ -323,7 +323,7 @@ document.getElementById('trayCheckoutBtn').addEventListener('click', () => {
             const productId = item.product._id || 'N/A';
 
             const productUrlData =
-                `${productUrl}frontend/product.html?id=${vendorData.username}&pid=${productId}`;
+                `${productUrl}portal/product.html?id=${vendorData.username}&pid=${productId}`;
 
             return [
                 `• ${item.product.name}`,
@@ -396,7 +396,7 @@ ${lines}
             const stockEl = document.getElementById('modalProductStock');
 
             document.getElementById("snapShotBtn").addEventListener("click", function() {
-                window.location.href = `${productUrl}/frontend/product.html?id=${product.vendor_id}&pid=${product._id}`
+                window.location.href = `${productUrl}/portal/product.html?id=${product.vendor_id}&pid=${product._id}`
             });
             
             const images = Array.isArray(product.images) && product.images.length ? product.images : [];

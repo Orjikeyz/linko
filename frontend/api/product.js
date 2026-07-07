@@ -43,6 +43,11 @@ const getProductById = async (productId) => {
         }
 
         if (data.status === 'success') {
+            document.querySelector('meta[property="og:title"]').setAttribute("content", data.result[0].name);
+            document.querySelector('meta[property="og:description"]').setAttribute("content", data.result[0].description);
+            document.querySelector('meta[property="og:image"]').setAttribute("content", data.result[0].images[0]);
+            document.querySelector('meta[property="og:url"]').setAttribute("content", productUrl+`/frontend/product.html?id=${data.result[0].vendor.username}&pid=${data.result[0]._id}}`);
+            
             return data.result[0]
             
         }

@@ -134,7 +134,7 @@ function loadProducts(data) {
         tbody.innerHTML += `<tr style='font-size: 12px'>
                     <td>${product.name}</td>
                     <td><textarea rows='1' style='border: none; outline: none; background: transparent;'>${product.description}</textarea></td>
-                    <td>₦${product.price.toFixed(2)}</td>
+                    <td>₦${Number(product.price.toFixed(2) || 0).toLocaleString()}</td>
                     <td><img src='${product.images[0]}' loading='lazy' data-img='${JSON.stringify(product.images)}' width='50px' height='50px' class='img-view'></td>
                     <td>
                         <div class="action-buttons">
@@ -181,60 +181,95 @@ function loadProducts(data) {
 function openProductModal(productId) {
     const modal = document.getElementById('productModal');
     const form = document.getElementById('productForm');
-    let currentImage = document.querySelector(".currentImage")
-    
+    let currentImage = document.querySelector(".currentImage");
 
-    currentImage.innerHTML = ""
+
+    currentImage.innerHTML = "";
+
+
     function imagePreviewBlog() {
-        document.getElementById("productImages").addEventListener("change", function () {
+        document.getElementById("productImages").onchange = function () {
+
             Array.from(this.files).forEach(file => {
-                console.log(URL.createObjectURL(file));
+
                 currentImage.innerHTML += `
-            <div class="currentimageItem" style='display: none'>
-                <img src="${URL.createObjectURL(file)}"
-                    loading="lazy" width="70px" height="70px" style="border-radius: 10px; margin: 0 10px;" class="imageName">
-                <i class="fa-solid fa-x removeImage" style="font-size: 10px; position: absolute; transform: translateX(-30px); background: #e3e3e3; padding: 5px; border-radius: 5px;"></i>
-            </div>
-            `
+                    <div class="currentimageItem">
+                        <img src="${URL.createObjectURL(file)}" loading="lazy" width="70px" height="70px" style="border-radius: 10px; margin: 0 10px;" class="imageName">
+                        <i class="fa-solid fa-x removeImage" style="font-size: 10px; position: absolute; transform: translateX(-30px); background: #e3e3e3; padding: 5px; border-radius: 5px;"></i>
+                    </div>
+                `;
             });
-        });
+        };
     }
 
+
     if (productId) {
-        console.log(productId, "fale")
+
         const product = fetchedProduct.data.find(p => p._id === productId);
+
         document.getElementById('modalTitle').textContent = 'Edit Product';
         document.getElementById('productName').value = product.name;
         document.getElementById('productPrice').value = product.price;
         document.getElementById('productDescription').value = product.description || '';
+
         currentEditId = productId;
-        let imageName = document.querySelectorAll(".imageName")
 
+        // Store old images
+        existingImages = [...product.images];
+        product.images.forEach(item => {
 
-        // product.images.forEach(item => {
-        //     currentImage.innerHTML += `
-        //     <div class="currentimageItem">
-        //         <img src="${item}"
-        //             loading="lazy" width="70px" height="70px" style="border-radius: 10px; margin: 0 10px;" class="imageName">
-        //         <i class="fa-solid fa-x removeImage" style="font-size: 10px; position: absolute; transform: translateX(-30px); background: #e3e3e3; padding: 5px; border-radius: 5px;"></i>
-        //     </div>
-        // `
-        // });
-
-
-        let removeImage = document.querySelectorAll(".removeImage")
-        removeImage.forEach((removeImageItem, index) => {
-            removeImageItem.addEventListener("click", () => {
-                console.log(index)
-            })
+            currentImage.innerHTML += `
+                <div class="currentimageItem">
+                    <img src="${item}" loading="lazy" width="70px" height="70px" style="border-radius: 10px; margin: 0 10px;" class="imageName">
+                    <i class="fa-solid fa-x removeImage" style="font-size: 10px; position: absolute; transform: translateX(-30px); background: #e3e3e3; padding: 5px; border-radius: 5px;"></i>
+                </div>
+            `;
         });
+
+
+        const productImagesInput = document.getElementById("productImages");
+
+        // Prevent duplicate listeners
+        productImagesInput.onchange = function () {
+
+            Array.from(this.files).forEach(file => {
+
+                currentImage.innerHTML += `
+                    <div class="currentimageItem">
+                        <img src="${URL.createObjectURL(file)}" loading="lazy" width="70" height="70" style="border-radius:10px; margin:0 10px;" class="imageName">
+                        <i class="fa-solid "fa-x removeImage" style="font-size:10px;position:absolute;transform:translateX(-30px);background:#e3e3e3;padding:5px;border-radius:5px;"></i>
+                    </div>
+                `;
+            });
+        };
+
+
+        // Prevent duplicate listeners
+        currentImage.onclick = function (e) {
+            if (!e.target.classList.contains("removeImage")) return;
+            const imageItem = e.target.parentElement;
+            const imgSrc = imageItem.querySelector("img").src;
+
+            // Remove existing image only
+            existingImages = existingImages.filter(url => url !== imgSrc);
+            imageItem.remove();
+
+        };
+
+
     } else {
-        console.log(productId)
-        imagePreviewBlog()
+
+        console.log(productId);
+
+        imagePreviewBlog();
+
         document.getElementById('modalTitle').textContent = 'Add New Product';
+
         form.reset();
+
         currentEditId = null;
     }
+
 
     modal.classList.add('active');
 }
@@ -361,8 +396,16 @@ const addProduct = async () => {
                 return;
             }
 
-            console.log(localStorage.getItem("currentProductId"))
-            sendDataToBackend(StorageData.urls)
+            if (document.getElementById("modalTitle").textContent === "Add New Product") {
+                console.log(localStorage.getItem("currentProductId"))
+                sendDataToBackend(StorageData.urls)
+            }else {
+                console.log(localStorage.getItem("currentProductId"))
+                existingImages = [...existingImages, ...StorageData.urls];
+                sendDataToBackend(existingImages)
+            }
+
+
             return;
         } else {
             showAlert(StorageData.message || "Upload failed", "error");

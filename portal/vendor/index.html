@@ -401,7 +401,7 @@
         }
 
         const storeLink = document.getElementById('storeLink');
-        storeLink.textContent = productUrl+`/portal/?id=${paramsValue}`
+        storeLink.textContent = productUrl+`portal/?id=${paramsValue}`
         storeLink.href  = productUrl+`/portal/?id=${paramsValue}`
         function copyShopLink() {
             navigator.clipboard.writeText(storeLink.textContent.trim())

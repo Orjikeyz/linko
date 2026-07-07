@@ -305,7 +305,7 @@ const addProduct = async () => {
 
     // Image validation
     const allowedTypes = ["image/jpeg", "image/png", "image/webp"];
-    const maxSize = 2 * 1024 * 1024; // 2MB
+    const maxSize = 5 * 1024 * 1024; // 5MB
 
     for (let img of productImages) {
         if (!allowedTypes.includes(img.type)) {
@@ -315,8 +315,8 @@ const addProduct = async () => {
         }
 
         if (img.size > maxSize) {
-            showAlert("Each image must be less than 2MB", "error")
-            loading()
+            showAlert("Each image must be less than 5MB", "error")
+            loading() 
             return;
         }
     }

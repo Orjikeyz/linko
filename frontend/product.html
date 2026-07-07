@@ -656,7 +656,7 @@
             document.getElementById('cardName').textContent = getProductDataById.name || '';
             document.getElementById('cardDesc').textContent = getProductDataById.description || '';
             document.getElementById('cardPrice').textContent = `₦${Number(getProductDataById.price || 0).toLocaleString()}`;
-            document.getElementById('cardStore').textContent = JSON.parse(localStorage.getItem('vendorData')).username || '';
+            document.getElementById('cardStore').textContent = JSON.parse(localStorage.getItem('vendorData')).brand_name || '';
             document.getElementById('edition-label').textContent = JSON.parse(localStorage.getItem('vendorData')).brand_name || '';
             document.getElementById('cardImg').src = getProductDataById.images[0] || './assets/images/logo.png';
 

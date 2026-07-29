@@ -71,10 +71,6 @@
             border-right: 2px solid #e0e0e0;
         }
 
-        #sideBars {
-            display: none;
-        }
-
         .sidebar-nav {
             list-style: none;
         }
@@ -399,6 +395,10 @@
         @media (max-width: 768px) {
             .dashboard-container {
                 flex-direction: column;
+            }
+
+            #sideBarsBtn {
+                display: block;
             }
 
             .sidebar {

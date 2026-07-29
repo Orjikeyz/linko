@@ -27,10 +27,12 @@
             <div class="dashboard-header-content">
                 <div class="dashboard-logo">Linko.ng </div>
                 <div class="user-menu">
-                    <button class="btn btn-logout" onclick="logout()">Logout</button>
+                    <i class="fa fa-bars" id="sideBars" onclick="sideBarBtn()"></i>
+                    <button class="btn btn-logout" onclick="logout()"><i class="fa fa-power-off"></i></button>
                 </div>
             </div>
         </header>
+
 
         <div class="dashboard-container">
             <!-- Sidebar -->
@@ -382,6 +384,10 @@
     
 
     <script>
+        function sideBarBtn () {
+            let sidebar = document.querySelector('.sidebar').classList.toggle("sidebarToggle")
+        }
+
         function settingsTabBtn(section, index) {
 
             const tabs = document.querySelectorAll(".settingsTabList");

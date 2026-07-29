@@ -398,7 +398,7 @@
             }
 
             #sideBarsBtn {
-                display: block;
+                display: block !important;
             }
 
             .sidebar {

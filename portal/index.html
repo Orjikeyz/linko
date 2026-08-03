@@ -156,7 +156,9 @@
 
 
         function passesFilters(item) {
-            const matchesSearch = item.name.toLowerCase().includes(searchTerm.toLowerCase());
+            const matchesSearch = item.name.toLowerCase().includes(searchTerm.toLowerCase()) || item.description.toLowerCase().includes(searchTerm.toLowerCase());
+
+            
             if (!matchesSearch) return false;
             if (activeFilter === 'all') return true;
             if (activeFilter === 'new') return item.tag === 'new';

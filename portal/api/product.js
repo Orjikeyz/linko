@@ -129,6 +129,25 @@ function loadProducts(data) {
     // status_plan.textContent = vendorData.plan.charAt(0).toUpperCase() + vendorData.plan.slice(1).toLowerCase();
     // account_status.textContent = vendorData.status.charAt(0).toUpperCase() + vendorData.status.slice(1).toLowerCase();
 
+
+    // Product search 
+    document.getElementById("productSearch").addEventListener("input", function () {
+        const search = this.value.toLowerCase().trim();
+
+        const rows = document.querySelectorAll("#productsTableBody tr");
+
+        rows.forEach(row => {
+            const name = row.cells[0].textContent.toLowerCase();
+            const description = row.cells[1].querySelector("textarea").value.toLowerCase();
+
+            if (name.includes(search) ||description.includes(search)) {
+                row.style.display = "";
+            } else {
+                row.style.display = "none";
+            }
+        });
+    });
+
     const tbody = document.getElementById('productsTableBody');
     vendorData.forEach(product => {
         tbody.innerHTML += `<tr style='font-size: 12px'>

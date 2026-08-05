@@ -1,0 +1,1099 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vendor Payment Submission</title>
+  <style>
+    :root {
+      --black: #000000;
+      --white: #ffffff;
+      --gray-50: #fafafa;
+      --gray-100: #f5f5f5;
+      --gray-200: #e5e5e5;
+      --gray-300: #d4d4d4;
+      --gray-400: #a3a3a3;
+      --gray-500: #737373;
+      --gray-600: #525252;
+      --gray-900: #171717;
+      --radius: 18px;
+      --radius-sm: 12px;
+      --shadow: 0 1px 3px rgba(0,0,0,0.04), 0 8px 32px rgba(0,0,0,0.06);
+      --shadow-hover: 0 1px 3px rgba(0,0,0,0.04), 0 12px 48px rgba(0,0,0,0.1);
+      --shadow-card: 0 4px 24px rgba(0,0,0,0.08);
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background: var(--gray-50);
+      color: var(--black);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 700px;
+      animation: fadeInUp 0.6s ease-out;
+    }
+
+    .card {
+      background: var(--white);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 48px;
+      transition: var(--transition);
+      border: 1px solid var(--gray-200);
+    }
+
+    .card:hover {
+      box-shadow: var(--shadow-hover);
+    }
+
+    /* Header */
+    .header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .logo {
+      width: 48px;
+      height: 48px;
+      background: var(--black);
+      border-radius: var(--radius-sm);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+
+    .logo svg {
+      width: 24px;
+      height: 24px;
+      color: var(--white);
+    }
+
+    .header h1 {
+      font-size: 24px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+    }
+
+    .header p {
+      color: var(--gray-500);
+      font-size: 15px;
+      line-height: 1.6;
+      max-width: 420px;
+      margin: 0 auto;
+    }
+
+    /* Progress */
+    .progress {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 48px;
+      position: relative;
+    }
+
+    .progress::before {
+      content: '';
+      position: absolute;
+      top: 16px;
+      left: 60px;
+      right: 60px;
+      height: 2px;
+      background: var(--gray-200);
+      z-index: 0;
+    }
+
+    .progress-line-fill {
+      position: absolute;
+      top: 16px;
+      left: 60px;
+      height: 2px;
+      background: var(--black);
+      z-index: 0;
+      transition: width 0.5s ease;
+      width: 0%;
+    }
+
+    .step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      z-index: 1;
+      flex: 1;
+    }
+
+    .step-circle {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      border: 2px solid var(--gray-200);
+      background: var(--white);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--gray-400);
+      transition: var(--transition);
+    }
+
+    .step-label {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--gray-400);
+      transition: var(--transition);
+      text-align: center;
+    }
+
+    .step.active .step-circle,
+    .step.completed .step-circle {
+      background: var(--black);
+      border-color: var(--black);
+      color: var(--white);
+      transform: scale(1.1);
+    }
+
+    .step.active .step-label,
+    .step.completed .step-label {
+      color: var(--black);
+      font-weight: 600;
+    }
+
+    .step.completed .step-circle {
+      animation: popIn 0.4s ease;
+    }
+
+    /* Forms */
+    .step-content {
+      display: none;
+      animation: fadeIn 0.4s ease;
+    }
+
+    .step-content.active {
+      display: block;
+    }
+
+    .section-header {
+      margin-bottom: 24px;
+    }
+
+    .section-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--gray-500);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 6px;
+    }
+
+    .section-subtitle {
+      font-size: 14px;
+      color: var(--gray-400);
+      line-height: 1.5;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .form-group {
+      position: relative;
+      margin-bottom: 24px;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 16px;
+      border: 1.5px solid var(--gray-200);
+      border-radius: var(--radius-sm);
+      font-size: 16px;
+      background: var(--white);
+      color: var(--black);
+      transition: var(--transition);
+      outline: none;
+    }
+
+    .form-group input:focus {
+      border-color: var(--black);
+      box-shadow: 0 0 0 4px rgba(0,0,0,0.04);
+    }
+
+    .form-group input::placeholder {
+      color: transparent;
+    }
+
+    .form-group label {
+      position: absolute;
+      left: 14px;
+      top: 16px;
+      color: var(--gray-400);
+      font-size: 16px;
+      pointer-events: none;
+      transition: var(--transition);
+      background: var(--white);
+      padding: 0 4px;
+      border-radius: 4px;
+    }
+
+    .form-group input:focus + label,
+    .form-group input:not(:placeholder-shown) + label {
+      top: -9px;
+      font-size: 12px;
+      color: var(--black);
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+
+    .form-group input.error {
+      border-color: #dc2626;
+    }
+
+    /* Company Account Card */
+    .company-account-card {
+      background: var(--black);
+      border-radius: var(--radius);
+      padding: 36px;
+      color: var(--white);
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 8px;
+      box-shadow: var(--shadow-card);
+    }
+
+    .company-account-card::before {
+      content: '';
+      position: absolute;
+      top: -40px;
+      right: -40px;
+      width: 160px;
+      height: 160px;
+      border: 2px solid rgba(255,255,255,0.06);
+      border-radius: 50%;
+    }
+
+    .company-account-card::after {
+      content: '';
+      position: absolute;
+      bottom: -60px;
+      left: -60px;
+      width: 200px;
+      height: 200px;
+      border: 2px solid rgba(255,255,255,0.04);
+      border-radius: 50%;
+    }
+
+    .account-card-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 28px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .account-card-icon {
+      width: 44px;
+      height: 44px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(8px);
+    }
+
+    .account-card-icon svg {
+      width: 22px;
+      height: 22px;
+      color: var(--white);
+    }
+
+    .account-card-title {
+      font-size: 16px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+    }
+
+    .account-card-subtitle {
+      font-size: 13px;
+      color: rgba(255,255,255,0.5);
+      margin-top: 2px;
+    }
+
+    .account-detail-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      position: relative;
+      z-index: 1;
+    }
+
+    .account-detail-row:last-child {
+      border-bottom: none;
+    }
+
+    .account-detail-label {
+      font-size: 12px;
+      color: rgba(255,255,255,0.45);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-weight: 500;
+    }
+
+    .account-detail-value {
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--white);
+      font-family: 'SF Mono', Monaco, monospace;
+      letter-spacing: 0.02em;
+    }
+
+    .copy-btn {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: rgba(255,255,255,0.7);
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      margin-left: 12px;
+    }
+
+    .copy-btn:hover {
+      background: rgba(255,255,255,0.15);
+      color: var(--white);
+    }
+
+    .copy-btn.copied {
+      background: rgba(255,255,255,0.2);
+      color: var(--white);
+    }
+
+    .account-note {
+      margin-top: 20px;
+      padding: 14px 16px;
+      background: rgba(255,255,255,0.05);
+      border-radius: var(--radius-sm);
+      border: 1px solid rgba(255,255,255,0.06);
+      position: relative;
+      z-index: 1;
+    }
+
+    .account-note p {
+      font-size: 13px;
+      color: rgba(255,255,255,0.5);
+      line-height: 1.6;
+    }
+
+    .account-note p strong {
+      color: rgba(255,255,255,0.8);
+      font-weight: 600;
+    }
+
+    /* Upload */
+    .upload-area {
+      border: 2px dashed var(--gray-200);
+      border-radius: var(--radius);
+      padding: 48px 24px;
+      text-align: center;
+      cursor: pointer;
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+      background: var(--white);
+    }
+
+    .upload-area:hover,
+    .upload-area.dragover {
+      border-color: var(--black);
+      background: var(--gray-50);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+    }
+
+    .upload-area.error {
+      border-color: #dc2626;
+      background: #fef2f2;
+    }
+
+    .upload-icon {
+      width: 48px;
+      height: 48px;
+      color: var(--gray-400);
+      margin-bottom: 16px;
+      transition: var(--transition);
+    }
+
+    .upload-area:hover .upload-icon {
+      color: var(--black);
+      transform: translateY(-2px);
+    }
+
+    .upload-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--black);
+      margin-bottom: 4px;
+    }
+
+    .upload-subtitle {
+      font-size: 14px;
+      color: var(--gray-500);
+      margin-bottom: 16px;
+    }
+
+    .upload-subtitle span {
+      color: var(--black);
+      font-weight: 600;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    .upload-meta {
+      font-size: 12px;
+      color: var(--gray-400);
+      line-height: 1.8;
+    }
+
+    .preview-container {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .preview-container img {
+      max-width: 100%;
+      max-height: 240px;
+      border-radius: var(--radius-sm);
+      object-fit: cover;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+
+    .remove-btn {
+      font-size: 13px;
+      color: var(--gray-500);
+      background: none;
+      border: none;
+      cursor: pointer;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      transition: var(--transition);
+      font-weight: 500;
+    }
+
+    .remove-btn:hover {
+      color: var(--black);
+    }
+
+    /* Buttons */
+    .btn-group {
+      display: flex;
+      gap: 12px;
+      margin-top: 32px;
+    }
+
+    .btn {
+      flex: 1;
+      padding: 16px 24px;
+      border-radius: var(--radius-sm);
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      border: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      letter-spacing: -0.01em;
+    }
+
+    .btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .btn-primary {
+      background: var(--white);
+      color: var(--black);
+      border: 2px solid var(--black);
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      background: var(--black);
+      color: var(--white);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.14);
+    }
+
+    .btn-secondary {
+      background: var(--gray-100);
+      color: var(--gray-600);
+      border: 2px solid transparent;
+    }
+
+    .btn-secondary:hover:not(:disabled) {
+      background: var(--gray-200);
+      color: var(--black);
+    }
+
+    /* Spinner */
+    .spinner {
+      width: 18px;
+      height: 18px;
+      border: 2px solid rgba(0,0,0,0.1);
+      border-top-color: currentColor;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      display: none;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Success State */
+    .success-state {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 24px 0;
+      animation: fadeInUp 0.6s ease;
+    }
+
+    .success-icon {
+      width: 80px;
+      height: 80px;
+      background: var(--black);
+      color: var(--white);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 28px;
+      position: relative;
+    }
+
+    .success-icon::after {
+      content: '';
+      position: absolute;
+      inset: -8px;
+      border-radius: 50%;
+      border: 2px solid var(--gray-200);
+      animation: ripple 1.5s ease-out infinite;
+    }
+
+    @keyframes ripple {
+      0% { transform: scale(1); opacity: 1; }
+      100% { transform: scale(1.3); opacity: 0; }
+    }
+
+    .success-icon svg {
+      width: 36px;
+      height: 36px;
+      stroke-dasharray: 30;
+      stroke-dashoffset: 30;
+      animation: drawCheck 0.5s ease forwards 0.4s;
+    }
+
+    @keyframes drawCheck {
+      to { stroke-dashoffset: 0; }
+    }
+
+    .success-state h2 {
+      font-size: 22px;
+      font-weight: 600;
+      margin-bottom: 16px;
+      letter-spacing: -0.02em;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 16px;
+      background: var(--gray-100);
+      color: var(--gray-600);
+      border-radius: 100px;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      border: 1px solid var(--gray-200);
+      margin-bottom: 20px;
+    }
+
+    .badge::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      background: var(--gray-400);
+      border-radius: 50%;
+    }
+
+    .success-state p {
+      color: var(--gray-500);
+      font-size: 15px;
+      line-height: 1.7;
+      max-width: 440px;
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      margin-top: 32px;
+      padding-top: 24px;
+      border-top: 1px solid var(--gray-200);
+    }
+
+    .footer p {
+      font-size: 13px;
+      color: var(--gray-400);
+    }
+
+    .footer a {
+      color: var(--black);
+      text-decoration: none;
+      font-weight: 600;
+      border-bottom: 1px solid var(--gray-200);
+      transition: var(--transition);
+    }
+
+    .footer a:hover {
+      border-color: var(--black);
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes popIn {
+      0% { transform: scale(0.8); }
+      50% { transform: scale(1.15); }
+      100% { transform: scale(1); }
+    }
+
+    /* Responsive */
+    @media (max-width: 640px) {
+      body { padding: 16px; }
+      .card { padding: 32px 24px; border-radius: 16px; }
+      .header h1 { font-size: 20px; }
+      .progress { margin-bottom: 32px; }
+      .step-label { font-size: 10px; }
+      .progress::before,
+      .progress-line-fill { left: 40px; right: 40px; }
+      .btn-group { flex-direction: column-reverse; }
+      .form-row { grid-template-columns: 1fr; gap: 0; }
+      .company-account-card { padding: 24px; }
+      .account-detail-row { flex-direction: column; align-items: flex-start; gap: 4px; }
+      .copy-btn { margin-left: 0; margin-top: 4px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="card">
+      
+      <!-- Header -->
+      <div class="header">
+        <div class="logo">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="18" height="18" rx="2"/>
+            <path d="M3 9h18M9 21V9"/>
+          </svg>
+        </div>
+        <h1>Vendor Payment Submission</h1>
+        <p>Complete the form below and upload your payment screenshot. Your submission will be reviewed by our finance team.</p>
+      </div>
+
+      <!-- Progress -->
+      <div class="progress">
+        <div class="progress-line-fill" id="progressLine"></div>
+        <div class="step active" data-step="0">
+          <div class="step-circle">1</div>
+          <span class="step-label">Vendor Details</span>
+        </div>
+        <div class="step" data-step="1">
+          <div class="step-circle">2</div>
+          <span class="step-label">Company Account</span>
+        </div>
+        <div class="step" data-step="2">
+          <div class="step-circle">3</div>
+          <span class="step-label">Upload Payment</span>
+        </div>
+        <div class="step" data-step="3">
+          <div class="step-circle">4</div>
+          <span class="step-label">Complete</span>
+        </div>
+      </div>
+
+      <!-- Form Content -->
+      <div id="formContent">
+        
+        <!-- Step 1: Vendor Details -->
+        <div class="step-content active" id="step1">
+          <div class="form-group">
+            <input type="text" id="username" placeholder=" " autocomplete="off">
+            <label for="username">Username</label>
+          </div>
+          <div class="form-group">
+            <input type="text" id="storeName" placeholder=" " autocomplete="off">
+            <label for="storeName">Store Name</label>
+          </div>
+          <div class="btn-group">
+            <button class="btn btn-primary" id="toStep2" style="margin-left: auto;">
+              Continue
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Step 2: Company Account Details -->
+        <div class="step-content" id="step2">
+          <div class="section-header">
+            <div class="section-title">Company Banking Details</div>
+            <div class="section-subtitle">Please transfer your payment to the following company account. You may copy any detail below.</div>
+          </div>
+
+          <div class="company-account-card">
+            <div class="account-card-header">
+              <div class="account-card-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="2" y="5" width="20" height="14" rx="2"/>
+                  <line x1="2" y1="10" x2="22" y2="10"/>
+                </svg>
+              </div>
+              <div>
+                <div class="account-card-title">Acme Enterprise Ltd.</div>
+                <div class="account-card-subtitle">Official Payment Account</div>
+              </div>
+            </div>
+
+            <div class="account-detail-row">
+              <span class="account-detail-label">Bank Name</span>
+              <span class="account-detail-value">Chase Bank <button class="copy-btn" data-copy="Chase Bank">Copy</button></span>
+            </div>
+
+            <div class="account-detail-row">
+              <span class="account-detail-label">Account Holder</span>
+              <span class="account-detail-value">Acme Enterprise Ltd. <button class="copy-btn" data-copy="Acme Enterprise Ltd.">Copy</button></span>
+            </div>
+
+            <div class="account-detail-row">
+              <span class="account-detail-label">Account Number</span>
+              <span class="account-detail-value">000123456789 <button class="copy-btn" data-copy="000123456789">Copy</button></span>
+            </div>
+
+            <div class="account-detail-row">
+              <span class="account-detail-label">IFSC / Swift Code</span>
+              <span class="account-detail-value">CHASUS33 <button class="copy-btn" data-copy="CHASUS33">Copy</button></span>
+            </div>
+
+            <div class="account-detail-row">
+              <span class="account-detail-label">Branch</span>
+              <span class="account-detail-value">Wall Street, NY <button class="copy-btn" data-copy="Wall Street, NY">Copy</button></span>
+            </div>
+
+            <div class="account-detail-row">
+              <span class="account-detail-label">Account Type</span>
+              <span class="account-detail-value">Business Checking</span>
+            </div>
+
+            <div class="account-note">
+              <p><strong>Important:</strong> Please include your Store Name in the payment reference so our finance team can match your transfer quickly.</p>
+            </div>
+          </div>
+
+          <div class="btn-group">
+            <button class="btn btn-secondary" id="backToStep1">Back</button>
+            <button class="btn btn-primary" id="toStep3">
+              I Have Made the Payment
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Step 3: Upload Payment -->
+        <div class="step-content" id="step3">
+          <div class="upload-area" id="uploadArea">
+            <input type="file" id="fileInput" accept=".png,.jpg,.jpeg" hidden>
+            
+            <div class="upload-content" id="uploadContent">
+              <svg class="upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                <polyline points="17 8 12 3 7 8"/>
+                <line x1="12" y1="3" x2="12" y2="15"/>
+              </svg>
+              <p class="upload-title">Drag & Drop Payment Screenshot</p>
+              <p class="upload-subtitle">or <span>Browse Files</span></p>
+              <p class="upload-meta">
+                Accepted formats: PNG, JPG, JPEG<br>
+                Maximum file size: 5 MB
+              </p>
+            </div>
+
+            <div class="preview-container" id="previewContainer">
+              <img id="previewImage" src="" alt="Payment proof preview">
+              <button type="button" class="remove-btn" id="removeFile">Remove file</button>
+            </div>
+          </div>
+
+          <div class="btn-group">
+            <button class="btn btn-secondary" id="backToStep2">Back</button>
+            <button class="btn btn-primary" id="submitBtn">
+              <span class="spinner" id="btnSpinner"></span>
+              <span class="btn-text">Submit Payment</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Success State -->
+      <div class="success-state" id="successState">
+        <div class="success-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+        </div>
+        <h2>Payment Submitted Successfully</h2>
+        <div class="badge">Pending Verification</div>
+        <p>Your payment proof has been received successfully. Our finance team will verify your payment within 24 hours. You will receive confirmation once your subscription has been activated.</p>
+      </div>
+
+      <!-- Footer -->
+      <div class="footer">
+        <p>Need Help? <a href="#">Contact our billing support team</a> if you experience any issues while submitting your payment.</p>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      const steps = document.querySelectorAll('.step');
+      const progressLine = document.getElementById('progressLine');
+      const step1 = document.getElementById('step1');
+      const step2 = document.getElementById('step2');
+      const step3 = document.getElementById('step3');
+      const formContent = document.getElementById('formContent');
+      const successState = document.getElementById('successState');
+      
+      const username = document.getElementById('username');
+      const storeName = document.getElementById('storeName');
+      
+      const toStep2 = document.getElementById('toStep2');
+      const toStep3 = document.getElementById('toStep3');
+      const backToStep1 = document.getElementById('backToStep1');
+      const backToStep2 = document.getElementById('backToStep2');
+      const submitBtn = document.getElementById('submitBtn');
+      const btnSpinner = document.getElementById('btnSpinner');
+      const btnText = submitBtn.querySelector('.btn-text');
+      
+      const uploadArea = document.getElementById('uploadArea');
+      const fileInput = document.getElementById('fileInput');
+      const uploadContent = document.getElementById('uploadContent');
+      const previewContainer = document.getElementById('previewContainer');
+      const previewImage = document.getElementById('previewImage');
+      const removeFile = document.getElementById('removeFile');
+
+      let currentStep = 0;
+
+      function updateProgress(stepIndex) {
+        steps.forEach((step, idx) => {
+          step.classList.remove('active', 'completed');
+          if (idx < stepIndex) step.classList.add('completed');
+          if (idx === stepIndex) step.classList.add('active');
+        });
+        
+        let pct = '0%';
+        if (stepIndex === 1) pct = '33%';
+        else if (stepIndex === 2) pct = '66%';
+        else if (stepIndex === 3) pct = '100%';
+        progressLine.style.width = pct;
+      }
+
+      function showStep(index) {
+        currentStep = index;
+        updateProgress(index);
+        
+        step1.classList.remove('active');
+        step2.classList.remove('active');
+        step3.classList.remove('active');
+        
+        if (index === 0) step1.classList.add('active');
+        else if (index === 1) step2.classList.add('active');
+        else if (index === 2) step3.classList.add('active');
+        else if (index === 3) {
+          formContent.style.display = 'none';
+          successState.style.display = 'flex';
+        }
+      }
+
+      // Step 1 -> Step 2
+      toStep2.addEventListener('click', () => {
+        let valid = true;
+        [username, storeName].forEach(input => {
+          if (!input.value.trim()) {
+            input.classList.add('error');
+            valid = false;
+          } else {
+            input.classList.remove('error');
+          }
+        });
+        if (valid) showStep(1);
+      });
+
+      backToStep1.addEventListener('click', () => showStep(0));
+      toStep3.addEventListener('click', () => showStep(2));
+      backToStep2.addEventListener('click', () => showStep(1));
+
+      // Copy buttons
+      document.querySelectorAll('.copy-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const text = btn.getAttribute('data-copy');
+          navigator.clipboard.writeText(text).then(() => {
+            const original = btn.textContent;
+            btn.textContent = 'Copied';
+            btn.classList.add('copied');
+            setTimeout(() => {
+              btn.textContent = original;
+              btn.classList.remove('copied');
+            }, 2000);
+          }).catch(() => {
+            // Fallback
+            const ta = document.createElement('textarea');
+            ta.value = text;
+            document.body.appendChild(ta);
+            ta.select();
+            document.execCommand('copy');
+            document.body.removeChild(ta);
+            const original = btn.textContent;
+            btn.textContent = 'Copied';
+            btn.classList.add('copied');
+            setTimeout(() => {
+              btn.textContent = original;
+              btn.classList.remove('copied');
+            }, 2000);
+          });
+        });
+      });
+
+      // File Upload
+      uploadArea.addEventListener('click', (e) => {
+        if (e.target !== removeFile && !e.target.classList.contains('copy-btn')) fileInput.click();
+      });
+
+      ['dragenter', 'dragover'].forEach(eventName => {
+        uploadArea.addEventListener(eventName, (e) => {
+          e.preventDefault();
+          uploadArea.classList.add('dragover');
+        });
+      });
+
+      ['dragleave', 'drop'].forEach(eventName => {
+        uploadArea.addEventListener(eventName, (e) => {
+          e.preventDefault();
+          uploadArea.classList.remove('dragover');
+        });
+      });
+
+      uploadArea.addEventListener('drop', (e) => {
+        const files = e.dataTransfer.files;
+        if (files.length) handleFile(files[0]);
+      });
+
+      fileInput.addEventListener('change', (e) => {
+        if (e.target.files.length) handleFile(e.target.files[0]);
+      });
+
+      function handleFile(file) {
+        if (file.size > 5 * 1024 * 1024) {
+          alert('File size exceeds 5 MB limit.');
+          return;
+        }
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          previewImage.src = e.target.result;
+          uploadContent.style.display = 'none';
+          previewContainer.style.display = 'flex';
+          uploadArea.classList.remove('error');
+        };
+        reader.readAsDataURL(file);
+      }
+
+      removeFile.addEventListener('click', (e) => {
+        e.stopPropagation();
+        fileInput.value = '';
+        previewImage.src = '';
+        uploadContent.style.display = 'block';
+        previewContainer.style.display = 'none';
+      });
+
+      // Submit
+      submitBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        
+        if (!fileInput.files.length && !previewImage.src) {
+          uploadArea.classList.add('error');
+          return;
+        }
+
+        btnSpinner.style.display = 'inline-block';
+        btnText.textContent = 'Processing...';
+        submitBtn.disabled = true;
+
+        setTimeout(() => {
+          showStep(3);
+        }, 1600);
+      });
+
+      // Remove error state on input
+      document.querySelectorAll('input').forEach(input => {
+        input.addEventListener('input', () => input.classList.remove('error'));
+      });
+    })();
+  </script>
+</body>
+</html>

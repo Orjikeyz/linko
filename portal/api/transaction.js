@@ -100,40 +100,44 @@ async function transactionPrevBtn() {
 }
 
 async function selectPlan(plan) {
-    let subscribeBtn = document.getElementById("subscribeBtn")
-    subscribeBtn.disabled = true
-    subscribeBtn.textContent = "Processing..."
-    let username = JSON.parse(localStorage.getItem("vendorData")).username
-    try {
-        const response = await fetch(`${backendUrl}/transaction/processPayment?id=${username}`, {
-            method: "GET",
-            credentials: "include"
-        });
+    //manual payment process
+    window.location.href = `payment.html?id=${paramsValue}`
 
-        const data = await response.json();
+    // paystack payment process
+    // let subscribeBtn = document.getElementById("subscribeBtn")
+    // subscribeBtn.disabled = true
+    // subscribeBtn.textContent = "Processing..."
+    // let username = JSON.parse(localStorage.getItem("vendorData")).username
+    // try {
+    //     const response = await fetch(`${backendUrl}/transaction/processPayment?id=${username}`, {
+    //         method: "GET",
+    //         credentials: "include"
+    //     });
 
-        if (data.status === "error") {
-            showAlert(data.message, data.status);
-            subscribeBtn.disabled = false
-            subscribeBtn.textContent = "Choose Pro"
-            return;
-        }
+    //     const data = await response.json();
 
-        // success
+    //     if (data.status === "error") {
+    //         showAlert(data.message, data.status);
+    //         subscribeBtn.disabled = false
+    //         subscribeBtn.textContent = "Choose Pro"
+    //         return;
+    //     }
 
-        localStorage.setItem("payStackReference", data.result.reference)
-        window.location.href = `${data.result.authorization_url}`
-        setTimeout(() => {
-            subscribeBtn.disabled = false
-            subscribeBtn.textContent = "Choose Pro"
-        }, 2000);
+    //     // success
 
-    } catch (error) {
-        subscribeBtn.disabled = false
-        subscribeBtn.textContent = "Choose Pro"
-        console.error(error);
-        showAlert("Network error. Please try again.");
-    }
+    //     localStorage.setItem("payStackReference", data.result.reference)
+    //     window.location.href = `${data.result.authorization_url}`
+    //     setTimeout(() => {
+    //         subscribeBtn.disabled = false
+    //         subscribeBtn.textContent = "Choose Pro"
+    //     }, 2000);
+
+    // } catch (error) {
+    //     subscribeBtn.disabled = false
+    //     subscribeBtn.textContent = "Choose Pro"
+    //     console.error(error);
+    //     showAlert("Network error. Please try again.");
+    // }
 }
 
 // Verify Subscription Payment  

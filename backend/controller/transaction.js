@@ -45,8 +45,8 @@ const getTransaction = async (req, res) => {
 // Process subscription payment
 const processPayment = async (req, res) => {
     try {
-        const email = "orjikeyz7@gmail.com"
-        const amount = 3000
+        const email = "user@gmail.com"
+        const amount = 2000
         const vendor_id = req.query.id
         const PAYSTACK_BASE_URL = "https://api.paystack.co";
         const secretKey = process.env.SECRET_KEY

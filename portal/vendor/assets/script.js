@@ -18,7 +18,6 @@ async function showSection(section) {
     event.target.classList.add('active');
 
     let transactionLoaded = false;  // global flag
-
     if (section === "transaction") {
         if (!transactionLoaded) {
             await getTransaction(paramsValue);  // load only once

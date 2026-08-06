@@ -140,6 +140,12 @@ async function selectPlan(plan) {
     // }
 }
 
+// Process manuel subscription payment 
+async function manuelSubscriptionProcess() {
+
+}
+
+
 // Verify Subscription Payment  
 async function verifySubscriptionPayment() {
     try {
@@ -192,38 +198,38 @@ function bankDataLoop() {
     });
 }
 
-const getAllBankData = async () => {
-    if (!localStorage.getItem("allBankList")) {
-        try {
-            let response = await fetch(`${backendUrl}/transaction/getAllBankData`, {
-                credentials: "include"
-            })
-            let data = await response.json()
+// const getAllBankData = async () => {
+//     if (!localStorage.getItem("allBankList")) {
+//         try {
+//             let response = await fetch(`${backendUrl}/transaction/getAllBankData`, {
+//                 credentials: "include"
+//             })
+//             let data = await response.json()
 
-            if (data.status === "error") {
-                showAlert(data.message, data.status)
-                return
-            }
+//             if (data.status === "error") {
+//                 showAlert(data.message, data.status)
+//                 return
+//             }
 
-            localStorage.setItem("allBankList", JSON.stringify(data.result))
-            bankDataLoop()
-        } catch (error) {
-            console.log(error)
-            showAlert("Network error. Please try again.", "error");
-        }
-    } else {
-        bankDataLoop()
-    }
-}
+//             localStorage.setItem("allBankList", JSON.stringify(data.result))
+//             bankDataLoop()
+//         } catch (error) {
+//             console.log(error)
+//             showAlert("Network error. Please try again.", "error");
+//         }
+//     } else {
+//         bankDataLoop()
+//     }
+// }
 
-getAllBankData()
+// getAllBankData()
 
-bankName.addEventListener("change", function (e) {
-    const bankNameValue = e.target.value
-    const selectedOption = e.target.selectedOptions[0];
-    const code = selectedOption.dataset.bankcode; 
-    bankCode.value = code
-})
+// bankName.addEventListener("change", function (e) {
+//     const bankNameValue = e.target.value
+//     const selectedOption = e.target.selectedOptions[0];
+//     const code = selectedOption.dataset.bankcode; 
+//     bankCode.value = code
+// })
 
 // accountNumber.addEventListener("keyup", function () {
 //     verifyBankAccountData(accountNumber.value, bankCode.value)

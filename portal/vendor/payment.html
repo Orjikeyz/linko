@@ -769,11 +769,11 @@
         <!-- Step 1: Vendor Details -->
         <div class="step-content active" id="step1">
           <div class="form-group">
-            <input type="text" id="username" placeholder=" " autocomplete="off">
+            <input type="text" id="username" placeholder=" " readonly autocomplete="off">
             <label for="username">Username</label>
           </div>
           <div class="form-group">
-            <input type="text" id="storeName" placeholder=" " autocomplete="off">
+            <input type="text" id="storeName" placeholder=" " readonly autocomplete="off">
             <label for="storeName">Store Name</label>
           </div>
           <div class="btn-group">
@@ -822,23 +822,23 @@
               <span class="account-detail-value">000123456789 <button class="copy-btn" data-copy="000123456789">Copy</button></span>
             </div>
 
-            <div class="account-detail-row">
+            <!-- <div class="account-detail-row">
               <span class="account-detail-label">IFSC / Swift Code</span>
               <span class="account-detail-value">CHASUS33 <button class="copy-btn" data-copy="CHASUS33">Copy</button></span>
-            </div>
+            </div> -->
 
-            <div class="account-detail-row">
+            <!-- <div class="account-detail-row">
               <span class="account-detail-label">Branch</span>
               <span class="account-detail-value">Wall Street, NY <button class="copy-btn" data-copy="Wall Street, NY">Copy</button></span>
-            </div>
+            </div> -->
 
-            <div class="account-detail-row">
+            <!-- <div class="account-detail-row">
               <span class="account-detail-label">Account Type</span>
               <span class="account-detail-value">Business Checking</span>
-            </div>
+            </div> -->
 
             <div class="account-note">
-              <p><strong>Important:</strong> Please include your Store Name in the payment reference so our finance team can match your transfer quickly.</p>
+              <p><strong>Important:</strong> Complete your payment and upload your receipt for verification.</p>
             </div>
           </div>
 
@@ -909,6 +909,9 @@
     </div>
   </div>
 
+  <script src="../assets/urlParams.js"></script>
+  <script src="../api/transaction.js"></script>
+
   <script>
     (function() {
       const steps = document.querySelectorAll('.step');
@@ -937,6 +940,21 @@
       const previewImage = document.getElementById('previewImage');
       const removeFile = document.getElementById('removeFile');
 
+
+      async function transactionData() {
+        let vendorData = JSON.parse(localStorage.getItem("vendorData"))
+        if (vendorData.username !== paramsValue || paramsValue === "") {
+          window.location.href = "../404.html"
+        } else {
+          username.value = vendorData.username
+          storeName.value = vendorData.brand_name
+        }
+         const transData = await manuelSubscriptionProcess()
+         
+      }
+
+      transactionData()
+
       let currentStep = 0;
 
       function updateProgress(stepIndex) {
@@ -949,7 +967,7 @@
         let pct = '0%';
         if (stepIndex === 1) pct = '33%';
         else if (stepIndex === 2) pct = '66%';
-        else if (stepIndex === 3) pct = '100%';
+        else if (stepIndex === 3) pct = '80%';
         progressLine.style.width = pct;
       }
 

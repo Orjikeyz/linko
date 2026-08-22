@@ -42,6 +42,11 @@ const getTransaction = async (req, res) => {
     }
 };
 
+//Process manuel payment 
+const processManualPayment = async (req, res) => {
+    console.log("dsd")
+}
+
 // Process subscription payment
 const processPayment = async (req, res) => {
     try {
@@ -196,9 +201,10 @@ const verifyBankAccountData = async (req, res) => {
 
 
 module.exports = {
+    getTransaction,
+    processManualPayment,
     processPayment,
     verifyPayment,
-    getTransaction,
     getAllBankData,
     verifyBankAccountData
 }

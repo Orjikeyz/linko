@@ -140,12 +140,6 @@ async function selectPlan(plan) {
     // }
 }
 
-// Process manuel subscription payment 
-async function manuelSubscriptionProcess() {
-
-}
-
-
 // Verify Subscription Payment  
 async function verifySubscriptionPayment() {
     try {

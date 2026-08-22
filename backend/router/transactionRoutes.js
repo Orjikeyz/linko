@@ -11,5 +11,7 @@ router.get("/processPayment", authMiddleware, transactionController.processPayme
 router.get("/verifyPayment", authMiddleware, transactionController.verifyPayment)
 router.get("/getAllBankData", authMiddleware, transactionController.getAllBankData)
 router.get("/verifyBankAccountData", authMiddleware, transactionController.verifyBankAccountData)
+router.post("/manualPayment", authMiddleware, transactionController.processManualPayment) 
+
 
 module.exports = router

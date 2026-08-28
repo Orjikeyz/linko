@@ -265,7 +265,7 @@ const uploadBrandLogo = async () => {
       }
     }
 
-    const StorageResponse = await fetch("https://judydoesbraids.com/linkostorage/upload.php", {
+    const StorageResponse = await fetch("https://cloudstorage.codeph.ng/linkostorage/upload.php", {
       method: "POST",
       body: formData
     });

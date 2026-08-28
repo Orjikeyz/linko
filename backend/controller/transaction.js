@@ -44,8 +44,47 @@ const getTransaction = async (req, res) => {
 
 //Process manuel payment 
 const processManualPayment = async (req, res) => {
-    console.log("dsd")
-}
+    try {
+        const vendor_id = req.userId;
+        let image_screenshot = req.body.urls
+
+        // check if vendor_id is valid
+        if (!vendor_id) {
+            return responseData( res, "error", 401, "Unauthorized", [], "");
+        }
+
+        if (image_screenshot.length === 0 || !image_screenshot[0]) {
+            return responseData( res, "error", 400, "Payment screenshot is required", [], "");
+        }
+
+        const paymentAmount = Number(process.env.SUBSCRIPTION_AMOUNT);
+        const reference_id = Math.random().toString(36).substring(2, 12);
+        const status = "pending";
+        const description = "Subscription payment";
+        const method = "Manuel"
+
+        const uploadManuelPayment = await Transaction.create({ 
+            vendor_id: vendor_id, 
+            amount: paymentAmount, 
+            reference_id: reference_id, 
+            description: description, 
+            method: method, 
+            image_screenshot: image_screenshot[0], 
+            status: status
+        });
+
+        if (!uploadManuelPayment) {
+                return responseData( res, "error", 500, "Unable to create payment transaction", [], ""
+            );
+        }
+
+        return responseData( res, "success", 200, "Manual payment submitted successfully", uploadManuelPayment, "");
+
+
+    } catch (error) {
+        return responseData( res, "error", 500, "Unable to process manual payment", [], "");
+    }
+};
 
 // Process subscription payment
 const processPayment = async (req, res) => {
@@ -187,7 +226,7 @@ const verifyBankAccountData = async (req, res) => {
         });
 
         const data = await response.json();
-            console.log(data)
+        console.log(data)
 
         if (data.status) {
             return responseData(res, 'success', 200, "data retrieved successfully", data, '');

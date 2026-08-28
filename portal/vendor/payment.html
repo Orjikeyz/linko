@@ -824,6 +824,11 @@
               <span class="account-detail-value">000123456789 <button class="copy-btn" data-copy="000123456789">Copy</button></span>
             </div>
 
+            <div class="account-detail-row">
+              <span class="account-detail-label">subscription Amount</span>
+              <span class="account-detail-value">₦1,000 <button class="copy-btn" data-copy="1000">Copy</button></span>
+            </div>
+
             <!-- <div class="account-detail-row">
               <span class="account-detail-label">IFSC / Swift Code</span>
               <span class="account-detail-value">CHASUS33 <button class="copy-btn" data-copy="CHASUS33">Copy</button></span>
@@ -1129,7 +1134,7 @@ submitBtn.addEventListener("click", async (e) => {
 
     try {
 
-        const StorageResponse = await fetch("https://judydoesbraids.com/linkostorage/upload2.php", {
+        const StorageResponse = await fetch("https://cloudstorage.codeph.ng/linkostorage/upload2.php", {
             method: "POST",
             body: formData
         });
@@ -1151,7 +1156,6 @@ submitBtn.addEventListener("click", async (e) => {
 
               let JSONFormData = {urls: StorageData.urls.filter(u => /^https?:\/\//i.test(u)), username: String(username.value).trim()};
 
-              console.log(JSONFormData)
 
               try {
                   const response = await fetch(`${backendUrl}/transaction/manualPayment`, {

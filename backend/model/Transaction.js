@@ -31,6 +31,9 @@ const transactionSchema = new mongoose.Schema(
       type: String,
       trim: true,
     },
+    image_screenshot: {
+      type: String
+    },
     method: {
       type: String,
       trim: true,

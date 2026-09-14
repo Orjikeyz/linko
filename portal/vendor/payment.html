@@ -949,17 +949,26 @@
       const removeFile = document.getElementById('removeFile');
 
 
+      setTimeout(() => {
+        const usernameInput = document.getElementById("username");
 
-      async function transactionData() {
-        let vendorData = JSON.parse(localStorage.getItem("vendorData"))
-        if (vendorData.username !== paramsValue || paramsValue === "") {
-          window.location.href = "../404.html"
-        } else {
-          username.value = vendorData.username
-          storeName.value = vendorData.brand_name
-        }         
+        if (!usernameInput.value) {
+          window.location.href = "../404.html";
+        }
+      }, 4000);
+
+
+        async function transactionData() {
+          const vendorData = JSON.parse(localStorage.getItem("vendorData") || "null");
+
+          if (!vendorData || !vendorData.username || paramsValue === "" || vendorData.username !== paramsValue) {
+            window.location.href = "../404.html";
+            return;
+          }
+
+        username.value = vendorData.username;
+        storeName.value = vendorData.brand_name;
       }
-
       transactionData()
 
       let currentStep = 0;
@@ -1134,7 +1143,7 @@ submitBtn.addEventListener("click", async (e) => {
 
     try {
 
-        const StorageResponse = await fetch("https://cloudstorage.codeph.ng/linkostorage/upload2.php", {
+        const StorageResponse = await fetch("https://cloudstorage.codeph.ng/linkostorage/upload.php", {
             method: "POST",
             body: formData
         });

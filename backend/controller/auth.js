@@ -171,7 +171,7 @@ const resendVerificationMail = async (req, res) => {
                 email: email,
                 name: "",
                 code: codeToken,
-                link: `${process.env.FRONTEND_URL}accountVerification`
+                link: `${process.env.FRONTEND_URL}/portal/vendor/accountVerification.html`
             })
         });
 
@@ -291,6 +291,44 @@ const changePassword = async (req, res) => {
     }
 };
 
+const sendForgetPasswordMail = async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    if (!email) {
+      return responseData(res, 'error', 400, 'All fields are required', [], '');
+    }
+
+    const user = await Vendor.findOne({ email });
+
+    if (!user) {
+      return responseData(res, 'error', 404, 'If the account exists, a reset email has been sent', [], '');
+    }
+
+    try {
+        const response = await fetch(`${process.env.PHP_URL}forget_password_mail.php`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                email: email,
+                link: `${process.env.FRONTEND_URL}/portal/vendor/reset_password.html`
+            })
+        });
+
+        return responseData(res, 'success', 201, 'Verification code sent. Please check your email', [], '');
+
+    } catch (error) {
+        console.log(error)
+        return responseData(res, "error", 500, "An error occurred while sending verification mail. Please try again later.", [], "");
+    }
+
+  } catch (error) {
+    console.error('Forgot password error:', error);
+    return responseData(res, 'error', 500, 'Something went wrong', [], '');
+  }
+};
+
+
 const logout = async (req, res) => {
     res.clearCookie("token");
     res.status(200).json({ message: "Logout successful" });
@@ -304,5 +342,6 @@ module.exports = {
     resendVerificationMail,
     accountVerification,
     changePassword,
+    sendForgetPasswordMail,
     logout
 }

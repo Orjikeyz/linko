@@ -10,6 +10,7 @@ router.post("/login", rateLimiter, authController.login)
 router.post("/register", rateLimiter, authController.register)
 router.post("/resendVerificationMail", rateLimiter, authController.resendVerificationMail) //verify otp code
 router.post("/accountVerification", rateLimiter, authController.accountVerification) //verify otp code
+router.post("/forgetPassword", rateLimiter, authController.sendForgetPasswordMail) //send forget password mail
 router.put("/changePassword", authMiddleware, authController.changePassword)
 router.post("/logout", authController.logout)
 

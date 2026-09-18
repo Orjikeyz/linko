@@ -299,10 +299,10 @@ const sendForgetPasswordMail = async (req, res) => {
       return responseData(res, 'error', 400, 'All fields are required', [], '');
     }
 
-    const user = await Vendor.findOne({ email });
+    const vendor = await Vendor.findOne({ brand_email: email });
 
-    if (!user) {
-      return responseData(res, 'error', 404, 'If the account exists, a reset email has been sent', [], '');
+    if (!vendor) {
+      return responseData(res, 'error', 404, 'Failed to send reset email', [], '');
     }
 
     try {
@@ -315,6 +315,7 @@ const sendForgetPasswordMail = async (req, res) => {
             })
         });
 
+        const data = await response.json()
         return responseData(res, 'success', 201, 'Verification code sent. Please check your email', [], '');
 
     } catch (error) {
@@ -327,6 +328,64 @@ const sendForgetPasswordMail = async (req, res) => {
     return responseData(res, 'error', 500, 'Something went wrong', [], '');
   }
 };
+
+const resetPassword = async (req, res) => {
+    try {
+        const {password, cpassword, email} = req.body;
+
+        if (!password || !cpassword) {
+            return responseData(res, 'error', 400, 'Password is required', [], '');
+        }
+
+        if (!email) {
+            return responseData(res, 'error', 400, 'email is required', [], '');
+        }
+
+        if (typeof password !== 'string' || password.length < 6) {
+            return responseData(res, 'error', 400, 'Password must be at least 6 characters', [], '');
+        }
+
+        if (password !== cpassword) {
+            return responseData(res, 'error', 400, 'Passwords do not match', [], '');
+
+        }
+
+        if (typeof email !== 'string' || typeof password !== 'string') {
+            return responseData(res, 'error', 400, 'Invalid input', [], '');
+        }
+
+        if (email.length > 254) {
+            return responseData(res, 'error', 400, 'Invalid email address', [], '');
+        }
+
+        if (password.length < 6) {
+            return responseData(res, 'error', 400, 'Password must be at least 6 characters', [], ''
+            );
+        }
+
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            return responseData(res, 'error', 400, 'Invalid email address', [], '');
+        }
+
+        const vendor = await Vendor.findOne({ brand_email: email });
+
+        if (!vendor) {
+            return responseData(res, 'error', 400, 'Invalid password reset request', [], '');
+        }
+
+        const hashedPassword = await bcrypt.hash(password, 12);
+        vendor.password = hashedPassword
+        await vendor.save();
+
+        return responseData(res, 'success', 200, 'Password reset successful', [], '');
+
+    } catch (error) {
+        console.error(error);
+        return responseData(res, 'error', 500, 'Sorry an error occurred while resetting your password. Please try again later', [], '');
+    }
+};
+
 
 
 const logout = async (req, res) => {
@@ -343,5 +402,6 @@ module.exports = {
     accountVerification,
     changePassword,
     sendForgetPasswordMail,
+    resetPassword,
     logout
 }

@@ -28,7 +28,6 @@ if (isset($_SERVER['HTTP_ORIGIN']) && in_array($_SERVER['HTTP_ORIGIN'], $allowed
 $data = json_decode(file_get_contents("php://input"), true);
 
 $email = trim($data["email"] ?? "");
-$name  = trim($data["name"] ?? "User");
 $link  = trim($data["link"] ?? "");
 
 
@@ -93,7 +92,7 @@ Reset Your Password
 
 
 <p style="margin-top:25px;font-size:16px;color:#666;line-height:28px;">
-Hello <strong>{$name}</strong>,
+Hello,
 </p>
 
 

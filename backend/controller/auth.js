@@ -305,13 +305,22 @@ const sendForgetPasswordMail = async (req, res) => {
       return responseData(res, 'error', 404, 'Failed to send reset email', [], '');
     }
 
+      const token = {
+          value: crypto.randomUUID(),
+          expiresAt: Date.now() + 5 * 60 * 1000
+      };
+
+      vendor.token = token.value
+      vendor.tokenExpiresAt = token.expiresAt
+      await vendor.save()
+
     try {
         const response = await fetch(`${process.env.PHP_URL}forget_password_mail.php`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
                 email: email,
-                link: `${process.env.FRONTEND_URL}/portal/vendor/reset_password.html`
+                link: `${process.env.FRONTEND_URL}/portal/vendor/reset_password.html?mail=${email}&token=${token.value}`
             })
         });
 
@@ -331,7 +340,7 @@ const sendForgetPasswordMail = async (req, res) => {
 
 const resetPassword = async (req, res) => {
     try {
-        const {password, cpassword, email} = req.body;
+        const {password, cpassword, email, token} = req.body;
 
         if (!password || !cpassword) {
             return responseData(res, 'error', 400, 'Password is required', [], '');
@@ -374,8 +383,17 @@ const resetPassword = async (req, res) => {
             return responseData(res, 'error', 400, 'Invalid password reset request', [], '');
         }
 
+        if (vendor.token !== token) {
+            return responseData(res, 'error', 400, 'Invalid token', [], '');
+        }
+
+        if (Date.now() > vendor.tokenExpiresAt) {
+            return responseData(res, 'error', 400, 'Token expired', [], '');
+        }
+
         const hashedPassword = await bcrypt.hash(password, 12);
         vendor.password = hashedPassword
+        vendor.token = ""
         await vendor.save();
 
         return responseData(res, 'success', 200, 'Password reset successful', [], '');

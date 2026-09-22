@@ -15,7 +15,7 @@ const vendorSchema = new mongoose.Schema(
             required: false,
         },
         brand_email: {
-            type: String, 
+            type: String,
             unique: true,
         },
         brand_description: {
@@ -51,9 +51,12 @@ const vendorSchema = new mongoose.Schema(
             type: String,
             enum: ["on", "off"],
             default: "off"
-        }, 
+        },
         token: {
             type: String,
+        },
+        tokenExpiresAt: {
+            type: Number,
         },
     },
     { timestamps: true }

@@ -190,11 +190,9 @@ $headers .= "Content-type:text/html;charset=UTF-8\r\n";
 $headers .= "From: Linko.ng <info@codeph.ng >\r\n";
 $headers .= "Reply-To: info@codeph.ng \r\n";
 $headers .= "X-Mailer: PHP/" . phpversion();
+$additional_params = '-finfo@codeph.ng';
 
-
-// ---------- SEND EMAIL ----------
-
-if (mail($email, $subject, $message, $headers)) {
+if (mail($email, $subject, $message, $headers, $additional_params)) {
 
     echo json_encode([
         "success" => true,

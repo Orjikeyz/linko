@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Super Admin · Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+<div class="layout">
+
+  <!-- ============ SIDEBAR ============ -->
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="mark">S</div>
+      <div><b>SuperAdmin</b><span>Platform Control</span></div>
+    </div>
+    <nav class="nav">
+      <div class="nav-sect">Manage</div>
+      <a class="nav-item" href="#dashboard"><span class="ico">▦</span>Dashboard</a>
+      <a class="nav-item" href="#vendors"><span class="ico">🏪</span>Vendors <span class="nav-badge">2</span></a>
+      <a class="nav-item" href="#products"><span class="ico">🛍</span>Products</a>
+      <a class="nav-item" href="#transactions"><span class="ico">⇄</span>Transactions</a>
+      <div class="nav-sect">System</div>
+      <a class="nav-item" href="#settings"><span class="ico">⚙</span>Settings</a>
+    </nav>
+    <div class="foot">
+      <a class="nav-item" href="#"><span class="ico">⏻</span>Sign out</a>
+    </div>
+  </aside>
+
+  <!-- ============ MAIN ============ -->
+  <div class="main">
+    <header class="topbar">
+      <h2 class="page-title t-dash">Dashboard</h2>
+      <h2 class="page-title t-vend">Vendors</h2>
+      <h2 class="page-title t-prod">Products</h2>
+      <h2 class="page-title t-tx">Transactions</h2>
+      <h2 class="page-title t-set">Settings</h2>
+      <span class="crumb">Super Admin</span>
+      <div class="right">
+        <div class="searchbox"><input type="text" placeholder="Search…"></div>
+        <a class="icon-action" href="#">🔔<span class="ping"></span></a>
+        <div class="avatar">
+          <div class="pic">SA</div>
+          <div class="who"><b>Super Admin</b><span>superadmin@platform.com</span></div>
+        </div>
+      </div>
+    </header>
+
+    <main class="content">
+
+      <!-- ================================================== -->
+      <!-- ==================== DASHBOARD =================== -->
+      <!-- ================================================== -->
+      <section class="page" id="dashboard">
+        <div class="stats">
+          <div class="stat-card">
+            <div class="dot purple">🏪</div>
+            <div class="lbl">Total Vendors</div>
+            <div class="val">2</div>
+            <div class="sub"><span class="up">2 active</span> · 0 suspended</div>
+          </div>
+          <div class="stat-card">
+            <div class="dot blue">🛍</div>
+            <div class="lbl">Total Products</div>
+            <div class="val">1</div>
+            <div class="sub">across all vendors</div>
+          </div>
+          <div class="stat-card">
+            <div class="dot amber">⇄</div>
+            <div class="lbl">Transactions</div>
+            <div class="val">1</div>
+            <div class="sub"><span class="up">1 successful</span></div>
+          </div>
+          <div class="stat-card">
+            <div class="dot green">💰</div>
+            <div class="lbl">Revenue</div>
+            <div class="val">₦3,000</div>
+            <div class="sub">from successful transactions</div>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-head"><h3>Revenue Overview</h3><div class="spacer"></div><a class="link" href="#">This week ▾</a></div>
+            <div class="chart">
+              <div class="bar-col"><div class="bar" style="height:35%"><span>₦3k</span></div><label>Mon</label></div>
+              <div class="bar-col"><div class="bar" style="height:55%"><span>₦8k</span></div><label>Tue</label></div>
+              <div class="bar-col"><div class="bar" style="height:42%"><span>₦5k</span></div><label>Wed</label></div>
+              <div class="bar-col"><div class="bar" style="height:70%"><span>₦12k</span></div><label>Thu</label></div>
+              <div class="bar-col"><div class="bar" style="height:88%"><span>₦15k</span></div><label>Fri</label></div>
+              <div class="bar-col"><div class="bar" style="height:64%"><span>₦9k</span></div><label>Sat</label></div>
+              <div class="bar-col"><div class="bar" style="height:48%"><span>₦6k</span></div><label>Sun</label></div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-head"><h3>Recent Transactions</h3><div class="spacer"></div><a class="link" href="#transactions">View all →</a></div>
+            <div class="recent-list">
+              <div class="recent-item">
+                <div class="thumb txt">⇄</div>
+                <div style="flex:1;min-width:0">
+                  <div class="cell-title">Subscription Plan</div>
+                  <div class="cell-sub mono">tx863heog3</div>
+                </div>
+                <div style="text-align:right"><div class="amount">₦3,000</div><span class="badge green">success</span></div>
+              </div>
+              <div class="recent-item">
+                <div class="thumb txt">⇄</div>
+                <div style="flex:1;min-width:0">
+                  <div class="cell-title">Subscription Plan</div>
+                  <div class="cell-sub mono">tx5521abc9</div>
+                </div>
+                <div style="text-align:right"><div class="amount">₦8,500</div><span class="badge amber">pending</span></div>
+              </div>
+              <div class="recent-item">
+                <div class="thumb txt">⇄</div>
+                <div style="flex:1;min-width:0">
+                  <div class="cell-title">Subscription Plan</div>
+                  <div class="cell-sub mono">tx91kd02mz</div>
+                </div>
+                <div style="text-align:right"><div class="amount">₦5,000</div><span class="badge red">failed</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head"><h3>Top Vendors</h3><div class="spacer"></div><a class="link" href="#vendors">View all →</a></div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Vendor</th><th>Plan</th><th>Status</th><th>2FA</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><div class="cell-main">
+                    <img class="thumb" src="https://cloudstorage.codeph.ng/linkostorage/uploads/images/ea44521b3e0fd3df4618b4d439e42846.jpg" alt="">
+                    <div><div class="cell-title">Empire Clothinghub</div><div class="cell-sub">@empireclothing_4821</div></div></div></td>
+                  <td><span class="badge blue">basic</span></td>
+                  <td><span class="badge green">active</span></td>
+                  <td class="cell-sub">🔒 on</td>
+                </tr>
+                <tr>
+                  <td><div class="cell-main">
+                    <div class="thumb txt">UT</div>
+                    <div><div class="cell-title">Urban Threads</div><div class="cell-sub">@urbanthreads_7392</div></div></div></td>
+                  <td><span class="badge blue">basic</span></td>
+                  <td><span class="badge green">active</span></td>
+                  <td class="cell-sub">off</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <!-- ==================== VENDORS ===================== -->
+      <!-- ================================================== -->
+      <section class="page" id="vendors">
+        <div class="card">
+          <div class="card-head"><h3>All Vendors (2)</h3><div class="spacer"></div>
+            <a class="btn small" href="#addVendor">＋ Add Vendor</a></div>
+          <div class="filters">
+            <select><option>All statuses</option><option>active</option><option>suspended</option><option>pending</option></select>
+            <select><option>All plans</option><option>basic</option><option>pro</option><option>premium</option></select>
+            <span class="hint">2 vendors found</span>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Vendor</th><th>Contact</th><th>Plan</th><th>Status</th><th>2FA</th><th></th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><div class="cell-main">
+                    <img class="thumb" src="https://cloudstorage.codeph.ng/linkostorage/uploads/images/ea44521b3e0fd3df4618b4d439e42846.jpg" alt="">
+                    <div><div class="cell-title">Empire Clothinghub</div><div class="cell-sub">@empireclothing_4821</div></div></div></td>
+                  <td><div class="cell-sub">admin@gmail.com</div><div class="cell-sub">+1234567890</div></td>
+                  <td><span class="badge blue">basic</span></td>
+                  <td><span class="badge green">active</span></td>
+                  <td class="cell-sub">🔒 on</td>
+                  <td><div class="row-actions">
+                    <a class="icon-btn" href="#viewVendor" title="View">👁</a>
+                    <button class="icon-btn" title="Edit">✎</button>
+                    <button class="icon-btn red" title="Delete">🗑</button></div></td>
+                </tr>
+                <tr>
+                  <td><div class="cell-main">
+                    <div class="thumb txt">UT</div>
+                    <div><div class="cell-title">Urban Threads</div><div class="cell-sub">@urbanthreads_7392</div></div></div></td>
+                  <td><div class="cell-sub">—</div><div class="cell-sub">+0987654321</div></td>
+                  <td><span class="badge blue">basic</span></td>
+                  <td><span class="badge green">active</span></td>
+                  <td class="cell-sub">off</td>
+                  <td><div class="row-actions">
+                    <button class="icon-btn" title="View">👁</button>
+                    <button class="icon-btn" title="Edit">✎</button>
+                    <button class="icon-btn red" title="Delete">🗑</button></div></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="pager">
+            <span>Showing 1–2 of 2</span>
+            <div class="pages"><button class="page-btn">‹</button><button class="page-btn active">1</button><button class="page-btn">›</button></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <!-- ==================== PRODUCTS ==================== -->
+      <!-- ================================================== -->
+      <section class="page" id="products">
+        <div class="card">
+          <div class="card-head"><h3>All Products (1)</h3><div class="spacer"></div>
+            <a class="btn small" href="#addProduct">＋ Add Product</a></div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Product</th><th>Price</th><th>Vendor</th><th>Images</th><th></th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><div class="cell-main">
+                    <img class="thumb" src="https://images.unsplash.com/photo-1523275335684-37898b6baf30" alt="">
+                    <div><div class="cell-title">Classic Black Wrist Watch</div>
+                    <div class="cell-sub">Elegant minimalist black wrist watch…</div></div></div></td>
+                  <td class="amount">₦12,000</td>
+                  <td><div class="cell-sub">Empire Clothinghub</div><div class="cell-sub">@empireclothing_4821</div></td>
+                  <td class="cell-sub">3 image(s)</td>
+                  <td><div class="row-actions">
+                    <a class="icon-btn" href="#viewProduct" title="View">👁</a>
+                    <button class="icon-btn" title="Edit">✎</button>
+                    <button class="icon-btn red" title="Delete">🗑</button></div></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="pager">
+            <span>Showing 1 of 1</span>
+            <div class="pages"><button class="page-btn">‹</button><button class="page-btn active">1</button><button class="page-btn">›</button></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <!-- ================== TRANSACTIONS ================== -->
+      <!-- ================================================== -->
+      <section class="page" id="transactions">
+        <div class="stats" style="grid-template-columns:repeat(3,1fr)">
+          <div class="stat-card"><div class="dot purple">⇄</div>
+            <div class="lbl">Total Transactions</div><div class="val">3</div><div class="sub">all time</div></div>
+          <div class="stat-card"><div class="dot green">✓</div>
+            <div class="lbl">Successful</div><div class="val">1</div><div class="sub"><span class="up">₦3,000</span> volume</div></div>
+          <div class="stat-card"><div class="dot amber">⏳</div>
+            <div class="lbl">Pending</div><div class="val">1</div><div class="sub">awaiting confirmation</div></div>
+        </div>
+
+        <div class="card">
+          <div class="card-head"><h3>Transactions</h3><div class="spacer"></div>
+            <select style="background:var(--bg-2);border:1px solid var(--border);border-radius:8px;padding:8px 11px;color:var(--text);font-size:12.5px;font-family:inherit">
+              <option>All statuses</option><option>success</option><option>pending</option><option>failed</option>
+            </select></div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Reference</th><th>Description</th><th>Vendor</th><th>Amount</th><th>Status</th><th>Date</th><th></th></tr></thead>
+              <tbody>
+                <tr>
+                  <td class="mono">tx863heog3</td>
+                  <td class="cell-title">Subscription Plan</td>
+                  <td class="cell-sub mono">123</td>
+                  <td class="amount">₦3,000</td>
+                  <td><span class="badge green">success</span></td>
+                  <td class="cell-sub">28 Jan 2026, 21:35</td>
+                  <td><div class="row-actions">
+                    <button class="icon-btn" title="View">👁</button>
+                    <button class="icon-btn red" title="Delete">🗑</button></div></td>
+                </tr>
+                <tr>
+                  <td class="mono">tx5521abc9</td>
+                  <td class="cell-title">Subscription Plan</td>
+                  <td class="cell-sub mono">123</td>
+                  <td class="amount">₦8,500</td>
+                  <td><span class="badge amber">pending</span></td>
+                  <td class="cell-sub">27 Jan 2026, 14:02</td>
+                  <td><div class="row-actions">
+                    <button class="icon-btn" title="View">👁</button>
+                    <button class="icon-btn red" title="Delete">🗑</button></div></td>
+                </tr>
+                <tr>
+                  <td class="mono">tx91kd02mz</td>
+                  <td class="cell-title">Subscription Plan</td>
+                  <td class="cell-sub mono">456</td>
+                  <td class="amount">₦5,000</td>
+                  <td><span class="badge red">failed</span></td>
+                  <td class="cell-sub">26 Jan 2026, 09:18</td>
+                  <td><div class="row-actions">
+                    <button class="icon-btn" title="View">👁</button>
+                    <button class="icon-btn red" title="Delete">🗑</button></div></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="pager">
+            <span>Showing 1–3 of 3</span>
+            <div class="pages"><button class="page-btn">‹</button><button class="page-btn active">1</button><button class="page-btn">›</button></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <!-- ==================== SETTINGS ==================== -->
+      <!-- ================================================== -->
+      <section class="page" id="settings">
+        <div class="grid-2b">
+          <div class="card">
+            <div class="card-head"><h3>Platform Overview</h3></div>
+            <div style="padding:20px">
+              <div class="detail-row"><span class="k">Total Vendors</span><span class="v">2</span></div>
+              <div class="detail-row"><span class="k">Active Vendors</span><span class="v">2</span></div>
+              <div class="detail-row"><span class="k">Total Products</span><span class="v">1</span></div>
+              <div class="detail-row"><span class="k">Total Transactions</span><span class="v">3</span></div>
+              <div class="detail-row"><span class="k">Total Revenue</span><span class="v amount" style="color:var(--green)">₦16,500</span></div>
+              <div class="detail-row"><span class="k">Platform Plan Tiers</span><span class="v">basic · pro · premium</span></div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-head"><h3>Admin Profile</h3></div>
+            <div style="padding:20px">
+              <div class="field"><label>Admin Email</label><input type="email" value="superadmin@platform.com"></div>
+              <div class="field"><label>Display Name</label><input type="text" value="Super Admin"></div>
+              <div class="field"><label>New Password</label><input type="password" placeholder="••••••••"></div>
+              <div style="display:flex;gap:10px;margin-top:6px">
+                <button class="btn small">Save Changes</button>
+                <button class="btn ghost small">Cancel</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+</div>
+
+<!-- ============ MODAL: ADD VENDOR (CSS-only, opens via #addVendor) ============ -->
+<div class="modal-overlay" id="addVendor">
+  <div class="modal">
+    <div class="modal-head"><h3>Add Vendor</h3><a class="modal-x" href="#vendors">✕</a></div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="field full"><label>Brand name</label><input type="text" placeholder="e.g. Empire Clothinghub"></div>
+        <div class="field"><label>Username</label><input type="text" placeholder="e.g. empire_4821"></div>
+        <div class="field"><label>Email</label><input type="email" placeholder="vendor@email.com"></div>
+        <div class="field"><label>Phone</label><input type="tel" placeholder="+1234567890"></div>
+        <div class="field"><label>Plan</label><select><option>basic</option><option>pro</option><option>premium</option></select></div>
+        <div class="field full"><label>Brand image URL</label><input type="text" placeholder="https://…"></div>
+        <div class="field full"><label>Description</label><textarea rows="2" placeholder="What does this vendor sell?"></textarea></div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <a class="btn ghost" href="#vendors">Cancel</a>
+      <a class="btn" href="#vendors">Save Vendor</a>
+    </div>
+  </div>
+</div>
+
+<!-- ============ MODAL: VENDOR DETAIL ============ -->
+<div class="modal-overlay" id="viewVendor">
+  <div class="modal">
+    <div class="modal-head"><h3>Empire Clothinghub</h3><a class="modal-x" href="#vendors">✕</a></div>
+    <div class="modal-body">
+      <div style="display:flex;gap:14px;align-items:center;margin-bottom:14px">
+        <img class="thumb lg" src="https://cloudstorage.codeph.ng/linkostorage/uploads/images/ea44521b3e0fd3df4618b4d439e42846.jpg" alt="">
+        <div>
+          <div style="font-weight:700">Empire Clothinghub</div>
+          <div class="cell-sub" style="margin-top:4px">@empireclothing_4821 · <span class="badge green">active</span> <span class="badge blue">basic</span></div>
+        </div>
+      </div>
+      <div class="detail-row"><span class="k">Email</span><span class="v">admin@gmail.com</span></div>
+      <div class="detail-row"><span class="k">Phone</span><span class="v">+1234567890</span></div>
+      <div class="detail-row"><span class="k">Description</span><span class="v">sell - buy - delivery</span></div>
+      <div class="detail-row"><span class="k">2FA</span><span class="v">🔒 Enabled</span></div>
+      <div class="detail-row"><span class="k">Products</span><span class="v">1</span></div>
+      <div class="detail-row"><span class="k">Socials</span><span class="v"><div class="soc">
+        <a href="https://instagram.com/empireclothing" target="_blank">Instagram</a>
+        <a href="https://facebook.com/empireclothing" target="_blank">Facebook</a>
+        <a href="https://x.com/empireclothing" target="_blank">X</a></div></span></div>
+    </div>
+    <div class="modal-foot"><a class="btn ghost" href="#vendors">Close</a></div>
+  </div>
+</div>
+
+<!-- ============ MODAL: ADD PRODUCT ============ -->
+<div class="modal-overlay" id="addProduct">
+  <div class="modal">
+    <div class="modal-head"><h3>Add Product</h3><a class="modal-x" href="#products">✕</a></div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="field full"><label>Product name</label><input type="text" placeholder="e.g. Classic Black Wrist Watch"></div>
+        <div class="field"><label>Price (₦)</label><input type="number" placeholder="12000"></div>
+        <div class="field"><label>Vendor</label>
+          <select><option>Empire Clothinghub</option><option>Urban Threads</option></select></div>
+        <div class="field full"><label>Description</label><textarea rows="3" placeholder="Product description…"></textarea></div>
+        <div class="field full"><label>Image URLs (one per line)</label><textarea rows="3" placeholder="https://…&#10;https://…"></textarea></div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <a class="btn ghost" href="#products">Cancel</a>
+      <a class="btn" href="#products">Save Product</a>
+    </div>
+  </div>
+</div>
+
+<!-- ============ MODAL: PRODUCT DETAIL ============ -->
+<div class="modal-overlay" id="viewProduct">
+  <div class="modal">
+    <div class="modal-head"><h3>Classic Black Wrist Watch</h3><a class="modal-x" href="#products">✕</a></div>
+    <div class="modal-body">
+      <div class="gallery">
+        <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30" alt="">
+        <img src="https://images.unsplash.com/photo-1518544887870-8d34c0c5f0b7" alt="">
+        <img src="https://images.unsplash.com/photo-1508057198894-247b23fe5ade" alt="">
+      </div>
+      <div style="margin-top:14px">
+        <div class="detail-row"><span class="k">Price</span><span class="v amount">₦12,000</span></div>
+        <div class="detail-row"><span class="k">Vendor</span><span class="v">Empire Clothinghub (@empireclothing_4821)</span></div>
+        <div class="detail-row"><span class="k">Description</span><span class="v">Elegant minimalist black wrist watch suitable for all occasions.</span></div>
+        <div class="detail-row"><span class="k">Product ID</span><span class="v mono">6a393c4eedee2ed38a4c3a85</span></div>
+      </div>
+    </div>
+    <div class="modal-foot"><a class="btn ghost" href="#products">Close</a></div>
+  </div>
+</div>
+
+</body>
+</html>

@@ -27,6 +27,9 @@ const login = async (req, res) => {
         if (!isMatch) {
             return responseData(res, 'error', 401, 'Invalid email or password', [], '');
         }
+        if (vendor.status === "pending") {
+            return responseData(res, 'error', 401, 'Your vendor account has not been approved yet', [], '');
+        }
 
         const token = jwt.sign({ id: vendor._id, userId: vendor.username, status: vendor.status}, process.env.JWT_SECRET, { expiresIn: "1h", algorithm: 'HS256' });
 

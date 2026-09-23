@@ -338,6 +338,16 @@
         // Countdown
         let time = 120;
 
+        // resend verification mail if redirected from login page 
+        const re = new URLSearchParams(window.location.search).get('re') || ""
+        async function reMail() {
+            if (Number(re) === 1) {
+                await resendVerificationMail()
+            }
+        }
+        reMail()
+
+
         const timer = document.getElementById("timer");
         async function resendVerificationMail() {
             try {

@@ -61,6 +61,12 @@ const loginAuth = async () => {
 
         if (data.status === "error") {
             showAlert(data.message || "Login failed", "error");
+
+            setTimeout(() => {
+                if (data.message === "Your vendor account has not been approved yet") {
+                    window.location.href = `../vendor/accountVerification.html?mail=${loginEmail}&re=1`
+                }
+            }, 2000);
             return;
         }
 

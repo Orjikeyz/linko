@@ -74,11 +74,10 @@ const processManualPayment = async (req, res) => {
         });
 
         if (!uploadManuelPayment) {
-                return responseData( res, "error", 500, "Unable to create payment transaction", [], ""
-            );
+            return responseData( res, "error", 500, "Unable to create payment transaction", [], "");
         }
 
-        return responseData( res, "success", 200, "Manual payment submitted successfully", uploadManuelPayment, "");
+        return responseData( res, "success", 200, "Manual payment submitted successfully", [], "");
 
 
     } catch (error) {

@@ -23,11 +23,15 @@ const authRoutes = require("./router/authRoutes")
 const productRoutes = require("./router/productRoutes")
 const vendorRoutes = require("./router/vendorRoutes")
 const transactionRoutes = require("./router/transactionRoutes")
+const managerRoutes = require("./router/managerRoutes")
 
 app.use("/", vendorRoutes);
 app.use("/auth", authRoutes);
 app.use("/product", productRoutes);
 app.use("/transaction", transactionRoutes);
+
+// Manager routes
+app.use("/manager", managerRoutes);
 
 app.listen(3000, ()=> {
     console.log(`Server running on port: ${process.env.PORT}`)

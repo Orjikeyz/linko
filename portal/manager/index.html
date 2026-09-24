@@ -7,6 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="./css/style.css">
+<link rel="stylesheet" href="../assets/alert.css">
 </head>
 <body>
 <div class="layout">
@@ -41,7 +42,7 @@
       <h2 class="page-title t-set">Settings</h2>
       <span class="crumb">Super Admin</span>
       <div class="right">
-        <div class="searchbox"><input type="text" placeholder="Search…"></div>
+        <div class="searchbox"><input type="text" style="display: none;" placeholder="Search…"></div>
         <a class="icon-action" href="#">🔔<span class="ping"></span></a>
         <div class="avatar">
           <div class="pic">SA</div>
@@ -60,7 +61,7 @@
           <div class="stat-card">
             <div class="dot purple">🏪</div>
             <div class="lbl">Total Vendors</div>
-            <div class="val">2</div>
+            <div class="val totalVendor">0</div>
             <div class="sub"><span class="up">2 active</span> · 0 suspended</div>
           </div>
           <div class="stat-card">
@@ -129,31 +130,29 @@
         </div>
 
         <div class="card">
-          <div class="card-head"><h3>Top Vendors</h3><div class="spacer"></div><a class="link" href="#vendors">View all →</a></div>
+          <div class="card-head">
+            <h3>Top Vendors</h3>
+            <div class="spacer"></div>
+            <a class="link" href="#vendors">View all →</a>
+          </div>
+
           <div class="table-wrap">
             <table>
-              <thead><tr><th>Vendor</th><th>Plan</th><th>Status</th><th>2FA</th></tr></thead>
-              <tbody>
+              <thead>
                 <tr>
-                  <td><div class="cell-main">
-                    <img class="thumb" src="https://cloudstorage.codeph.ng/linkostorage/uploads/images/ea44521b3e0fd3df4618b4d439e42846.jpg" alt="">
-                    <div><div class="cell-title">Empire Clothinghub</div><div class="cell-sub">@empireclothing_4821</div></div></div></td>
-                  <td><span class="badge blue">basic</span></td>
-                  <td><span class="badge green">active</span></td>
-                  <td class="cell-sub">🔒 on</td>
+                  <th>Vendor</th>
+                  <th>Email</th>
+                  <th>Plan</th>
+                  <th>Status</th>
+                  <th>2FA</th>
                 </tr>
-                <tr>
-                  <td><div class="cell-main">
-                    <div class="thumb txt">UT</div>
-                    <div><div class="cell-title">Urban Threads</div><div class="cell-sub">@urbanthreads_7392</div></div></div></td>
-                  <td><span class="badge blue">basic</span></td>
-                  <td><span class="badge green">active</span></td>
-                  <td class="cell-sub">off</td>
-                </tr>
-              </tbody>
+              </thead>
+
+              <tbody id="vendorTableBody"></tbody>
             </table>
           </div>
         </div>
+
       </section>
 
       <!-- ================================================== -->
@@ -432,5 +431,9 @@
   </div>
 </div>
 
+<div id="alertBox" class="alert">Saved successfully!</div>
+<script src="../assets/alert.js"></script>
+<script src="../assets/url.js"></script>
+<script src="./js/vendor.js"></script>
 </body>
 </html>

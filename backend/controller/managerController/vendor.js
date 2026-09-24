@@ -1,17 +1,17 @@
-const Vendor = require('../model/Vendors')
-const Product = require('../model/Products')
-const Transaction = require('../model/Transactions')
-const responseData = require('../middleware/response')
+const exprees = require('express')
+const Vendor = require('../../model/Vendors')
+const responseData = require('../../middleware/response')
+
 
 // GET /vendors
 const getVendors = async (req, res) => {
   try {
     const vendors = await Vendor.find().sort({ createdAt: -1 })
-
+    console.log(vendors)
     return responseData(res, 'success', 200, 'Vendors retrieved successfully', vendors, '')
+
   } catch (error) {
     console.error('Get vendors error:', error)
-
     return responseData(res, 'error', 500, 'Internal server error', [], '')
   }
 }

@@ -1,5 +1,5 @@
 const express = require("express")
-const Product = require('../../model/Transaction')
+const Product = require('../../model/Product')
 const responseData = require('../../middleware/response')
 
 // GET /products

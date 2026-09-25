@@ -13,7 +13,7 @@ async function getVendors() {
     return data
   } catch (error) {
     console.error("Error fetching vendors:", error);
-    return showAlert(data.message, data.status)
+    return showAlert("Error Fetching vendors data", "error")
   }
 }
 
@@ -77,44 +77,64 @@ async function updateVendor(id, vendor) {
 async function loadVendors() {
   try {
     const vendorData = await getVendors();
-
+    document.querySelector(".totalVendor").textContent = vendorData.result.length
     const vendors = vendorData.result || [];
 
-    // Total vendors
-    document.querySelector(".totalVendor").textContent = vendors.length;
+    // Select both tables
+    const tbodies = document.querySelectorAll(
+      "#vendorTableBody, #vendorTableBody2"
+    );
 
-    // Table body
-    const tbody = document.querySelector("#vendorTableBody");
+    const rows = vendors.map(vendor => {
+      const statusClass =
+        vendor.status === "active" ? "green" : "red";
 
-    tbody.innerHTML = vendors.map(vendor => {
-      const statusClass = vendor.status === "active" ? "green" : "red";
-
-      const twoFactor = vendor.twofactorToken === "on"? "🔒 on" : "off";
+      const twoFactor =
+        vendor.twofactorToken === "on" ? "🔒 on" : "off";
 
       return `
         <tr>
           <td>
             <div class="cell-main">
-              <img class="thumb" src="${vendor.brand_image || ""}" alt="${vendor.brand_name || "Vendor"}"
-              >
+              <img class="thumb" src="${vendor.brand_image || ""}" alt="${vendor.brand_name || "Vendor"}">
 
               <div>
-                <div class="cell-title"> ${vendor.brand_name || "Unknown Vendor"}</div>
-
-                <div class="cell-sub"> @${vendor.username || ""} | ${vendor._id}</div>
+                <div class="cell-title">${vendor.brand_name || "Unknown Vendor"}</div>
+                <div class="cell-sub">@${vendor.username || ""}</div>
               </div>
             </div>
           </td>
 
-          <td><span >${vendor.brand_email || "N/A"}</span></td>
-          <td><span class="badge blue">${vendor.plan || "N/A"}</span></td>
+          <td>
+            <div class="cell-sub"> ${vendor.brand_email || "—"}</div>
+            <div class="cell-sub">${vendor.phone || "—"}</div>
+          </td>
 
-          <td><span class="badge ${statusClass}">${vendor.status || "unknown"}</span></td>
+          <td>
+            <span class="badge blue">${vendor.plan || "N/A"}</span>
+          </td>
+
+          <td><span class="badge ${statusClass}">${vendor.status || "unknown"}</span>
+          </td>
 
           <td class="cell-sub">${twoFactor}</td>
+
+          <td>
+            <div class="row-actions">
+              <a class="icon-btn" href="#viewVendor" title="View">👁</a>
+              <button class="icon-btn" title="Edit">✎</button>
+
+              <button class="icon-btn red" title="Delete">🗑</button>
+            </div>
+          </td>
         </tr>
       `;
     }).join("");
+
+    // Put the same rows into both tables
+    tbodies.forEach(tbody => {
+      tbody.innerHTML = rows;
+    });
 
   } catch (error) {
     console.error("Failed to load vendors:", error);

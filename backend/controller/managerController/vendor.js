@@ -7,7 +7,6 @@ const responseData = require('../../middleware/response')
 const getVendors = async (req, res) => {
   try {
     const vendors = await Vendor.find().sort({ createdAt: -1 })
-    console.log(vendors)
     return responseData(res, 'success', 200, 'Vendors retrieved successfully', vendors, '')
 
   } catch (error) {
@@ -18,41 +17,41 @@ const getVendors = async (req, res) => {
 
 
 // POST /vendors
-const createVendor = async (req, res) => {
-  try {
-    const { username, brand_name, brand_description, phone_number, instagram, facebook, x, brand_image, plan} = req.body
+// const createVendor = async (req, res) => {
+//   try {
+//     const { username, brand_name, brand_description, phone_number, instagram, facebook, x, brand_image, plan} = req.body
 
-    // Basic required field validation
-    if ( typeof username !== 'string' || typeof brand_name !== 'string' || typeof brand_description !== 'string' || typeof phone_number !== 'string') {
-      return responseData(res, 'error', 400, 'Invalid input types', [], '')
-    }
+//     // Basic required field validation
+//     if ( typeof username !== 'string' || typeof brand_name !== 'string' || typeof brand_description !== 'string' || typeof phone_number !== 'string') {
+//       return responseData(res, 'error', 400, 'Invalid input types', [], '')
+//     }
 
-    const existingVendor = await Vendor.findOne({ username })
+//     const existingVendor = await Vendor.findOne({ username })
 
-    if (existingVendor) {
-      return responseData(res, 'error', 409, 'Vendor already exists', [], '')
-    }
+//     if (existingVendor) {
+//       return responseData(res, 'error', 409, 'Vendor already exists', [], '')
+//     }
 
-    const vendor = await Vendor.create({
-      username: username.trim(),
-      brand_name: brand_name.trim(),
-      brand_description: brand_description.trim(),
-      phone_number: phone_number.trim(),
-      instagram: instagram?.trim(),
-      facebook: facebook?.trim(),
-      x: x?.trim(),
-      brand_image: brand_image?.trim(),
-      plan
-    })
+//     const vendor = await Vendor.create({
+//       username: username.trim(),
+//       brand_name: brand_name.trim(),
+//       brand_description: brand_description.trim(),
+//       phone_number: phone_number.trim(),
+//       instagram: instagram?.trim(),
+//       facebook: facebook?.trim(),
+//       x: x?.trim(),
+//       brand_image: brand_image?.trim(),
+//       plan
+//     })
 
-    return responseData(res, 'success', 201, 'Vendor created successfully', vendor, '')
+//     return responseData(res, 'success', 201, 'Vendor created successfully', vendor, '')
 
-  } catch (error) {
-    console.error('Create vendor error:', error)
+//   } catch (error) {
+//     console.error('Create vendor error:', error)
 
-    return responseData(res, 'error', 500, 'Internal server error', [], '')
-  }
-}
+//     return responseData(res, 'error', 500, 'Internal server error', [], '')
+//   }
+// }
 
 
 // GET /vendors/:id
@@ -178,7 +177,7 @@ const deleteVendor = async (req, res) => {
 
 module.exports = {
   getVendors,
-  createVendor,
+  // createVendor,
   getVendorById,
   updateVendorById,
   deleteVendor

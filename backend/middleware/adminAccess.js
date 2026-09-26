@@ -5,7 +5,7 @@ function adminOnly(req, res, next) {
         return responseData(res, 'error', 403, "No Access", [], '');
     }
 
-    if (req.userId !== "empireclothing_4821") {
+    if (req.userId !== "blackforge") {
         return responseData(res, 'error', 403, "No Access", [], '');
     }
 

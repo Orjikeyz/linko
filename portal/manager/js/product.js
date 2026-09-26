@@ -2,6 +2,7 @@ async function getProducts() {
     try {
         const response = await fetch(`${backendUrl}/manager/product`, {
             method: "GET",
+            credentials: "include",
             headers: {
                 "Content-Type": "application/json"
             }
@@ -12,7 +13,7 @@ async function getProducts() {
             return showAlert(data.message, data.status)
         }
 
-        showAlert(data.message, data.status)
+        // showAlert(data.message, data.status)
         return data;
 
     } catch (error) {
@@ -21,91 +22,6 @@ async function getProducts() {
     }
 }
 
-async function getProductById(id) {
-    try {
-        const response = await fetch(`${backendUrl}/manager/product/products/${id}`, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json"
-            }
-        });
-
-        if (!response.ok) {
-            throw new Error(`Failed to fetch product: ${response.status}`);
-        }
-
-        return await response.json();
-
-    } catch (error) {
-        console.error("Error fetching product:", error);
-        throw error;
-    }
-}
-
-async function createProduct(productData) {
-    try {
-        const response = await fetch(`${backendUrl}/manager/product/products`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(productData)
-        });
-
-        if (!response.ok) {
-            throw new Error(`Failed to create product: ${response.status}`);
-        }
-
-        return await response.json();
-
-    } catch (error) {
-        console.error("Error creating product:", error);
-        throw error;
-    }
-}
-
-async function updateProduct(id, productData) {
-    try {
-        const response = await fetch(`${backendUrl}/manager/product/products/${id}`, {
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(productData)
-        });
-
-        if (!response.ok) {
-            throw new Error(`Failed to update product: ${response.status}`);
-        }
-
-        return await response.json();
-
-    } catch (error) {
-        console.error("Error updating product:", error);
-        throw error;
-    }
-}
-
-async function deleteProduct(id) {
-    try {
-        const response = await fetch(`${backendUrl}/manager/product/products/${id}`, {
-            method: "DELETE",
-            headers: {
-                "Content-Type": "application/json"
-            }
-        });
-
-        if (!response.ok) {
-            throw new Error(`Failed to delete product: ${response.status}`);
-        }
-
-        return await response.json();
-
-    } catch (error) {
-        console.error("Error deleting product:", error);
-        throw error;
-    }
-}
 
 // ============================================================
 // LOAD PRODUCTS INTO TABLE
@@ -114,7 +30,11 @@ async function deleteProduct(id) {
 async function loadProducts() {
   try {
     const productData = await getProducts();
-    const totalProduct = document.querySelector(".totalProduct").textContent = productData.result.length
+
+    let totalProduct = document.querySelectorAll(".totalProduct");
+    for (let i = 0; i < totalProduct.length; i++) {
+      totalProduct[i].textContent = productData.result.length
+    }
 
     const products = productData.result || [];
     const tbody = document.querySelector("#productBody");

@@ -66,24 +66,24 @@
               <div class="dot purple">🏪</div>
               <div class="lbl">Total Vendors</div>
               <div class="val totalVendor">0</div>
-              <div class="sub"><span class="up">2 active</span> · 0 suspended</div>
+              <!-- <div class="sub"><span class="up">2 active</span> · 0 suspended</div> -->
             </div>
             <div class="stat-card">
               <div class="dot blue">🛍</div>
               <div class="lbl">Total Products</div>
-              <div class="val">1</div>
+              <div class="val totalProduct">0</div>
               <div class="sub">across all vendors</div>
             </div>
             <div class="stat-card">
               <div class="dot amber">⇄</div>
               <div class="lbl">Transactions</div>
-              <div class="val">1</div>
-              <div class="sub"><span class="up">1 successful</span></div>
+              <div class="val totalTransactions">0</div>
+              <!-- <div class="sub"><span class="up">1 successful</span></div> -->
             </div>
             <div class="stat-card">
               <div class="dot green">💰</div>
               <div class="lbl">Revenue</div>
-              <div class="val">₦3,000</div>
+              <div class="val totalSuccessfulAmount" style="color: var(--green)">₦0</div>
               <div class="sub">from successful transactions</div>
             </div>
           </div>
@@ -209,7 +209,7 @@
                 <option>pro</option>
                 <option>premium</option>
               </select>
-              <span class="hint">2 vendors found</span>
+              <span class="hint"><span class="totalVendor">0</span> vendors found</span>
             </div>
             <div class="table-wrap">
               <table>
@@ -339,14 +339,13 @@
                 <h3>Platform Overview</h3>
               </div>
               <div style="padding:20px">
-                <div class="detail-row"><span class="k">Total Vendors</span><span class="v">0</span></div>
-                <div class="detail-row"><span class="k">Active Vendors</span><span class="v">0</span></div>
-                <div class="detail-row"><span class="k">Total Products</span><span class="v">0</span></div>
-                <div class="detail-row"><span class="k">Total Transactions</span><span class="v">0</span></div>
+                <div class="detail-row"><span class="k">Total Vendors</span><span class="v totalVendor">0</span></div>
+                <!-- <div class="detail-row"><span class="k">Active Vendors</span><span class="v">0</span></div> -->
+                <div class="detail-row"><span class="k">Total Products</span><span class="v totalProduct">0</span></div>
+                <div class="detail-row"><span class="k">Total Transactions</span><span class="v totalTransactions">0</span></div>
                 <div class="detail-row"><span class="k">Total Revenue</span><span class="v amount"
                     style="color:var(--green)">₦16,500</span></div>
-                <div class="detail-row"><span class="k">Platform Plan Tiers</span><span class="v">basic · pro ·
-                    premium</span></div>
+                <div class="detail-row"><span class="k">Platform Plan Tiers</span><span class="v">Free · pro </span></div>
               </div>
             </div>
             <div class="card">

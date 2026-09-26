@@ -3,6 +3,7 @@ async function getTransactions() {
     try {
         const response = await fetch(`${backendUrl}/manager/transaction`, {
             method: "GET",
+            credentials: "include",
             headers: {
                 "Content-Type": "application/json"
             }
@@ -14,33 +15,8 @@ async function getTransactions() {
             return showAlert(data.message, data.status)
         }
 
-        showAlert(data.message, data.status)
+        // showAlert(data.message, data.status)
         return data
-
-    } catch (error) {
-        console.error("Error fetching transactions data:", error);
-        return showAlert("Error fetching transactions data", "error")
-    }
-}
-
-
-async function getTransactionById(id) {
-    try {
-        const response = await fetch(`${backendUrl}/manager/transaction/${id}`,
-            {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json"
-                }
-            }
-        );
-
-        const data = await response.json()
-        if (data.status === "error") {
-            return showAlert(data.message, data.status)
-        }
-
-        return showAlert(data.message, data.status)
 
     } catch (error) {
         console.error("Error fetching transactions data:", error);
@@ -77,13 +53,21 @@ async function loadTransactions() {
             0
         );
 
-        document.querySelector(".totalTransactions").textContent = totalTransactions;
+        let totalTransactionValue = document.querySelectorAll(".totalTransactions");
+        for (let i = 0; i < totalTransactionValue.length; i++) {
+            totalTransactionValue[i].textContent = totalTransactions
+        }
 
         document.querySelector(".totalSuccessful").textContent = totalSuccessful;
 
         document.querySelector(".totalPending").textContent = totalPending;
+
+        let totalSuccessfulAmountValue = document.querySelectorAll(".totalSuccessfulAmount");
+        for (let i = 0; i < totalSuccessfulAmountValue.length; i++) {
+            totalSuccessfulAmountValue[i].textContent = `₦${totalSuccessfulAmount.toLocaleString("en-NG")}`;
+        }
         
-        document.querySelector(".totalSuccessfulAmount").textContent = `₦${totalSuccessfulAmount.toLocaleString("en-NG")}`;
+        // document.querySelector(".totalSuccessfulAmount").textContent = `₦${totalSuccessfulAmount.toLocaleString("en-NG")}`;
 
         const tbody = document.querySelector("#transactionBody");
 

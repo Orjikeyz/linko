@@ -2,14 +2,19 @@ const API_URL = `${backendUrl}/manager/vendor`;
 
 async function getVendors() {
   try {
-    const response = await fetch(API_URL);
+    const response = await fetch(`${API_URL}`, {
+      method: 'GET',
+      credentials: "include",
+      headers: { 'Content-Type': 'application/json' }
+    })
+
     const data = await response.json()
 
     if (data.status === "error") {
         return showAlert(data.message, data.status)
     }
 
-    showAlert(data.message, data.status)
+    // showAlert(data.message, data.status)
     return data
   } catch (error) {
     console.error("Error fetching vendors:", error);
@@ -17,73 +22,17 @@ async function getVendors() {
   }
 }
 
-async function getVendor(id) {
-  try {
-    const response = await fetch(`${API_URL}/${id}`);
-
-    if (!response.ok) {
-      throw new Error(`Failed to fetch vendor: ${response.status}`);
-    }
-
-    return await response.json();
-  } catch (error) {
-    console.error("Error fetching vendor:", error);
-    throw error;
-  }
-}
-
-async function createVendor(vendor) {
-  try {
-    const response = await fetch(API_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(vendor),
-    });
-
-    if (!response.ok) {
-      throw new Error(`Failed to create vendor: ${response.status}`);
-    }
-
-    return await response.json();
-  } catch (error) {
-    console.error("Error creating vendor:", error);
-    throw error;
-  }
-}
-
-async function updateVendor(id, vendor) {
-  try {
-    const response = await fetch(`${API_URL}/${id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(vendor),
-    });
-
-    if (!response.ok) {
-      throw new Error(`Failed to update vendor: ${response.status}`);
-    }
-
-    return await response.json();
-  } catch (error) {
-    console.error("Error updating vendor:", error);
-    throw error;
-  }
-}
-
 async function loadVendors() {
   try {
     const vendorData = await getVendors();
-    document.querySelector(".totalVendor").textContent = vendorData.result.length
+    let totalVendor = document.querySelectorAll(".totalVendor") 
+    for (let i = 0; i < totalVendor.length; i++) {
+      totalVendor[i].textContent = vendorData.result.length
+    }
     const vendors = vendorData.result || [];
 
     // Select both tables
-    const tbodies = document.querySelectorAll(
-      "#vendorTableBody, #vendorTableBody2"
-    );
+    const tbodies = document.querySelectorAll("#vendorTableBody, #vendorTableBody2");
 
     const rows = vendors.map(vendor => {
       const statusClass =

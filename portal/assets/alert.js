@@ -13,12 +13,17 @@ function showAlert(message, status) {
         alertBox.classList.add("show");
 
         if (message === "Unauthorized" || message === "Unauthorized - logging out") {
-            const body = document.querySelector('body').style.display = ""
-            window.location.href = "./login.html"
+            const body = document.querySelector('body').style.display = "none"
+            window.location.href = `${productUrl}/portal/vendor/login.html`
+        }
+
+        if (message === "No Access") {
+            const body = document.querySelector('body').style.display = "none"
+            window.location.href = "../404.html"
         }
 
         if (message === "Account verification required") {
-            const body = document.querySelector('body').style.display = ""
+            const body = document.querySelector('body').style.display = "none"
             window.location.href = "./accountVerification.html" 
         }
         

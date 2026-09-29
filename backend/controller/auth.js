@@ -44,7 +44,8 @@ const login = async (req, res) => {
             httpOnly: true,
             secure: true,        // ✅ MUST be true on HTTPS
             sameSite: "None",    // ✅ MUST be None for cross-origin
-            maxAge: 1000 * 60 * 60
+            maxAge: 1000 * 60 * 60,
+            path: "/"
         });
 
         return responseData(res, 'success', 200, 'Login successful', { id: vendor.username }, '');

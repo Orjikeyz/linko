@@ -6,6 +6,7 @@ connectDB() //connect DB
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 
+app.set("trust proxy", 1);
 
 app.use(cors({
     origin: ["http://localhost", "http://127.0.0.1:5500", "https://linko-ng.vercel.app"],

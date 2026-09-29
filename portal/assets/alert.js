@@ -13,8 +13,9 @@ function showAlert(message, status) {
         alertBox.classList.add("show");
 
         if (message === "Unauthorized" || message === "Unauthorized - logging out") {
-            const body = document.querySelector('body').style.display = "none"
-            window.location.href = `${productUrl}/portal/vendor/login.html`
+            console.log(message)
+            // const body = document.querySelector('body').style.display = "none"
+            // window.location.href = `${productUrl}/portal/vendor/login.html`
         }
 
         if (message === "No Access") {

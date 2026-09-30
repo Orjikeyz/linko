@@ -14,6 +14,7 @@ const getVendor = async (req, res) => {
       return responseData(res, 'error', 400, 'Vendor not found', [], '')
     }
 
+    console.log(req.cookies)
     return responseData(res, 'success', 200, 'Vendor data retrieved successfully', vendor, vendor.plan)
 
   } catch (error) {

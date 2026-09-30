@@ -14,7 +14,13 @@ const getVendor = async (req, res) => {
       return responseData(res, 'error', 400, 'Vendor not found', [], '')
     }
 
-    console.log(req.cookies)
+
+    console.log("AUTH REQUEST COOKIES:", req.cookies);
+
+    const token = req.cookies.token;
+
+    console.log("TOKEN EXISTS:", !!token);
+
     return responseData(res, 'success', 200, 'Vendor data retrieved successfully', vendor, vendor.plan)
 
   } catch (error) {

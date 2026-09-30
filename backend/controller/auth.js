@@ -41,10 +41,11 @@ const login = async (req, res) => {
         // });
 
         res.cookie("token", token, {
-            httpOnly: true,
+            httpOnly: false,
             secure: true,        // ✅ MUST be true on HTTPS
-            sameSite: "Lax",    // ✅ MUST be None for cross-origin
-            maxAge: 1000 * 60 * 60
+            sameSite: "None",    // ✅ MUST be None for cross-origin
+            maxAge: 1000 * 60 * 60,
+            path: "/"
         });
 
         console.log(req.cookies)

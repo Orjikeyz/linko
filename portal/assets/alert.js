@@ -14,6 +14,7 @@ function showAlert(message, status) {
 
         if (message === "Unauthorized" || message === "Unauthorized - logging out") {
             console.log(message)
+            alert(document.cookie)
             // const body = document.querySelector('body').style.display = "none"
             // window.location.href = `${productUrl}/portal/vendor/login.html`
         }

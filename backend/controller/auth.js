@@ -39,18 +39,16 @@ const login = async (req, res) => {
         //     sameSite: "lax", // works for dev
         //     maxAge: 1000 * 60 * 60 // 1 hour in milliseconds
         // });
-        const frontendHost = req.headers['x-forwarded-host'] || 'linko-ng.vercel.app';
+
         res.cookie("token", token, {
             httpOnly: true,
             secure: true,        // ✅ MUST be true on HTTPS
-            sameSite: "Lax",    // ✅ MUST be None for cross-origin
-            domain: frontendHost.includes('localhost') ? undefined : `.${frontendHost}`, // 💡 Forces the cookie domain to match Vercel exactly
+            sameSite: "None",    // ✅ MUST be None for cross-origin
             maxAge: 1000 * 60 * 60,
-            path: "/"
         });
 
         console.log(req.cookies)
-        return responseData(res, 'success', 200, 'Login successful', { id: vendor.username }, '');
+        return responseData(res, 'success', 200, 'Login successful', { id: vendor.username, token: token}, '');
 
     } catch (error) {
         console.error(error);

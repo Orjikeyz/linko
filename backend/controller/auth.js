@@ -45,6 +45,7 @@ const login = async (req, res) => {
             secure: true,        // ✅ MUST be true on HTTPS
             sameSite: "None",    // ✅ MUST be None for cross-origin
             maxAge: 1000 * 60 * 60,
+            partitioned: true,
             path: "/"
         });
 

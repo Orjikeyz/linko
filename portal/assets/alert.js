@@ -14,13 +14,13 @@ function showAlert(message, status) {
 
         if (message === "Unauthorized" || message === "Unauthorized - logging out") {
             console.log(message)
-            const body = document.querySelector('body').style.display = "none"
-            window.location.href = `${productUrl}/portal/vendor/login.html`
+            // const body = document.querySelector('body').style.display = "none"
+            // window.location.href = `${productUrl}/portal/vendor/login.html`
         }
 
         if (message === "No Access") {
-            const body = document.querySelector('body').style.display = "none"
-            window.location.href = "../404.html"
+            // const body = document.querySelector('body').style.display = "none"
+            // window.location.href = "../404.html"
         }
 
         if (message === "Account verification required") {

@@ -71,8 +71,6 @@ const loginAuth = async () => {
         }
 
         showAlert("Login successful!", "success");
-
-          document.cookie = `token=${data.result.token}; path=/; maxAge=${60 * 60}; Secure; SameSite=Lax`;
         setTimeout(() => {
             loginBtn.disabled = true
             loginBtn.textContent = "ACCESS GRANTED"

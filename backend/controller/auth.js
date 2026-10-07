@@ -44,11 +44,10 @@ const login = async (req, res) => {
             httpOnly: true,
             secure: true,        // ✅ MUST be true on HTTPS
             sameSite: "None",    // ✅ MUST be None for cross-origin
-            maxAge: 1000 * 60 * 60,
+            maxAge: 1000 * 60 * 60
         });
 
-        console.log(req.cookies)
-        return responseData(res, 'success', 200, 'Login successful', { id: vendor.username, token: token}, '');
+        return responseData(res, 'success', 200, 'Login successful', { id: vendor.username }, '');
 
     } catch (error) {
         console.error(error);

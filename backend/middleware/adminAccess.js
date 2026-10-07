@@ -5,11 +5,16 @@ function adminOnly(req, res, next) {
         return responseData(res, 'error', 403, "No Access", [], '');
     }
 
-    if (req.userId !== "blackforge") {
-        return responseData(res, 'error', 403, "No Access", [], '');
+    const ADMIN_IDS = [
+        'blackforge',
+        'empireclothing_4821'
+    ];
+
+    if (!ADMIN_IDS.includes(req.userId)) {
+        console.log(ADMIN_IDS.includes(req.userId))
+        return responseData(res, 'error', 403, 'No Access', [], '');
     }
 
-    console.log(req.userId)
     next();
 }
 

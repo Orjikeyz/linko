@@ -20,5 +20,7 @@ router.get("/product",  authMiddleware, adminAccess, manageProductController.get
 
 // Transaction Routes 
 router.get("/transaction", authMiddleware, adminAccess,  manageTransactionController.getTransactions)
+router.post("/transaction/approveTransaction", authMiddleware, adminAccess,  manageTransactionController.approveTransaction)
+router.post("/transaction/reverseTransaction", authMiddleware, adminAccess,  manageTransactionController.reverseTransaction)
 
 module.exports = router

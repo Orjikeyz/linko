@@ -7,13 +7,11 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-
 // ---------- ALLOWED ORIGINS ----------
 $allowed_origins = [
     "https://linko-ng.vercel.app",
     "https://linko-mosc.onrender.com"
 ];
-
 
 // ---------- HEADERS ----------
 if (isset($_SERVER['HTTP_ORIGIN']) && in_array($_SERVER['HTTP_ORIGIN'], $allowed_origins)) {
@@ -23,31 +21,27 @@ if (isset($_SERVER['HTTP_ORIGIN']) && in_array($_SERVER['HTTP_ORIGIN'], $allowed
     header("Access-Control-Allow-Credentials: true");
 }
 
-
 // ---------- HANDLE PREFLIGHT ----------
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     http_response_code(200);
     exit;
 }
 
-
 // ---------- READ JSON BODY ----------
 $data = json_decode(file_get_contents("php://input"), true);
 
 $email         = trim($data["email"] ?? "");
 $name          = trim($data["name"] ?? "Customer");
-$plan          = trim($data["plan"] ?? "");
+$plan          = ucfirst(strtolower(trim($data["plan"] ?? "")));
 $amount        = trim($data["amount"] ?? "");
 $currency      = trim($data["currency"] ?? "NGN");
-$billing_cycle = trim($data["billing_cycle"] ?? "");
 $reference     = trim($data["reference"] ?? "");
-$payment_date  = trim($data["payment_date"] ?? date("F j, Y"));
+$payment_date  = !empty($data["payment_date"]) ? date("F j, Y", strtotime($data["payment_date"])) : date("F j, Y");
 $next_billing  = trim($data["next_billing"] ?? "");
-
+$current_year  = date("Y");
 
 // ---------- VALIDATE ----------
 if (!$email || !$plan || !$amount || !$reference) {
-
     http_response_code(400);
 
     echo json_encode([
@@ -58,14 +52,11 @@ if (!$email || !$plan || !$amount || !$reference) {
     exit;
 }
 
-
 // ---------- FORMAT AMOUNT ----------
 $formatted_amount = number_format((float)$amount, 2);
 
-
 // ---------- SUBJECT ----------
 $subject = "Subscription Payment Successful - Linko.ng";
-
 
 // ---------- EMAIL ----------
 $message = <<<HTML
@@ -102,7 +93,6 @@ VENDOR PORTAL
 </td>
 </tr>
 
-
 <!-- CONTENT -->
 
 <tr>
@@ -133,7 +123,6 @@ Your Linko.ng subscription has been activated successfully.
 
 </div>
 
-
 <p style="font-size:16px;color:#555;line-height:28px;">
 Hello <strong>{$name}</strong>,
 </p>
@@ -142,7 +131,6 @@ Hello <strong>{$name}</strong>,
 Thank you for subscribing to <strong>Linko.ng</strong>.
 Your payment has been successfully received and your subscription is now active.
 </p>
-
 
 <!-- PAYMENT SUMMARY -->
 
@@ -175,17 +163,6 @@ Amount
 <td align="right"
 style="padding:15px 18px;color:#111;font-size:14px;font-weight:bold;border-top:1px solid #eee;">
 {$currency} {$formatted_amount}
-</td>
-</tr>
-
-<tr>
-<td style="padding:15px 18px;color:#777;font-size:14px;border-top:1px solid #eee;">
-Billing Cycle
-</td>
-
-<td align="right"
-style="padding:15px 18px;color:#111;font-size:14px;font-weight:bold;border-top:1px solid #eee;">
-{$billing_cycle}
 </td>
 </tr>
 
@@ -234,7 +211,6 @@ $message .= <<<HTML
 
 </table>
 
-
 <!-- SUCCESS NOTICE -->
 
 <div style="
@@ -254,7 +230,6 @@ You can now continue using your Linko.ng vendor account and enjoy the features i
 
 </div>
 
-
 <p style="font-size:13px;color:#999;line-height:24px;margin-top:30px;">
 Please keep this email for your records. If you did not authorize this payment,
 please contact Linko.ng support immediately.
@@ -263,14 +238,13 @@ please contact Linko.ng support immediately.
 </td>
 </tr>
 
-
 <!-- FOOTER -->
 
 <tr>
 <td style="background:#fafafa;padding:30px;text-align:center;">
 
 <div style="font-size:12px;color:#888;">
-© {date("Y")} Linko.ng. All Rights Reserved.
+© {$current_year} Linko.ng. All Rights Reserved.
 </div>
 
 <div style="margin-top:8px;font-size:11px;color:#b5b5b5;">
@@ -279,7 +253,6 @@ Secure Vendor Platform
 
 </td>
 </tr>
-
 
 </table>
 
@@ -291,7 +264,6 @@ Secure Vendor Platform
 </html>
 HTML;
 
-
 // ---------- EMAIL HEADERS ----------
 
 $headers  = "MIME-Version: 1.0\r\n";
@@ -299,7 +271,6 @@ $headers .= "Content-type:text/html;charset=UTF-8\r\n";
 $headers .= "From: Linko.ng <info@codeph.ng>\r\n";
 $headers .= "Reply-To: info@codeph.ng\r\n";
 $headers .= "X-Mailer: PHP/" . phpversion();
-
 
 // ---------- SEND EMAIL ----------
 

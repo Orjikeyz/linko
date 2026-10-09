@@ -26,7 +26,11 @@ document.addEventListener("click", function (event) {
     }
 });
 
-
+// Close Receipt Modal Pop up 
+function closeReceiptModalPop() {
+    let receiptModalOverlay = document.querySelector(".receipt-pop-modal")
+    receiptModalOverlay.style.display = "none"
+}
 // Close with Escape key
 document.addEventListener("keydown", function (event) {
     if (event.key === "Escape") {

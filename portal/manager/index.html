@@ -295,6 +295,31 @@
 
           <div class="card">
             <div class="card-head">
+
+              <!-- Trnsaction Info Modal -->
+              <div class="modal-overlay receipt-pop-modal" style="width: 100%; height: 100%; position: fixed; top: 0; left: 0; z-index: 20; ">
+                <div class="receipt-pop">
+                  <div class="receipt-head">
+                    <span>Receipt Verification</span>
+                    <button onclick="closeReceiptModalPop()">×</button>
+                  </div>
+              
+                  <div class="receipt-img">
+                    <img src=""
+                      alt="Receipt" id="receipt_img">
+                  </div>
+              
+                  <div class="receipt-info">
+                    <div><small>Reference</small><b id="receipt_ref"></b></div>
+                    <div><small>Description</small><b id="receipt_description"></b></div>
+                    <div><small>Vendor</small><b id="receipt_vendor"></b></div>
+                    <div><small>Amount</small><b id="receipt_amount"></b></div>
+                    <div><small>Date</small><b id="receipt_date"></b></div>
+                    <div><small>Status</small><strong id="receipt_status"></strong></div>
+                  </div>
+                </div>
+              </div>
+
               <h3>Transactions</h3>
               <div class="spacer"></div>
               <select

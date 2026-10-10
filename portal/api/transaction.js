@@ -99,9 +99,24 @@ async function transactionPrevBtn() {
     }
 }
 
+
+let vendorAccountPlan = sessionStorage.getItem("vendorAccountPlan")
+if (vendorAccountPlan === "pro") {
+    document.getElementById("subscribeBtn").textContent = "Current Plan"
+    document.getElementById("subscribeBtn").style.background = "#7a7a7a"
+}
 async function selectPlan(plan) {
+    let vendorAccountPlan = sessionStorage.getItem("vendorAccountPlan")
+    if (vendorAccountPlan === "pro") {
+        showAlert("You’re already on the Pro plan.", "info")
+        console.log(vendorAccountPlan)
+    }else {
+        window.location.href = `payment.html?id=${paramsValue}`
+    }
+
+
     //manual payment process
-    window.location.href = `payment.html?id=${paramsValue}`
+    
 
     // paystack payment process
     // let subscribeBtn = document.getElementById("subscribeBtn")

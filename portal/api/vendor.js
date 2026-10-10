@@ -77,6 +77,7 @@ const getVendorDashboardData = async () => {
     if (data.status === "success") {
       document.getElementById('status_plan').innerHTML = `<b style='text-transform: capitalize;'>${data.result.plan}</b>` || "Free"
       localStorage.setItem("vendorData", JSON.stringify(data.result))
+      sessionStorage.setItem("vendorAccountPlan", data.result.plan) || "free"
     }
   } catch (error) {
     showAlert("Server Error. Error getting vendor panel data", "error")
